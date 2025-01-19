@@ -6,7 +6,7 @@ import { Alert } from "react-native";
 import { BASE_URL } from "./config";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-export const signIn = async (payload: { role: 'customer' | 'captain', phone: string }) => {
+export const signIn = async (payload: { role: 'customer' | 'captain', phone: string },updateAccessToken:()=>void) => {
   const { setUser } = useUserStore.getState();
   const { setUser: setCaptainUser } = useCaptainStore.getState();
 
@@ -28,6 +28,7 @@ export const signIn = async (payload: { role: 'customer' | 'captain', phone: str
     } else {
       resetAndNavigate("/captain/home");
     }
+    updateAccessToken()
   } catch (error: any) {
     Alert.alert("Oh, there was an error");
     console.log("Error:", error?.response?.data?.msg || "Error in sign-in");
