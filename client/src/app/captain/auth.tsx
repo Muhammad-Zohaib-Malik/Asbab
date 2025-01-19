@@ -6,9 +6,13 @@ import { commonStyles } from '@/styles/commonStyles'
 import MaterialIcons from '@expo/vector-icons/MaterialIcons'
 import PhoneInput from '@/components/shared/PhoneInput'
 import { signIn } from '@/service/authService'
+import { useWS } from '@/service/WebProvider'
 
 
 const Auth = () => {
+    const {updateAccessToken}=useWS()
+  
+  
   const [phone, setPhone] = useState('')
  const handleNext = async() => {
     if(!phone && phone.length!==10){
@@ -16,7 +20,7 @@ const Auth = () => {
       return
     }
 
-    signIn({role:'captain',phone})
+    signIn({role:'captain',phone},updateAccessToken)
     
 
   }
