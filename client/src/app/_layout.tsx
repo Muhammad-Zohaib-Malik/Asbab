@@ -5,6 +5,7 @@ import * as SplashScreen from 'expo-splash-screen';
 import { useEffect } from 'react';
 import 'react-native-reanimated';
 import '../../global.css'
+import { WSProvider } from '@/service/WebProvider';
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -30,7 +31,7 @@ export default function RootLayout() {
   }
 
   return (
-    
+    <WSProvider>
       <Stack>
         <Stack.Screen name="index" options={{headerShown:false}}/>
         <Stack.Screen name="role" options={{headerShown:false}}/>
@@ -40,6 +41,7 @@ export default function RootLayout() {
         <Stack.Screen name="customer/home" options={{headerShown:false}}/>
         <Stack.Screen name="+not-found" />
       </Stack>
+      </WSProvider>
    
 
   );
