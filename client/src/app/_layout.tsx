@@ -42,6 +42,8 @@ export default function RootLayout() {
         <Stack.Screen name="captain/auth" options={{headerShown:false}}/>
         <Stack.Screen name="captain/home" options={{headerShown:false}}/>
         <Stack.Screen name="customer/home" options={{headerShown:false}}/>
+        <Stack.Screen name="customer/selectlocation" options={{headerShown:false}}/>
+
         <Stack.Screen name="+not-found" />
       </Stack>
       </WSProvider>
