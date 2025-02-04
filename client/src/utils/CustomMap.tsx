@@ -53,9 +53,9 @@ export const customMapStyle = [
   }
 ]
 
-export const indiaIntialRegion = {
-  latitude: 28.6139,
-  longitude: 77.2090,
-  latitudeDelta: 0.5,
-  longitudeDelta: 0.5,
-}
+export const islamabadInitialRegion = {
+  latitude: 33.6844, // Latitude for Islamabad
+  longitude: 73.0479, // Longitude for Islamabad
+  latitudeDelta: 0.5, // Adjust zoom level as needed
+  longitudeDelta: 0.5, // Adjust zoom level as needed
+};

@@ -7,7 +7,8 @@
     "orientation": "portrait",
     "icon": "./src/assets/images/icon.png",
     "newArchEnabled": true,
-    "scheme": "myapp",
+    "scheme": "Asbab",
+    "jsEngine": "hermes",
     "userInterfaceStyle": "automatic",
     "splash": {
       "image": "./src/assets/images/splash.png",
@@ -18,14 +19,15 @@
       "supportsTablet": true,
       "bundleIdentifier": "com.zohaib.Asbab",
       "config": {
-                     "googleMapsApiKey": "process.env.EXPO_PUBLIC_MAP_API_KEY"
+                     "googleMapsApiKey": "AlzaSyInPVUKDhdtaEWVLfHMDVFd-STij5KQ40l"
+                     
 
             }
     },
     "android": {
       "config": {
                 "googleMaps": {
-                    "apiKey": "process.env.EXPO_PUBLIC_MAP_API_KEY"
+                    "apiKey": "AlzaSyInPVUKDhdtaEWVLfHMDVFd-STij5KQ40l"
                 }
             },
       "adaptiveIcon": {

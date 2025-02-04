@@ -23,7 +23,7 @@ const LocationBar = () => {
           </TouchableOpacity>
 
           <TouchableOpacity style={uiStyles.locationBar}
-            onPress={() => router.navigate('/customer/selectlocation')}>
+            onPress={() => router.navigate('/customer/ridePlan')}>
             <View style={uiStyles.dot} />
 
             <Text className="font-JakartaMedium" numberOfLines={1}  style={uiStyles.locationText}>
