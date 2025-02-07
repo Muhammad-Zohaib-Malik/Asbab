@@ -6,12 +6,7 @@ import MapViewDirections from "react-native-maps-directions";
 import { AntDesign } from "@expo/vector-icons";
 import { FontAwesome } from "@expo/vector-icons";
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
-import 'react-native-get-random-values'; // Fix for crypto.getRandomValues()
-
-const GOOGLE_MAPS_API_KEY = process.env.EXPO_PUBLIC_MAP_API_KEY;
-console.log(GOOGLE_MAPS_API_KEY)
-
-
+import 'react-native-get-random-values';
 import { router } from "expo-router";
 import { windowHeight } from "@/utils/Constants";
 import { mapStyles } from "@/styles/mapStyles";
@@ -56,7 +51,7 @@ const RidePlan = () => {
       </View>
 
       {/* Bottom Section (30% Height) */}
-      <View className="flex-1 ">
+      <View className="flex-1 bg-slate-200">
         <View className="flex-1">
           <View className="flex flex-row items-center justify-between">
             <TouchableOpacity onPress={() => router.back()}>
@@ -70,13 +65,13 @@ const RidePlan = () => {
           borderColor: "#000",
           borderWidth: 2,
           borderRadius: 15,
-          marginBottom: windowHeight(10),
-          paddingHorizontal: windowHeight(10),
-          paddingVertical: windowHeight(10),
+          marginBottom: windowHeight(20),
+          paddingHorizontal: windowHeight(3),
+          paddingVertical: windowHeight(20),
         }}>
-          <View className="flex flex-row items-center m-1">
+          <View className="flex flex-row items-center ">
             <FontAwesome name="map-marker" size={32} color="blue" />
-            <View style={{ flex: 1, marginLeft: 8 }}>
+            <View style={{ flex: 1, marginLeft: 5 }}>
               <Text className="font-JakartaMedium text-[#075BB5]">Current Location</Text>
               <GooglePlacesAutocomplete
                 placeholder="Where to?"
@@ -109,7 +104,7 @@ const RidePlan = () => {
                     textAlignVertical: "center",
                   },
                   predefinedPlacesDescription: {
-                    // color: '#1faadb'
+                    color: '#1faadb'
                   }
                 }}
                 textInputProps={{
