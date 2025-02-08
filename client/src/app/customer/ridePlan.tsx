@@ -1,6 +1,6 @@
 import { customMapStyle, islamabadInitialRegion } from "@/utils/CustomMap";
 import { useState } from "react";
-import { KeyboardAvoidingView, View, StyleSheet, TouchableOpacity, Text } from "react-native";
+import { KeyboardAvoidingView, View, StyleSheet, TouchableOpacity, Text, Pressable } from "react-native";
 import MapView, { Marker } from "react-native-maps";
 import MapViewDirections from "react-native-maps-directions";
 import { AntDesign } from "@expo/vector-icons";
@@ -10,6 +10,7 @@ import 'react-native-get-random-values';
 import { router } from "expo-router";
 import { windowHeight } from "@/utils/Constants";
 import { mapStyles } from "@/styles/mapStyles";
+import { getPlacesSuggestions } from "@/utils/mapUtils";
 
 
 const RidePlan = () => {
@@ -22,8 +23,13 @@ const RidePlan = () => {
   const [keyboardAvoidingHeight, setkeyboardAvoidingHeight] = useState(false);
   const [places, setPlaces] = useState<any>([]);
   const [query, setQuery] = useState("");
-  const handleInputChange = (text: any) => {
+  const handleInputChange = async (text: any) => {
     setQuery(text);
+    console.log(text);
+    // if (text.length > 2) {  // Avoid unnecessary API calls
+    //   const suggestions = await getPlacesSuggestions(text);
+    //   setPlaces(suggestions);
+    // }
   }
 
   return (
@@ -98,7 +104,7 @@ const RidePlan = () => {
                     color: '#000',
                     borderBottomWidth: 1,
                     borderColor: "#ccc",
-                    paddingHorizontal: 10,
+                    paddingHorizontal: 1,
                     borderRadius: 10,
                     backgroundColor: "#fff",
                     textAlignVertical: "center",
@@ -106,6 +112,7 @@ const RidePlan = () => {
                   predefinedPlacesDescription: {
                     color: '#1faadb'
                   }
+
                 }}
                 textInputProps={{
                   onChangeText: (text) => handleInputChange(text),
@@ -116,11 +123,20 @@ const RidePlan = () => {
                 fetchDetails={true}
                 debounce={200}
               />
+
             </View>
           </View>
-
-
         </View>
+        {/* last */}
+        {
+          places.map((place: any, index: number) => (
+            <Pressable key={index}>
+              <Text>{place.description}</Text>
+            </Pressable>
+          ))
+
+
+        }
 
       </View>
     </KeyboardAvoidingView>

@@ -62,8 +62,8 @@ export const getPlacesSuggestions = async (query: string) => {
                 input: query,
                 location: `${location?.latitude},${location?.longitude}`,
                 radius: 50000,
-                components: 'country:IN',
-                key: process.env.EXPO_PUBLIC_MAP_API_KEY,
+                components: 'country:PK',
+                key: process.env.EXPO_PUBLIC_MAP_API_KEY
             }
         }
         );
@@ -164,5 +164,4 @@ export const vehicleIcons: Record<'bike' | 'auto' | 'cabEconomy' | 'cabPremium',
     auto: { icon: require('@/assets/icons/auto.png') },
     cabEconomy: { icon: require('@/assets/icons/cab.png') },
     cabPremium: { icon: require('@/assets/icons/cab_premium.png') },
-  };
-  
+};

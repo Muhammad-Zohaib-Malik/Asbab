@@ -12,7 +12,7 @@ SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
   const [loaded] = useFonts({
-    
+
     "Jakarta-Bold": require("@/assets/fonts/PlusJakartaSans-Bold.ttf"),
     "Jakarta-ExtraBold": require("@/assets/fonts/PlusJakartaSans-ExtraBold.ttf"),
     "Jakarta-Light": require("@/assets/fonts/PlusJakartaSans-Light.ttf"),
@@ -21,8 +21,8 @@ export default function RootLayout() {
     "Jakarta-SemiBold": require("@/assets/fonts/PlusJakartaSans-SemiBold.ttf"),
 
 
-    
-});
+
+  });
   useEffect(() => {
     if (loaded) {
       SplashScreen.hideAsync();
@@ -36,18 +36,17 @@ export default function RootLayout() {
   return (
     <WSProvider>
       <Stack>
-        <Stack.Screen name="index" options={{headerShown:false}}/>
-        <Stack.Screen name="role" options={{headerShown:false}}/>
-        <Stack.Screen name="customer/auth" options={{headerShown:false}}/>
-        <Stack.Screen name="captain/auth" options={{headerShown:false}}/>
-        <Stack.Screen name="captain/home" options={{headerShown:false}}/>
-        <Stack.Screen name="customer/home" options={{headerShown:false}}/>
-        <Stack.Screen name="customer/ridePlan" options={{headerShown:false}}/>
-
+        <Stack.Screen name="index" options={{ headerShown: false }} />
+        <Stack.Screen name="role" options={{ headerShown: false }} />
+        <Stack.Screen name="customer/auth" options={{ headerShown: false }} />
+        <Stack.Screen name="captain/auth" options={{ headerShown: false }} />
+        <Stack.Screen name="captain/home" options={{ headerShown: false }} />
+        <Stack.Screen name="customer/home" options={{ headerShown: false }} />
+        <Stack.Screen name="customer/ridePlan" options={{ headerShown: false }} />
         <Stack.Screen name="+not-found" />
       </Stack>
-      </WSProvider>
-   
+    </WSProvider>
+
 
   );
 }

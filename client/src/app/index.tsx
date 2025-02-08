@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Alert, Image, View } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import {jwtDecode} from "jwt-decode";
+import { jwtDecode } from "jwt-decode";
 import { commonStyles } from "@/styles/commonStyles";
 import { splashStyles } from "@/styles/splashStyles";
 import { resetAndNavigate } from "@/utils/Helpers";
@@ -37,7 +37,7 @@ const Main = () => {
       }
 
       if (refresh_token) {
-    const decodedRefreshToken = jwtDecode<DecodedToken>(refresh_token);
+        const decodedRefreshToken = jwtDecode<DecodedToken>(refresh_token);
 
         if (decodedRefreshToken?.exp < currentTime) {
           // Refresh token is expired
