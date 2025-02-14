@@ -11,6 +11,7 @@ const connectDB = require("./config/connect");
 const notFoundMiddleware = require("./middleware/not-found");
 const errorHandlerMiddleware = require("./middleware/error-handler");
 const authMiddleware = require("./middleware/authentication");
+const cloudinary = require("cloudinary").v2;
 
 // Routers
 const authRouter = require("./routes/auth");
@@ -18,6 +19,11 @@ const rideRouter = require("./routes/ride");
 
 // Import socket handler
 const handleSocketConnection = require("./controllers/sockets");
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
 
 const app = express();
 app.use(express.json());
@@ -55,7 +61,7 @@ const start = async () => {
       console.log(
         `HTTP server is running on port http://localhost:${process.env.PORT || 3000
         }`
-        
+
       )
     );
   } catch (error) {
