@@ -5,7 +5,8 @@ import { Feather } from '@expo/vector-icons';
 const Profile = () => {
   const [user, setUser] = useState({
     name: 'John Doe',
-    number: '1234567890'
+    number: '1234567890',
+    role: 'User' // Static Role
   });
 
   const [editingField, setEditingField] = useState('');
@@ -42,7 +43,7 @@ const Profile = () => {
 
       {/* Name Field */}
       <View className="flex-row items-center mb-4">
-        <Text className="text-lg">Name:</Text>
+        <Text className="text-lg font-JakartaMedium">Name</Text>
         <TouchableOpacity
           className="ml-2"
           onPress={() => toggleEdit('name')}
@@ -63,12 +64,12 @@ const Profile = () => {
           onChangeText={(text) => handleChange('name', text)}
         />
       ) : (
-        <Text className="p-3 mb-4 border border-gray-300 rounded-lg">{user.name}</Text>
+        <Text className="p-3 mb-4 border border-gray-300 rounded-lg font-JakartaMedium">{user.name}</Text>
       )}
 
       {/* Number Field */}
       <View className="flex-row items-center mb-4">
-        <Text className="text-lg">Number:</Text>
+        <Text className="text-lg font-JakartaMedium">Number</Text>
         <TouchableOpacity
           className="ml-2"
           onPress={() => toggleEdit('number')}
@@ -83,15 +84,23 @@ const Profile = () => {
 
       {editingField === 'number' ? (
         <TextInput
-          className="p-3 mb-4 border border-gray-300 rounded-lg"
+          className="p-3 mb-4 border border-gray-300 rounded-lg font-JakartaMedium"
           placeholder="Enter your number"
           value={user.number}
           onChangeText={(text) => handleChange('number', text)}
           keyboardType="numeric"
         />
       ) : (
-        <Text className="p-3 mb-4 border border-gray-300 rounded-lg">{user.number}</Text>
+        <Text className="p-3 mb-4 border border-gray-300 rounded-lg font-JakartaMedium">{user.number}</Text>
       )}
+
+      {/* Role Field (Non-Editable) */}
+      <View className="mb-4">
+        <Text className="text-lg font-JakartaMedium">Role</Text>
+        <Text className="p-3 mb-4 text-gray-600 bg-gray-100 border border-gray-300 rounded-lg font-JakartaMedium">
+          {user.role}
+        </Text>
+      </View>
     </View>
   );
 };
