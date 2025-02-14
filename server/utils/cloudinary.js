@@ -1,7 +1,7 @@
 const cloudinary = require('cloudinary').v2;
 
 
-export const uploadOnCloudinary = async (localFilePath) => {
+const uploadOnCloudinary = async (localFilePath) => {
   try {
     if (!localFilePath) return null;
     const response = await cloudinary.uploader.upload(localFilePath, {
@@ -15,7 +15,7 @@ export const uploadOnCloudinary = async (localFilePath) => {
   }
 };
 
-export const deleteImageFromCloudinary = async (publicId) => {
+const deleteImageFromCloudinary = async (publicId) => {
   try {
     if (!publicId) {
       console.error('Public ID is required for deletion.');
@@ -29,3 +29,5 @@ export const deleteImageFromCloudinary = async (publicId) => {
     throw error;
   }
 };
+
+module.exports = { uploadOnCloudinary, deleteImageFromCloudinary };
