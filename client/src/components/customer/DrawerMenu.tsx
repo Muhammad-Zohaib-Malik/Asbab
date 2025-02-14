@@ -11,7 +11,7 @@ const menuItems = [
   {
     label: "Home",
     icon: "home-outline",
-    route: "/home",
+    route: "/customer/home",
   },
   {
     label: "My Rides",
@@ -21,12 +21,12 @@ const menuItems = [
   {
     label: "Profile",
     icon: "person-outline",
-    route: "/profile",
+    route: "/customer/profile",
   },
   {
     label: "Settings",
     icon: "settings-outline",
-    route: "/settings",
+    route: "/customer/setting",
   },
 ];
 
@@ -76,7 +76,7 @@ const DrawerMenu = ({ isOpen, onClose }: any) => {
             }}
             onPress={() => {
               onClose();
-              router.navigate(item.route);  // Use navigate instead of push
+              router.navigate(item.route);
             }}
           >
             <View className="flex-row items-center gap-3 space-x-3">
