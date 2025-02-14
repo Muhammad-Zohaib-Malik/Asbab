@@ -82,7 +82,44 @@ const refreshToken = async (req, res) => {
   }
 };
 
+const updateProfileController = async (req, res) => {
+  const { name } = req.body;
+  const userId = req.user.id;
+
+  if (!name) {
+    throw new BadRequestError("Name is required to update profile");
+  }
+
+  try {
+    // Find the user by ID
+    const user = await User.findById(userId);
+
+    if (!user) {
+      throw new NotFoundError("User not found");
+    }
+
+    // Update the name only
+    user.name = name;
+
+    await user.save();
+
+    res.status(StatusCodes.OK).json({
+      message: "Name updated successfully",
+      user: {
+        id: user._id,
+        name: user.name,
+        phone: user.phone,
+        profilePic: user.profilePic,
+        role: user.role,
+      }
+    });
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
 module.exports = {
   refreshToken,
-  auth
+  auth,
+  updateProfileController
 };
