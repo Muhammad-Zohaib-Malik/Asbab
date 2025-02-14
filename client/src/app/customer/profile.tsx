@@ -1,26 +1,56 @@
-import { View, Text, TextInput, Image, TouchableOpacity } from 'react-native';
-import React, { useState } from 'react';
+import { View, Text, TextInput, Image, TouchableOpacity, Alert } from 'react-native';
+import React, { useState, useEffect } from 'react';
 import { Feather } from '@expo/vector-icons';
+import { updateProfile } from "../../service/authService";  // Adjust the path as needed
+import { useUserStore } from '../../store/userStore';
 
 const Profile = () => {
-  const [user, setUser] = useState({
-    name: 'John Doe',
-    number: '1234567890',
-    role: 'User' // Static Role
+  const { user, setUser } = useUserStore();
+
+  const [localUser, setLocalUser] = useState({
+    name: '',
+    phone: '',
+    role: ''
   });
 
   const [editingField, setEditingField] = useState('');
 
-  const handleChange = (field: any, value: any) => {
-    setUser(prevState => ({
+  useEffect(() => {
+    if (user) {
+      setLocalUser(user);
+    }
+  }, [user]);
+
+  const handleChange = (field: string, value: string) => {
+    setLocalUser(prevState => ({
       ...prevState,
       [field]: value
     }));
   };
 
-  const toggleEdit = (field: any) => {
+  const handleUpdateProfile = async () => {
+    try {
+      await updateProfile({ name: localUser.name });
+
+      setUser({
+        ...user,
+        name: localUser.name,
+
+      });
+
+      Alert.alert("Success", "Profile updated successfully!");
+    } catch (error) {
+      console.log("Error updating profile:", error);
+      Alert.alert("Error", "Failed to update profile.");
+    }
+  };
+
+  const toggleEdit = (field: string) => {
     if (editingField === field) {
       setEditingField(''); // Save and exit edit mode
+      if (field === 'name') {
+        handleUpdateProfile();
+      }
     } else {
       setEditingField(field); // Enable edit mode for the selected field
     }
@@ -58,49 +88,26 @@ const Profile = () => {
 
       {editingField === 'name' ? (
         <TextInput
-          className="p-3 mb-4 border border-gray-300 rounded-lg"
+          className="p-3 mb-4 border border-gray-300 rounded-lg font-JakartaMedium"
           placeholder="Enter your name"
-          value={user.name}
+          value={localUser.name}
           onChangeText={(text) => handleChange('name', text)}
         />
       ) : (
-        <Text className="p-3 mb-4 border border-gray-300 rounded-lg font-JakartaMedium">{user.name}</Text>
+        <Text className="p-3 mb-4 border border-gray-300 rounded-lg font-JakartaMedium">{localUser.name}</Text>
       )}
 
-      {/* Number Field */}
+      {/* Number Field (Read-Only) */}
       <View className="flex-row items-center mb-4">
         <Text className="text-lg font-JakartaMedium">Number</Text>
-        <TouchableOpacity
-          className="ml-2"
-          onPress={() => toggleEdit('number')}
-        >
-          {editingField === 'number' ? (
-            <Feather name="check" size={20} color="blue" />
-          ) : (
-            <Feather name="edit-2" size={20} color="gray" />
-          )}
-        </TouchableOpacity>
       </View>
+      <Text className="p-3 mb-4 border border-gray-300 rounded-lg font-JakartaMedium">{localUser.phone}</Text>
 
-      {editingField === 'number' ? (
-        <TextInput
-          className="p-3 mb-4 border border-gray-300 rounded-lg font-JakartaMedium"
-          placeholder="Enter your number"
-          value={user.number}
-          onChangeText={(text) => handleChange('number', text)}
-          keyboardType="numeric"
-        />
-      ) : (
-        <Text className="p-3 mb-4 border border-gray-300 rounded-lg font-JakartaMedium">{user.number}</Text>
-      )}
-
-      {/* Role Field (Non-Editable) */}
-      <View className="mb-4">
+      {/* Role Field (Now Read-Only) */}
+      <View className="flex-row items-center mb-4">
         <Text className="text-lg font-JakartaMedium">Role</Text>
-        <Text className="p-3 mb-4 text-gray-600 bg-gray-100 border border-gray-300 rounded-lg font-JakartaMedium">
-          {user.role}
-        </Text>
       </View>
+      <Text className="p-3 mb-4 border border-gray-300 rounded-lg font-JakartaMedium">{localUser.role}</Text>
     </View>
   );
 };

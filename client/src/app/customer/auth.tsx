@@ -10,16 +10,16 @@ import { useWS } from '@/service/WebProvider'
 
 
 const Auth = () => {
-  const {updateAccessToken}=useWS()
+  const { updateAccessToken } = useWS()
   const [phone, setPhone] = useState('')
-  const handleNext = async() => {
-    if(!phone && phone.length!==10){
+  const handleNext = async () => {
+    if (!phone && phone.length !== 10) {
       Alert.alert("Enter Your Phone Number")
       return
     }
 
-    signIn({role:'customer',phone},updateAccessToken)
-    
+    signIn({ role: 'customer', phone }, updateAccessToken)
+
 
   }
 
