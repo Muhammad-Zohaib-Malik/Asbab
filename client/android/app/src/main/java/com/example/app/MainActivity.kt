@@ -1,4 +1,4 @@
-package com.zohaib.Asbab
+package com.example.app
 import expo.modules.splashscreen.SplashScreenManager
 
 import android.os.Build

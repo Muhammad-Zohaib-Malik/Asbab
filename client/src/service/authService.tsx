@@ -2,7 +2,7 @@ import { useCaptainStore } from "@/store/captainStore";
 import { useUserStore } from "@/store/userStore";
 import { resetAndNavigate } from "@/utils/Helpers";
 import axios from "axios";
-import { Alert } from "react-native";
+import { Alert, Platform } from "react-native";
 import { BASE_URL } from "./config";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
@@ -86,6 +86,46 @@ export const updateProfile = async (payload: { name: string }) => {
         console.log("Error:", error);
         Alert.alert("Update Failed", "Unexpected error occurred.");
       }
+    }
+  }
+};
+
+
+export const updateProfilePic = async (photoUri: string) => {
+  try {
+    const accessToken = await AsyncStorage.getItem("access_token");
+    if (!accessToken) {
+      Alert.alert("Error", "No access token found. Please log in again.");
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("profilePic", {
+      uri: Platform.OS === 'android' ? photoUri : photoUri.replace('file://', ''),
+
+      name: "profile-pic.jpg",
+      type: "image/jpg"
+    } as any);
+
+    const res = await axios.put(`${BASE_URL}/auth/update-profile-pic`, formData, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+        "Content-Type": "multipart/form-data"
+      }
+    });
+
+    console.log("Response:", res.data);
+
+    Alert.alert("Profile Picture Updated", "Your profile picture has been successfully updated.");
+
+    return res.data.user.profilePic;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      console.log("Error:", error.response?.data || error.message);
+      Alert.alert("Update Failed", error.response?.data?.msg || "Error in updating profile picture");
+    } else {
+      console.log("Error:", error);
+      Alert.alert("Update Failed", "Unexpected error occurred.");
     }
   }
 };

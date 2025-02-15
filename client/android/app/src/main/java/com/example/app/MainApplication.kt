@@ -1,4 +1,4 @@
-package com.zohaib.Asbab
+package com.example.app
 
 import android.app.Application
 import android.content.res.Configuration
