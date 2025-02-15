@@ -178,9 +178,14 @@ const updateProfilePicContoller = async (req, res) => {
     throw error;
   }
 }
+
+
+
+
 module.exports = {
   refreshToken,
   auth,
   updateProfileController,
   updateProfilePicContoller,
+
 };

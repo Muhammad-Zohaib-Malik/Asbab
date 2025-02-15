@@ -16,7 +16,6 @@ const userSchema = new Schema(
     },
     name: {
       type: String,
-      required: true,
       minlength: 3,
       maxLength: 50,
       trim: true,
