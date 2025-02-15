@@ -35,22 +35,33 @@ export const signIn = async (payload: { role: 'customer' | 'captain', phone: str
   }
 };
 
+
+
 export const logout = async () => {
   const { clearData } = useUserStore.getState();
   const { clearCaptainData } = useCaptainStore.getState();
 
   try {
-    // Use AsyncStorage to clear all stored tokens
+    // Get refresh token from AsyncStorage
+    const refreshToken = await AsyncStorage.getItem('refresh_token');
+
+    // Make request to backend to invalidate refresh token
+    await axios.post(`${BASE_URL}/auth/logout`, {
+      refresh_token: refreshToken
+    });
+
+    // Clear AsyncStorage
     await AsyncStorage.clear();
 
+    // Clear state
     clearCaptainData();
     clearData();
-
-    resetAndNavigate("/role");
   } catch (error) {
     console.log("Error during logout:", error);
+    throw error;
   }
 };
+
 
 export const updateProfile = async (payload: { name: string }) => {
   try {

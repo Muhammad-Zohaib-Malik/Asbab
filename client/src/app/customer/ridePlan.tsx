@@ -10,7 +10,6 @@ import 'react-native-get-random-values';
 import { router } from "expo-router";
 import { windowHeight } from "@/utils/Constants";
 import { mapStyles } from "@/styles/mapStyles";
-import { getPlacesSuggestions } from "@/utils/mapUtils";
 
 
 const RidePlan = () => {
