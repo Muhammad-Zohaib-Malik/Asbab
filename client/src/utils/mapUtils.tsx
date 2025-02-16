@@ -3,7 +3,7 @@ import { useUserStore } from "@/store/userStore";
 
 export const getLatLong = async (placeId: string) => {
     try {
-        const response = await axios.get("https://maps.googleapis.com/maps/api/place/details/json", {
+        const response = await axios.get("https://maps.gomaps.pro/maps/api/place/details/json", {
             params: {
                 placeid: placeId,
                 key: process.env.EXPO_PUBLIC_MAP_API_KEY,
@@ -11,19 +11,52 @@ export const getLatLong = async (placeId: string) => {
         });
         const data = response.data;
         if (data.status === 'OK' && data.result) {
-            const location = data.result.geometry.location;
-            const address = data.result.formatted_address;
+            const { lat, lng } = data.result.geometry.location;
+            // const address = data.result.formatted_address;
+            const selectedDestination = { lat, lng }
+
 
             return {
-                latitude: location.lat,
-                longitude: location.lng,
-                address: address,
+                latitude: lat,
+                longitude: lng,
+                // address: address,
             };
         } else {
             throw new Error('Unable to fetch location details');
         }
     } catch (error) {
         throw new Error('Unable to fetch location details');
+    }
+}
+
+export const getDistanceMatrix = async (origin: string, destination: string) => {
+    try {
+        const response = await axios.get("https://maps.googleapis.com/maps/api/distancematrix/json", {
+            params: {
+
+                destinations: destination,
+                key: process.env.EXPO_PUBLIC_MAP_API_KEY,
+            },
+        });
+
+        const data = response.data;
+        if (data.status === 'OK' && data.rows.length > 0) {
+            const element = data.rows[0].elements[0];
+            if (element.status === 'OK') {
+                return {
+                    distance: element.distance.text,
+                    duration: element.duration.text,
+                    distanceValue: element.distance.value, // in meters
+                    durationValue: element.duration.value, // in seconds
+                };
+            } else {
+                throw new Error('No route found between the locations');
+            }
+        } else {
+            throw new Error('Unable to fetch distance matrix');
+        }
+    } catch (error) {
+        throw new Error('Unable to fetch distance matrix');
     }
 }
 
@@ -57,7 +90,7 @@ export const getPlacesSuggestions = async (query: string) => {
     const { location } = useUserStore.getState();
     try {
         const response = await axios.get(
-            `https://maps.googleapis.com/maps/api/place/autocomplete/json`, {
+            `https://maps.gomaps.pro/maps/api/place/autocomplete/json`, {
             params: {
                 input: query,
                 location: `${location?.latitude},${location?.longitude}`,
@@ -159,9 +192,9 @@ export const getPoints = (places: any) => {
     return quadraticBezierCurve(p1, p2, controlPoint, 100);
 };
 
-export const vehicleIcons: Record<'bike' | 'auto' | 'cabEconomy' | 'cabPremium', { icon: any }> = {
-    bike: { icon: require('@/assets/icons/bike.png') },
-    auto: { icon: require('@/assets/icons/auto.png') },
-    cabEconomy: { icon: require('@/assets/icons/cab.png') },
-    cabPremium: { icon: require('@/assets/icons/cab_premium.png') },
-};
+// export const vehicleIcons: Record<'bike' | 'auto' | 'cabEconomy' | 'cabPremium', { icon: any }> = {
+//     bike: { icon: require('@/assets/icons/bike.png') },
+//     auto: { icon: require('@/assets/icons/auto.png') },
+//     cabEconomy: { icon: require('@/assets/icons/cab.png') },
+//     cabPremium: { icon: require('@/assets/icons/cab_premium.png') },
+// };

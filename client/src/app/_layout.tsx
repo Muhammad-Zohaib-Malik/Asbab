@@ -6,8 +6,6 @@ import { useEffect } from 'react';
 import 'react-native-reanimated';
 import '../../global.css'
 import { WSProvider } from '@/service/WebProvider';
-
-// Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
@@ -42,13 +40,15 @@ export default function RootLayout() {
         <Stack.Screen name="captain/auth" options={{ headerShown: false }} />
         <Stack.Screen name="captain/home" options={{ headerShown: false }} />
         <Stack.Screen name="customer/home" options={{ headerShown: false }} />
+
         <Stack.Screen name="customer/ridePlan" options={{ headerShown: false }} />
+
         <Stack.Screen name="customer/profile" options={{ headerShown: false }} />
         <Stack.Screen name="customer/setting" options={{ headerShown: false }} />
 
         <Stack.Screen name="+not-found" />
       </Stack>
-    </WSProvider>
+    </WSProvider >
 
 
   );
