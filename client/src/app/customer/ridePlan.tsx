@@ -10,18 +10,27 @@ import 'react-native-get-random-values';
 import { router } from "expo-router";
 import { windowHeight, windowWidth } from "@/utils/Constants";
 import { mapStyles } from "@/styles/mapStyles";
-import { getLatLong, getPlacesSuggestions } from "@/utils/mapUtils";
 import _, { set } from "lodash";
 import * as Location from 'expo-location';
 import axios from "axios";
+import { Toast } from "react-native-toast-notifications";
+import { parseDuration } from "@/utils/time.duration";
+import moment from "moment";
+import { calculateDistance } from "@/utils/mapUtils";
+
+
+type Coordinate = {
+  latitude: number,
+  longitude: number
+}
 
 const RidePlan = () => {
   const [region, setRegion] = useState(
     islamabadInitialRegion
   );
 
-  const [marker, setMarker] = useState(null);
-  const [currentLocation, setCurrentLocation] = useState(null);
+  const [marker, setMarker] = useState<Coordinate | null>(null);
+  const [currentLocation, setCurrentLocation] = useState<Coordinate | null>(null);
   const [keyboardAvoidingHeight, setkeyboardAvoidingHeight] = useState(false);
   const [places, setPlaces] = useState<any>([]);
   const [distance, setDistance] = useState<any>(null);
@@ -41,11 +50,17 @@ const RidePlan = () => {
   useEffect(() => {
     (async () => {
       let { status } = await Location.requestForegroundPermissionsAsync();
-      if (status !== 'granted') {
-        alert("Location permission is required to use this feature. Please enable it in your device settings.");
-        return;
+      if (status !== "granted") {
+        Toast.show(
+          "Please approve your location tracking otherwise you can't use this app!",
+          {
+            type: "danger",
+            placement: "bottom",
+          }
+        );
       }
-      const location = await Location.getCurrentPositionAsync({
+
+      let location = await Location.getCurrentPositionAsync({
         accuracy: Location.Accuracy.High,
       });
       const { latitude, longitude } = location.coords;
@@ -62,12 +77,36 @@ const RidePlan = () => {
 
   const fetchPlaces = async (input: any) => {
     try {
-      const suggestions = await getPlacesSuggestions(input);
-      setPlaces(suggestions);
+      const response = await axios.get(
+        `https://maps.gomaps.pro/maps/api/place/autocomplete/json`,
+        {
+          params: {
+            input,
+            key: process.env.EXPO_PUBLIC_MAP_API_KEY,
+            language: "en",
+          },
+        }
+      );
+      setPlaces(response.data.predictions);
     } catch (error) {
-      console.error('Error fetching places:', error);
+      console.log(error);
     }
-  }
+  };
+
+  const debouncedFetchPlaces = useCallback(_.debounce(fetchPlaces, 100), []);
+
+  useEffect(() => {
+    if (query.length > 2) {
+      debouncedFetchPlaces(query);
+    } else {
+      setPlaces([]);
+    }
+  }, [query, debouncedFetchPlaces]);
+
+  const handleInputChange = async (text: any) => {
+    setQuery(text);
+  };
+
   const fetchTravelTimes = async (origin: any, destination: any) => {
     const modes = ["driving", "walking", "bicycling", "transit"];
     let travelTimes = {
@@ -75,81 +114,105 @@ const RidePlan = () => {
       walking: null,
       bicycling: null,
       transit: null,
-    } as any
+    } as any;
+
     for (const mode of modes) {
-      const params = {
-        origin: `${origin.latitude},${origin.longitude}`,
-        destination: `${destination.latitude},${destination.longitude}`,
+      let params = {
+        origins: `${origin.latitude},${origin.longitude}`,
+        destinations: `${destination.latitude},${destination.longitude}`,
+        key: process.env.EXPO_PUBLIC_MAP_API_KEY,
         mode: mode,
-        key: process.env.EXPO_PUBLIC_MAP_API_KEY
-      } as any
+      } as any;
+
       if (mode === "driving") {
-        params.departure_time = "now"
+        params.departure_time = "now";
       }
+
       try {
-        const response = await axios.get(`https://maps.gomaps.pro/maps/api/distancematrix/json`, {
-          params
-        })
-        const elements = response.data.rows[0].elements[0]
+        const response = await axios.get(
+          `https://maps.gomaps.pro/maps/api/distancematrix/json`,
+          { params }
+        );
+
+        const elements = response.data.rows[0].elements[0];
         if (elements.status === "OK") {
-          travelTimes[mode] = elements.duration.text
+          travelTimes[mode] = elements.duration.text;
         }
-        else {
-          console.warn(`No travel time for mode: ${mode}`);
-        }
-        setTravelTimes(travelTimes);
       } catch (error) {
-        console.error('Error fetching travel times:', error);
+        console.log(error);
       }
     }
-  }
+
+    setTravelTimes(travelTimes);
+  };
 
   const handlePlaceSelect = async (placeId: any) => {
     try {
-      const details = await getLatLong(placeId);
-
-      if (details) {
-        setMarker({
-          latitude: details.latitude,
-          longitude: details.longitude,
-
-        });
-        setRegion({
-          ...region,
-          latitude: details.latitude,
-          longitude: details.longitude,
-
-        });
-        // setQuery(details.address); // Update input with selected place's address
-        setPlaces([]); // Clear the suggestions list
-        setlocationSelected(true);
-        setkeyboardAvoidingHeight(false);
-
-        if (currentLocation) {
-          await fetchTravelTimes(currentLocation, {
-            latitude: details.latitude,
-            longitude: details.longitude,
-          })
+      const response = await axios.get(
+        `https://maps.gomaps.pro/maps/api/place/details/json`,
+        {
+          params: {
+            place_id: placeId,
+            key: process.env.EXPO_PUBLIC_MAP_API_KEY,
+          },
         }
+      );
+      const { lat, lng } = response.data.result.geometry.location;
+
+      const selectedDestination = { latitude: lat, longitude: lng };
+      setRegion({
+        ...region,
+        latitude: lat,
+        longitude: lng,
+      });
+      setMarker({
+        latitude: lat,
+        longitude: lng,
+      });
+      setPlaces([]);
+
+      setlocationSelected(true);
+      setkeyboardAvoidingHeight(false);
+      if (currentLocation) {
+        await fetchTravelTimes(currentLocation, selectedDestination);
       }
     } catch (error) {
-      console.error("Error selecting place:", error);
+      console.log(error);
     }
   };
 
+  // const calculateDistance = (lat1: any, lon1: any, lat2: any, lon2: any) => {
+  //   var p = 0.017453292519943295; // Math.PI / 180
+  //   var c = Math.cos;
+  //   var a =
+  //     0.5 -
+  //     c((lat2 - lat1) * p) / 2 +
+  //     (c(lat1 * p) * c(lat2 * p) * (1 - c((lon2 - lon1) * p))) / 2;
 
-  const deboundedFetchPlaces = useCallback(_.debounce(fetchPlaces, 100), []);
+  //   return 12742 * Math.asin(Math.sqrt(a)); // 2 * R; R = 6371 km
+  // };
+
+  const getEstimatedArrivalTime = (travelTime: any) => {
+    const now = moment();
+    const travelMinutes = parseDuration(travelTime);
+    const arrivalTime = now.add(travelMinutes, "minutes");
+    return arrivalTime.format("hh:mm A");
+  };
+
   useEffect(() => {
-    if (query.length > 2) {
-      deboundedFetchPlaces(query);
-    } else {
-      setPlaces([]);
+    if (marker && currentLocation) {
+      const dist = calculateDistance(
+        currentLocation.latitude,
+        currentLocation.longitude,
+        marker.latitude,
+        marker.longitude
+      );
+      setDistance(dist);
     }
-  }, [query]);
+  }, [marker, currentLocation]);
 
-  const handleInputChange = async (text: any) => {
-    setQuery(text);
-  };
+
+
 
   return (
     <KeyboardAvoidingView style={mapStyles.container}>
@@ -205,7 +268,7 @@ const RidePlan = () => {
                             Asbab x
                           </Text>
                           <Text style={{ fontSize: 16 }}>
-                            20 min  dropoff
+                            {getEstimatedArrivalTime(travelTimes.driving)}{" "} dropoff
                           </Text>
                         </View>
 
@@ -249,7 +312,7 @@ const RidePlan = () => {
                           ]);
                         }}
                         query={{
-                          key: `${process.env.EXPO_PUBLIC_MAP_API_KEY}`,
+                          key: `${process.env.EXPO_PUBLIC_MAP_API_KEY!}`,
                           language: 'en',
                         }}
                         styles={{

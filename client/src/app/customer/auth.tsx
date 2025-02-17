@@ -13,14 +13,14 @@ const Auth = () => {
   const { updateAccessToken } = useWS()
   const [phone, setPhone] = useState('')
   const handleNext = async () => {
-    if (!phone && phone.length !== 10) {
-      Alert.alert("Enter Your Phone Number")
+    // Check if phone is not empty and exactly 10 digits
+    if (!phone || phone.length !== 10 || !/^\d{10}$/.test(phone)) {
+      Alert.alert("Enter a valid 10-digit Phone Number")
       return
     }
 
+    // Proceed with sign-in if validation passes
     signIn({ role: 'customer', phone }, updateAccessToken)
-
-
   }
 
   return (

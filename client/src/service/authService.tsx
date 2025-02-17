@@ -30,7 +30,7 @@ export const signIn = async (payload: { role: 'customer' | 'captain', phone: str
     }
     updateAccessToken()
   } catch (error: any) {
-    Alert.alert("Oh, there was an error");
+    Alert.alert("Oh, no!", error?.response?.data?.msg || "Error in sign-in");
     console.log("Error:", error?.response?.data?.msg || "Error in sign-in");
   }
 };

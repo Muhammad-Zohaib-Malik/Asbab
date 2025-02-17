@@ -7,6 +7,8 @@ import { splashStyles } from "@/styles/splashStyles";
 import { resetAndNavigate } from "@/utils/Helpers";
 import { refresh_tokens } from "@/service/apiInterceptor";
 import { useUserStore } from "@/store/userStore";
+import Video from 'react-native-video'; // Import react-native-video
+
 
 
 interface DecodedToken {
@@ -85,9 +87,10 @@ const Main = () => {
   return (
     <View style={commonStyles.container}>
       <Image
-        source={require("../assets/images/logo_t.png")}
+        source={require("../assets/images/Logo.png")}
         style={splashStyles.img}
       />
+
     </View>
   );
 };

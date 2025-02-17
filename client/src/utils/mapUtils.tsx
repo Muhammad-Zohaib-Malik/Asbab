@@ -5,21 +5,22 @@ export const getLatLong = async (placeId: string) => {
     try {
         const response = await axios.get("https://maps.gomaps.pro/maps/api/place/details/json", {
             params: {
-                placeid: placeId,
+                place_id: placeId,
                 key: process.env.EXPO_PUBLIC_MAP_API_KEY,
             },
         });
         const data = response.data;
         if (data.status === 'OK' && data.result) {
             const { lat, lng } = data.result.geometry.location;
-            // const address = data.result.formatted_address;
+            const address = data.result.formatted_address;
             const selectedDestination = { lat, lng }
 
 
             return {
                 latitude: lat,
                 longitude: lng,
-                // address: address,
+                address: address,
+                selectedDestination
             };
         } else {
             throw new Error('Unable to fetch location details');
@@ -119,6 +120,16 @@ export const calculateDistance = (lat1: number, lon1: number, lat2: number, lon2
     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
     return R * c;
 };
+// export const calculateDistance = (lat1: any, lon1: any, lat2: any, lon2: any) => {
+//     var p = 0.017453292519943295; // Math.PI / 180
+//     var c = Math.cos;
+//     var a =
+//         0.5 -
+//         c((lat2 - lat1) * p) / 2 +
+//         (c(lat1 * p) * c(lat2 * p) * (1 - c((lon2 - lon1) * p))) / 2;
+
+//     return 12742 * Math.asin(Math.sqrt(a)); // 2 * R; R = 6371 km
+// };
 
 export const calculateFare = (distance: number) => {
     const rateStructure = {
