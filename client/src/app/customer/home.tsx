@@ -1,8 +1,9 @@
-import { View, Text, TouchableOpacity } from 'react-native';
+import { View, Text, TouchableOpacity, Image } from 'react-native';
 import { homeStyles } from '@/styles/homeStyles';
 import { StatusBar } from 'expo-status-bar';
 import LocationBar from '@/components/customer/LocationBar';
 import TransportItem from '@/components/customer/TransportItem';
+
 
 const Home = () => {
   return (
@@ -19,8 +20,10 @@ const Home = () => {
           </TouchableOpacity>
         </View>
 
-        {/* Transport Options - Just Call It! */}
+
         <TransportItem />
+
+
       </View>
     </View>
   );

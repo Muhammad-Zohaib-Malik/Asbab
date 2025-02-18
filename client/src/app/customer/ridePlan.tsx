@@ -247,7 +247,8 @@ const RidePlan = () => {
                 <ScrollView style={{ paddingBottom: windowHeight(20), height: windowHeight(280) }}>
                   <View style={{ borderBottomWidth: 1, borderBottomColor: "#b5b5b5", paddingBottom: windowHeight(10), flexDirection: 'row' }}>
                     <Pressable onPress={() => setlocationSelected(false)}>
-                      <Text>hello</Text>
+                      <AntDesign name="arrowleft" size={24} color="black" />
+
                     </Pressable>
                     <Text className="m-auto text-[20px] text-bold">Gathering Option</Text>
                   </View>
@@ -288,16 +289,16 @@ const RidePlan = () => {
                 </View>
 
                 <View style={{
-                  borderColor: "#000",
-                  borderWidth: 2,
-                  borderRadius: 15,
-                  marginBottom: windowHeight(20),
-                  paddingHorizontal: windowHeight(3),
-                  paddingVertical: windowHeight(20),
+                  // borderColor: "#000",
+                  // borderWidth: 2,
+                  // borderRadius: 15,
+                  // marginBottom: windowHeight(20),
+                  // paddingHorizontal: windowHeight(3),
+                  // paddingVertical: windowHeight(20),
                 }}>
-                  <View className="flex flex-row items-center ">
+                  {/* <View className="flex flex-row items-center ">
                     <FontAwesome name="map-marker" size={32} color="blue" />
-                    <View style={{ flex: 1, marginLeft: 5 }}>
+                    <View style={{ flex: 1, marginLeft: 5, marginTop: 10, paddingHorizontal: 5 }}>
                       <Text className="font-JakartaMedium text-[#075BB5]">Current Location</Text>
                       <GooglePlacesAutocomplete
                         placeholder="Where to?"
@@ -344,7 +345,60 @@ const RidePlan = () => {
                         debounce={200}
                       />
                     </View>
+                  </View> */}
+                  <View className="flex flex-row items-center p-2">
+                    <FontAwesome name="map-marker" size={32} color="#075BB5" />
+                    <View style={{ flex: 1, marginLeft: 10 }}>
+                      <Text className="font-JakartaMedium text-[#075BB5] mb-2">Current Location</Text>
+                      <GooglePlacesAutocomplete
+                        placeholder="Where to?"
+                        onPress={(data, details = null) => {
+                          setkeyboardAvoidingHeight(true);
+                          handlePlaceSelect(data.place_id)
+                          setPlaces([
+                            {
+                              description: data.description,
+                              details: details,
+                            }
+                          ]);
+                        }}
+                        query={{
+                          key: `${process.env.EXPO_PUBLIC_MAP_API_KEY!}`,
+                          language: 'en',
+                        }}
+                        styles={{
+                          textInputContainer: {
+                            width: '100%',
+                            borderRadius: 10,
+                            overflow: 'hidden',
+                            borderWidth: 1,
+                            borderColor: "#ccc",
+                          },
+                          textInput: {
+                            height: 45,
+                            fontSize: 16,
+                            color: '#000',
+                            paddingHorizontal: 10,
+                            borderRadius: 10,
+                            backgroundColor: "#fff",
+                            textAlignVertical: "center",
+                          },
+                          predefinedPlacesDescription: {
+                            color: '#1faadb'
+                          }
+                        }}
+                        textInputProps={{
+                          onChangeText: (text) => handleInputChange(text),
+                          value: query,
+                          onFocus: () => setkeyboardAvoidingHeight(true),
+                        }}
+                        onFail={(error) => console.log(error)}
+                        fetchDetails={true}
+                        debounce={200}
+                      />
+                    </View>
                   </View>
+
                 </View>
 
 

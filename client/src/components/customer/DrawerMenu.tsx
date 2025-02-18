@@ -24,6 +24,11 @@ const menuItems = [
     route: "/customer/profile",
   },
   {
+    label: "Complaints",
+    icon: "chatbox-ellipses-outline", // Changed icon
+    route: "/customer/complaint",
+  },
+  {
     label: "Settings",
     icon: "settings-outline",
     route: "/customer/setting",
