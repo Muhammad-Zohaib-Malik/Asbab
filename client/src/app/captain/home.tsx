@@ -1,27 +1,21 @@
-import { View, Text } from 'react-native';
-import React from 'react';
+import { SafeAreaView, View } from 'react-native';
+import React, { useState } from 'react';
+// import Header from '@/components/captain/Header';
 
 const Home = () => {
+  const [isAvailable, setIsAvailable] = useState(true);
+
+  const toggleAvailability = () => {
+    setIsAvailable(!isAvailable);
+  };
+
   return (
-    <View className="items-center justify-center flex-1 bg-gray-100">
-      <View
-        className="w-11/12 p-8 bg-white rounded-3xl"
-        style={{
-          shadowColor: '#000',
-          shadowOffset: { width: 0, height: 5 },
-          shadowOpacity: 0.1,
-          shadowRadius: 10,
-          elevation: 5,
-        }}
-      >
-        <Text className="text-3xl font-bold text-center text-blue-600">
-          Captain
-        </Text>
-        <Text className="mt-2 text-lg text-center text-gray-600">
-          Welcome to the Home Screen!
-        </Text>
+    <SafeAreaView className="flex-1 bg-white">
+      <Header isOn={isAvailable} toggleSwitch={toggleAvailability} />
+      <View className="flex-1">
+        {/* Add your main content here */}
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 

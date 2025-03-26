@@ -7,7 +7,7 @@ import { splashStyles } from "@/styles/splashStyles";
 import { resetAndNavigate } from "@/utils/Helpers";
 import { refresh_tokens } from "@/service/apiInterceptor";
 import { useUserStore } from "@/store/userStore";
-import Video from 'react-native-video'; // Import react-native-video
+
 
 
 

@@ -64,7 +64,7 @@ export const getDistanceMatrix = async (origin: string, destination: string) => 
 export const reverseGeocode = async (latitude: number, longitude: number) => {
     try {
         const response = await axios.get(
-            `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=${process.env.EXPO_PUBLIC_MAP_API_KEY}`
+            `https://maps.gomaps.pro/maps/api/geocode/json?latlng=${latitude},${longitude}&key=${process.env.EXPO_PUBLIC_MAP_API_KEY}`
         );
         if (response.data.status === 'OK') {
             const address = response.data.results[0].formatted_address;

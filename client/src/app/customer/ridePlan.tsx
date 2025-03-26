@@ -254,7 +254,7 @@ const RidePlan = () => {
                   </View>
                   <View style={{ padding: windowWidth(10) }}>
                     <Pressable style={{
-                      width: Dimensions.get("screen").width * 1, borderWidth: selectedVehcile === "car" ? 2 : 0,
+                      width: windowWidth(420), borderWidth: selectedVehcile === "car" ? 2 : 0,
                       borderRadius: 10, padding: 10, marginVertical: 5
                     }} onPress={() => setselectedVehcile("car")}>
                       <View style={{ margin: "auto" }}>
