@@ -1,4 +1,3 @@
-
 import { useFonts } from 'expo-font';
 import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
@@ -6,6 +5,7 @@ import { useEffect } from 'react';
 import 'react-native-reanimated';
 import '../../global.css'
 import { WSProvider } from '@/service/WebProvider';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
@@ -32,24 +32,22 @@ export default function RootLayout() {
   }
 
   return (
-    <WSProvider>
-      <Stack>
-        <Stack.Screen name="index" options={{ headerShown: false }} />
-        <Stack.Screen name="role" options={{ headerShown: false }} />
-        <Stack.Screen name="customer/auth" options={{ headerShown: false }} />
-        <Stack.Screen name="captain/auth" options={{ headerShown: false }} />
-        <Stack.Screen name="captain/home" options={{ headerShown: false }} />
-        <Stack.Screen name="customer/home" options={{ headerShown: false }} />
-
-        <Stack.Screen name="customer/ridePlan" options={{ headerShown: false }} />
-
-        <Stack.Screen name="customer/profile" options={{ headerShown: false }} />
-        <Stack.Screen name="customer/setting" options={{ headerShown: false }} />
-
-        <Stack.Screen name="+not-found" />
-      </Stack>
-    </WSProvider >
-
-
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <WSProvider>
+        <Stack>
+          <Stack.Screen name="index" options={{ headerShown: false }} />
+          <Stack.Screen name="role" options={{ headerShown: false }} />
+          <Stack.Screen name="customer/auth" options={{ headerShown: false }} />
+          <Stack.Screen name="captain/auth" options={{ headerShown: false }} />
+          <Stack.Screen name="captain/home" options={{ headerShown: false }} />
+          <Stack.Screen name="customer/home" options={{ headerShown: false }} />
+          <Stack.Screen name="customer/selectlocations" options={{ headerShown: false }} />
+          <Stack.Screen name="customer/ridebooking" options={{ headerShown: false }} />
+          <Stack.Screen name="customer/profile" options={{ headerShown: false }} />
+          <Stack.Screen name="customer/setting" options={{ headerShown: false }} />
+          <Stack.Screen name="+not-found" />
+        </Stack>
+      </WSProvider>
+    </GestureHandlerRootView>
   );
 }

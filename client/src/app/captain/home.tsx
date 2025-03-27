@@ -11,7 +11,7 @@ const Home = () => {
 
   return (
     <SafeAreaView className="flex-1 bg-white">
-      <Header isOn={isAvailable} toggleSwitch={toggleAvailability} />
+      {/* <Header isOn={isAvailable} toggleSwitch={toggleAvailability} /> */}
       <View className="flex-1">
         {/* Add your main content here */}
       </View>
