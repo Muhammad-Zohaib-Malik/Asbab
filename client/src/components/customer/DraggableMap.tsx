@@ -59,6 +59,35 @@ const DraggableMap: FC<{ height: number }> = ({ height }) => {
   }, [mapRef, isFocused]);
 
 
+  //REALTIME NEARBY RIDERS
+
+  // useEffect(() => {
+  //   if (location?.latitude && location?.longitude && isFocused) {
+  //     emit('subscribeToZone', {
+  //       latitude: location.latitude,
+  //       longitude: location.longitude
+  //     })
+  //     on("nearbyCaptains", (captains: any[]) => {
+  //       const updatedMarkers = captains.map((captain) => ({
+  //         id: captain.id,
+  //         latitude: captain.coords.latitude,
+  //         longitude: captain.coords.longitude,
+  //         type: "captain",
+  //         rotation: captain.coords.heading,
+  //         visible: true
+  //       }))
+  //       setMarkers(updatedMarkers)
+  //     })
+  //   }
+  //   return () => {
+  //     off("nearbyCaptains")
+  //   }
+  // }, [location, emit, on, off, isFocused])
+
+
+
+  // STIMULATING NEARBY RIDER
+
   const generateRandomMarkers = () => {
     if (!location?.latitude || !location?.longitude || outOfRange) return
     const types = ['bike', 'auto', 'cab']
@@ -163,7 +192,7 @@ const DraggableMap: FC<{ height: number }> = ({ height }) => {
             <Marker key={index} zIndex={index + 1} flat anchor={{ x: 0.5, y: 0.5 }} coordinate={{ latitude: marker?.latitude, longitude: marker?.longitude }}>
 
               <View style={{ transform: [{ rotate: `${marker?.rotation}deg` }] }}>
-                <Image source={marker.type === "bike" ? require("@/assets/icons/bike.png") : marker.type === "auto" ? require("@/assets/icons/auto.png") : require("@/assets/icons/cab.png")} style={{ height: 40, width: 40, resizeMode: 'contain' }} />
+                <Image source={marker.type === "bike" ? require("@/assets/icons/bike_marker.png") : marker.type === "auto" ? require("@/assets/icons/auto_marker.png") : require("@/assets/icons/cab_marker.png")} style={{ height: 40, width: 40, resizeMode: 'contain' }} />
 
               </View>
             </Marker>
