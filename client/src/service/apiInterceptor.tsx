@@ -27,10 +27,10 @@ export const refresh_tokens = async () => {
 
     return new_access_token;
   } catch (error) {
-    console.log('REFRESH TOKEN ERROR');
     await AsyncStorage.clear();  // Clear all AsyncStorage
-    resetAndNavigate('/role');
     logout();
+    resetAndNavigate('/role');
+    throw new Error("Refresh token expired or invalid");
   }
 };
 

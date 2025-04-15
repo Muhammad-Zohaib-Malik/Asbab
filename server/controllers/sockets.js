@@ -20,10 +20,15 @@ const handleSocketConnection = (io) => {
       socket.user = { id: payload.id, role: user.role };
       next();
     } catch (error) {
-      console.log("Socket Error", error);
-      return next(
-        new Error("Authentication invalid: Token verification failed")
-      );
+      console.log(error);
+      if (error.name === "TokenExpiredError") {
+        return next(new Error("Token expired"));
+      }
+      return next(new Error("Authentication failed"));
+      // console.log("Socket Error", error);
+      // return next(
+      //   new Error("Authentication invalid: Token verification failed")
+      // );
     }
   });
 

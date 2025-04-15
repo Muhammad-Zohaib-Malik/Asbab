@@ -30,8 +30,13 @@ export const signIn = async (payload: { role: 'customer' | 'captain', phone: str
     }
     updateAccessToken()
   } catch (error: any) {
+    const errorMessage = error?.response?.data?.msg || error?.message || "Unknown error in sign-in";
     Alert.alert("Oh, no!", error?.response?.data?.msg || "Error in sign-in");
     console.log("Error:", error?.response?.data?.msg || "Error in sign-in");
+    console.error("Sign-in Error:", errorMessage);
+    // console.error("Sign-in Error:", error);
+
+
   }
 };
 
