@@ -4,10 +4,11 @@ import { StatusBar } from 'expo-status-bar';
 import LocationBar from '@/components/customer/LocationBar';
 import { screenHeight } from '@/utils/Constants';
 import DraggableMap from '@/components/customer/DraggableMap';
-import { useCallback, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import BottomSheet, { BottomSheetScrollView } from '@gorhom/bottom-sheet'
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import SheetContent from '@/components/customer/SheetContent';
+import { getMyRides } from '@/service/rideService';
 
 const androidHeights = [screenHeight * 0.12, screenHeight * 0.42]
 
@@ -25,6 +26,11 @@ const Home = () => {
     }
     setMapHeight(height)
   }, [])
+
+  useEffect(() => {
+    getMyRides()
+  })
+
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <View style={homeStyles.container}>
