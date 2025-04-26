@@ -193,9 +193,9 @@ export const getPoints = (places: any) => {
     return quadraticBezierCurve(p1, p2, controlPoint, 100);
 };
 
-// export const vehicleIcons: Record<'bike' | 'auto' | 'cabEconomy' | 'cabPremium', { icon: any }> = {
-//     bike: { icon: require('@/assets/icons/bike.png') },
-//     auto: { icon: require('@/assets/icons/auto.png') },
-//     cabEconomy: { icon: require('@/assets/icons/cab.png') },
-//     cabPremium: { icon: require('@/assets/icons/cab_premium.png') },
-// };
+export const vehicleIcons: Record<'bike' | 'auto' | 'cabEconomy' | 'cabPremium', { icon: any }> = {
+    bike: { icon: require('@/assets/icons/bike.png') },
+    auto: { icon: require('@/assets/icons/auto.png') },
+    cabEconomy: { icon: require('@/assets/icons/cab.png') },
+    cabPremium: { icon: require('@/assets/icons/cab_premium.png') },
+};
