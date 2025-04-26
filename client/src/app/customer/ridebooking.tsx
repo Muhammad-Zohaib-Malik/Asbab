@@ -23,7 +23,6 @@ const RideBooking = () => {
     const distance = parseFloat(item?.distanceInKm);
     return calculateFare(isNaN(distance) ? 0 : distance);
   }, [item?.distanceInKm]);
-    
 
   const rideOptions = useMemo(
     () => [
@@ -92,7 +91,6 @@ const RideBooking = () => {
     });
 
     setLoading(false);
-   
   };
 
   return (
@@ -144,7 +142,7 @@ const RideBooking = () => {
       </TouchableOpacity>
 
       <View style={rideStyles.bookingContainer}>
-        <Text disabled={loading}   onPress={handleRideBooking} >
+        <Text disabled={loading} onPress={handleRideBooking}>
           Book Ride
         </Text>
       </View>
