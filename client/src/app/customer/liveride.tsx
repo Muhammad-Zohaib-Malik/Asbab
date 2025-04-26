@@ -1,13 +1,15 @@
 import LiveTrackingMap from "@/components/customer/LiveTrackingMap";
-import SearchingRideSheet from "@/components/SearchingRideSheet";
+import LiveTrackingSheet from "@/components/customer/LiveTrackingSheet";
+import SearchingRideSheet from "@/components/customer/SearchingRideSheet";
 import { useWS } from "@/service/WebProvider";
 import { rideStyles } from "@/styles/rideStyles";
 import { screenHeight } from "@/utils/Constants";
+import { resetAndNavigate } from "@/utils/Helpers";
 import BottomSheet, { BottomSheetScrollView } from "@gorhom/bottom-sheet";
 import { useRoute } from "@react-navigation/native";
 import { StatusBar } from "expo-status-bar";
-import { memo, useCallback, useMemo, useRef, useState } from "react";
-import { ActivityIndicator, Text, View } from "react-native";
+import { memo, useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { ActivityIndicator, Alert, Text, View } from "react-native";
 
 const androidHeights = [screenHeight * 0.12, screenHeight * 0.42];
 
@@ -28,6 +30,50 @@ const LiveRide = () => {
     }
     setMapHeight(height);
   }, []);
+
+  useEffect(() => {
+    if (id) {
+      emit("subscribeRide", id);
+      on("rideData", (data) => {
+        setRideData(data);
+        if (data?.staus === "SEARCHING_FOR_RIDER") {
+          emit("searchrider", id);
+        }
+      });
+
+      on("rideUpdate", (data) => {
+        setRideData(data);
+      });
+
+      on("rideCanceled", (error) => {
+        resetAndNavigate("/customer/home");
+        Alert.alert("Ride Cancelled");
+      });
+      on("error", (error) => {
+        resetAndNavigate("/customer/home");
+        Alert.alert("Oh Dang! No Riders Found");
+      });
+
+      return () => {
+        off("rideData");
+        off("rideUpdate");
+        off("rideCanceled");
+        off("error");
+      };
+    }
+  }, [id, emit, on, off]);
+
+  useEffect(() => {
+    if (rideData?.rider?._id) {
+      emit("subscribeToriderLocation", rideData?.rider?._id);
+      on("riderLocationUpdate", (data) => {
+        setriderCoords(data);
+      });
+    }
+    return () => {
+      off("riderLocationUpdate");
+    };
+  }, [rideData]);
 
   return (
     <View style={rideStyles.container}>
