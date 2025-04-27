@@ -40,6 +40,7 @@ export default function RootLayout() {
           <Stack.Screen name="customer/auth" options={{ headerShown: false }} />
           <Stack.Screen name="captain/auth" options={{ headerShown: false }} />
           <Stack.Screen name="captain/home" options={{ headerShown: false }} />
+          <Stack.Screen name="captain/liveride" options={{ headerShown: false }} />
           <Stack.Screen name="customer/home" options={{ headerShown: false }} />
           <Stack.Screen name="customer/selectlocations" options={{ headerShown: false }} />
           <Stack.Screen name="customer/ridebooking" options={{ headerShown: false }} />

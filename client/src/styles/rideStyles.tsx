@@ -169,7 +169,7 @@ export const rideStyles = StyleSheet.create({
         borderTopLeftRadius: 20,
         borderTopRightRadius: 20,
     },
-    swipeableContaninerCaptain: {
+    swipeableContaninerRider: {
         width: '100%',
         padding: 10,
         backgroundColor: '#fff',
