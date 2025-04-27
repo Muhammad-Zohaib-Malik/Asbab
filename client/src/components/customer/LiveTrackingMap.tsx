@@ -15,9 +15,9 @@ const LiveTrackingMap: FC<{
   height: number;
   drop: any;
   pickup: any;
-  rider: any;
+  captain: any;
   status: string;
-}> = ({ drop, status, height, pickup, rider }) => {
+}> = ({ drop, status, height, pickup, captain }) => {
   const mapRef = useRef<MapView>(null);
   const [isUserInteracting, setIsUserInteracting] = useState(false);
 
@@ -26,28 +26,29 @@ const LiveTrackingMap: FC<{
 
     const coordinates = [];
 
-    if (pickup?.lattitude && pickup?.longitude && status == "START") {
+    if (pickup?.latitude && pickup?.longitude && status === "START") {
       coordinates.push({
         latitude: pickup.latitude,
         longitude: pickup.longitude,
       });
     }
 
-    if (drop?.lattitude && drop?.longitude && status == "ARRIVED") {
+    if (drop?.latitude && drop?.longitude && status === "ARRIVED") {
       coordinates.push({
         latitude: drop.latitude,
         longitude: drop.longitude,
       });
     }
 
-    if (rider?.lattitude && rider?.longitude) {
+    if (captain?.latitude && captain?.longitude) {
       coordinates.push({
-        latitude: rider.latitude,
-        longitude: rider.longitude,
+        latitude: captain.latitude,
+        longitude: captain.longitude,
       });
     }
 
     if (coordinates.length === 0) return;
+
     try {
       mapRef.current?.fitToCoordinates(coordinates, {
         edgePadding: {
@@ -64,9 +65,9 @@ const LiveTrackingMap: FC<{
   };
 
   const calculateInitialRegion = () => {
-    if (pickup?.latitude && drop?.longitude) {
-      const latitude = (pickup?.latitude + drop?.latitude) / 2;
-      const longitude = (pickup?.longitude + drop?.longitude) / 2;
+    if (pickup?.latitude && drop?.latitude) {
+      const latitude = (pickup.latitude + drop.latitude) / 2;
+      const longitude = (pickup.longitude + drop.longitude) / 2;
       return {
         latitude,
         longitude,
@@ -78,10 +79,10 @@ const LiveTrackingMap: FC<{
   };
 
   useEffect(() => {
-    if (pickup?.latitude && drop?.lattitude) {
+    if (pickup?.latitude && drop?.latitude) {
       fitToMarkers();
     }
-  }, [pickup?.latitude, drop?.lattitude, rider?.latitude]);
+  }, [pickup?.latitude, drop?.latitude, captain?.latitude]);
 
   return (
     <View style={{ height: height, width: "100%" }}>
@@ -99,25 +100,22 @@ const LiveTrackingMap: FC<{
         onRegionChange={() => setIsUserInteracting(true)}
         onRegionChangeComplete={() => setIsUserInteracting(false)}
       >
-        {rider?.latitude && pickup?.lattitude && (
+        {captain?.latitude && pickup?.latitude && (
           <MapViewDirections
-            origin={rider}
+            origin={captain}
             destination={status === "START" ? pickup : drop}
             onReady={fitToMarkers}
             apikey={apiKey}
             strokeColor={Colors.iosColor}
-            strokeColors={[Colors.iosColor]}
             strokeWidth={5}
             precision="high"
-            onError={(error) =>
-              console.log("Error in MapViewDirections", error)
-            }
+            onError={(error) => console.log("Error in MapViewDirections", error)}
           />
         )}
 
-        {drop?.lattitude && (
+        {drop?.latitude && (
           <Marker
-            coordinate={{ latitude: drop.lattitude, longitude: drop.longitude }}
+            coordinate={{ latitude: drop.latitude, longitude: drop.longitude }}
             anchor={{ x: 0.5, y: 1 }}
             zIndex={1}
           >
@@ -128,10 +126,10 @@ const LiveTrackingMap: FC<{
           </Marker>
         )}
 
-        {pickup?.lattitude && (
+        {pickup?.latitude && (
           <Marker
             coordinate={{
-              latitude: pickup.lattitude,
+              latitude: pickup.latitude,
               longitude: pickup.longitude,
             }}
             anchor={{ x: 0.5, y: 1 }}
@@ -144,16 +142,16 @@ const LiveTrackingMap: FC<{
           </Marker>
         )}
 
-        {rider?.latitude && (
+        {captain?.latitude && (
           <Marker
             coordinate={{
-              latitude: rider.latitude,
-              longitude: rider.longitude,
+              latitude: captain.latitude,
+              longitude: captain.longitude,
             }}
             anchor={{ x: 0.5, y: 1 }}
             zIndex={3}
           >
-            <View style={{ transform: [{ rotate: `${rider?.heading}deg` }] }}>
+            <View style={{ transform: [{ rotate: `${captain?.heading || 0}deg` }] }}>
               <Image
                 source={require("@/assets/icons/cab_marker.png")}
                 style={{ height: 40, width: 40, resizeMode: "contain" }}

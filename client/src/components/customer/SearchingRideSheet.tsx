@@ -7,16 +7,17 @@ import { router } from "expo-router";
 import { FC } from "react";
 import {
   ActivityIndicator,
+  Alert,
   Image,
   Text,
   TouchableOpacity,
   View,
 } from "react-native";
 
-type VehcileType = "bike" | "auto" | "cabEconomy" | "cabPremium";
+type VehicleType  = "bike" | "auto" | "cabEconomy" | "cabPremium";
 
 interface RideItem {
-  vehicle?: VehcileType;
+  vehicle?: VehicleType ;
   _id: string;
   pickup?: { address: string };
   drop?: { address: string };
@@ -44,7 +45,7 @@ const SearchingRideSheet: FC<{ item: RideItem }> = ({ item }) => {
       </View>
 
       <View style={{ padding: 10 }}>
-        <Text> Location Details</Text>// custom
+        <Text> Location Details</Text>
         <View
           style={[
             commonStyles?.flexRowGap,
@@ -55,14 +56,14 @@ const SearchingRideSheet: FC<{ item: RideItem }> = ({ item }) => {
             source={require("@/assets/icons/marker.png")}
             style={rideStyles?.pinIcon}
           />
-          <Text numberOfLines={2}>{item?.pickup?.address}</Text>//custom
+          <Text numberOfLines={2}>{item?.pickup?.address}</Text>
         </View>
         <View style={[commonStyles?.flexRowGap, { width: "90%" }]}>
           <Image
             source={require("@/assets/icons/drop_marker.png")}
             style={rideStyles?.pinIcon}
           />
-          <Text numberOfLines={2}>{item?.drop?.address}</Text>//custom
+          <Text numberOfLines={2}>{item?.drop?.address}</Text>
         </View>
         <View style={{ marginVertical: 20 }}>
           <View style={[commonStyles.flexRowBetween]}>
@@ -72,7 +73,7 @@ const SearchingRideSheet: FC<{ item: RideItem }> = ({ item }) => {
                 size={20}
                 color="black"
               />
-              <Text style={{ marginLeft: 10 }}>Payment</Text> //custom
+              <Text style={{ marginLeft: 10 }}>Payment</Text> 
             </View>
             <Text>RS{item?.fare?.toFixed(2)}</Text>
           </View>
@@ -87,8 +88,10 @@ const SearchingRideSheet: FC<{ item: RideItem }> = ({ item }) => {
             emit("cancelRide", item?._id);
           }}
         >
-          <Text style={rideStyles?.cancelButtonText}>Cancel</Text> //custom
+          <Text style={rideStyles?.cancelButtonText}>Cancel</Text> 
         </TouchableOpacity>
+
+
 
         <TouchableOpacity
           style={rideStyles?.backButton2}

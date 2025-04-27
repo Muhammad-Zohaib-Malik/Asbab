@@ -31,7 +31,7 @@ export const createRide = async (payload: {
 
 export const getMyRides= async (isCustomer: boolean=true) => {
     try {
-        const res = await appAxios.get("/ride/ride")
+        const res = await appAxios.get("/ride/rides")
         const filterRides=res.data.rides?.filter(
             (ride:any)=>ride?.status!="COMPLETED"
         )

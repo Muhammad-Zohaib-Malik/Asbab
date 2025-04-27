@@ -23,8 +23,11 @@ const LiveRide = () => {
   const bottomSheetRef = useRef(null);
   const snapPoints = useMemo(() => androidHeights, []);
   const [mapHeight, setMapHeight] = useState(snapPoints[0]);
+
+
+
   const handleSheetChanges = useCallback((index: number) => {
-    let height = screenHeight * 0.18;
+    let height = screenHeight * 0.8;
     if (index == 1) {
       height = screenHeight * 0.5;
     }
@@ -36,8 +39,8 @@ const LiveRide = () => {
       emit("subscribeRide", id);
       on("rideData", (data) => {
         setRideData(data);
-        if (data?.staus === "SEARCHING_FOR_RIDER") {
-          emit("searchrider", id);
+        if (data?.status === "SEARCHING_FOR_RIDER") {
+          emit("searchCaptain", id);
         }
       });
 
@@ -51,7 +54,7 @@ const LiveRide = () => {
       });
       on("error", (error) => {
         resetAndNavigate("/customer/home");
-        Alert.alert("Oh Dang! No Riders Found");
+        Alert.alert("Oh No! No Riders Found");
       });
 
       return () => {
@@ -64,14 +67,14 @@ const LiveRide = () => {
   }, [id, emit, on, off]);
 
   useEffect(() => {
-    if (rideData?.rider?._id) {
-      emit("subscribeToriderLocation", rideData?.rider?._id);
-      on("riderLocationUpdate", (data) => {
-        setriderCoords(data);
+    if (rideData?.captain?._id) {
+      emit("subscribeToCaptainLocation", rideData?.captain?._id);
+      on("captainLocationUpdate", (data) => {
+        setriderCoords(data?.coords);
       });
     }
     return () => {
-      off("riderLocationUpdate");
+      off("captainLocationUpdate");
     };
   }, [rideData]);
 
@@ -83,17 +86,17 @@ const LiveRide = () => {
           height={mapHeight}
           status={rideData?.status}
           drop={{
-            lattitude: parseFloat(rideData?.drop?.latitude),
+            latitude: parseFloat(rideData?.drop?.latitude),
             longitude: parseFloat(rideData?.drop?.longitude),
           }}
           pickup={{
-            lattitude: parseFloat(rideData?.pickup?.latitude),
+            latitude: parseFloat(rideData?.pickup?.latitude),
             longitude: parseFloat(rideData?.pickup?.longitude),
           }}
-          rider={
+          captain={
             riderCoords
               ? {
-                  latitude: riderCoords.lattitude,
+                  latitude: riderCoords.latitude,
                   longitude: riderCoords.longitude,
                   heading: riderCoords.heading,
                 }
@@ -125,7 +128,7 @@ const LiveRide = () => {
         <View
           style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
         >
-          <Text>Fetching Information...</Text> // custom
+          <Text>Fetching Information...</Text> 
           <ActivityIndicator color="black" size="small" />
         </View>
       )}
