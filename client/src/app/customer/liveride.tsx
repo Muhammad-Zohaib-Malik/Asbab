@@ -79,7 +79,7 @@ const LiveRide = () => {
   }, [rideData]);
 
   return (
-    <View style={rideStyles.container}>
+    <View style={rideStyles?.container}>
       <StatusBar style="light" backgroundColor="#075BB5" translucent={false} />
       {rideData && (
         <LiveTrackingMap
@@ -88,7 +88,7 @@ const LiveRide = () => {
           drop={{
             latitude: parseFloat(rideData?.drop?.latitude),
             longitude: parseFloat(rideData?.drop?.longitude),
-          }}
+          }}   
           pickup={{
             latitude: parseFloat(rideData?.pickup?.latitude),
             longitude: parseFloat(rideData?.pickup?.longitude),

@@ -7,17 +7,16 @@ import { router } from "expo-router";
 import { FC } from "react";
 import {
   ActivityIndicator,
-  Alert,
   Image,
   Text,
   TouchableOpacity,
   View,
 } from "react-native";
 
-type VehicleType  = "bike" | "auto" | "cabEconomy" | "cabPremium";
+type VehicleType = "bike" | "auto" | "cabEconomy" | "cabPremium";
 
 interface RideItem {
-  vehicle?: VehicleType ;
+  vehicle?: VehicleType;
   _id: string;
   pickup?: { address: string };
   drop?: { address: string };
@@ -27,20 +26,21 @@ interface RideItem {
 const SearchingRideSheet: FC<{ item: RideItem }> = ({ item }) => {
   const { emit } = useWS();
   return (
-    <View style={rideStyles?.headerContainer}>
-      <View style={commonStyles.flexRowBetween}>
-        {item?.vehicle && (
-          <Image
-            source={vehicleIcons[item.vehicle]?.icon}
-            style={rideStyles?.rideIcon}
-          />
-        )}
+    <View>
+      <View style={rideStyles?.headerContainer}>
+        <View style={commonStyles.flexRowBetween}>
+          {item?.vehicle && (
+            <Image
+              source={vehicleIcons[item.vehicle]?.icon}
+              style={rideStyles?.rideIcon}
+            />
+          )}
 
-        <View style={{ marginLeft: 10 }}>
-          <Text>Looking for You</Text>
-          <Text>{item?.vehicle}Ride</Text>
+          <View style={{ marginLeft: 10 }}>
+            <Text>Looking for You</Text>
+            <Text>{item?.vehicle} Ride</Text>
+          </View>
         </View>
-
         <ActivityIndicator color="black" size="small" />
       </View>
 
@@ -65,6 +65,7 @@ const SearchingRideSheet: FC<{ item: RideItem }> = ({ item }) => {
           />
           <Text numberOfLines={2}>{item?.drop?.address}</Text>
         </View>
+
         <View style={{ marginVertical: 20 }}>
           <View style={[commonStyles.flexRowBetween]}>
             <View style={[commonStyles.flexRow]}>
@@ -73,11 +74,11 @@ const SearchingRideSheet: FC<{ item: RideItem }> = ({ item }) => {
                 size={20}
                 color="black"
               />
-              <Text style={{ marginLeft: 10 }}>Payment</Text> 
+              <Text style={{ marginLeft: 10 }}>Payment</Text>
             </View>
             <Text>RS{item?.fare?.toFixed(2)}</Text>
           </View>
-          <Text>Payment via cash</Text> //custom
+          <Text>Payment via cash</Text>
         </View>
       </View>
 
@@ -86,12 +87,11 @@ const SearchingRideSheet: FC<{ item: RideItem }> = ({ item }) => {
           style={rideStyles?.cancelButton}
           onPress={() => {
             emit("cancelRide", item?._id);
+            console.log("Cancel");
           }}
         >
-          <Text style={rideStyles?.cancelButtonText}>Cancel</Text> 
+          <Text style={rideStyles?.cancelButtonText}>Cancel</Text>
         </TouchableOpacity>
-
-
 
         <TouchableOpacity
           style={rideStyles?.backButton2}

@@ -3,7 +3,7 @@ import { Colors } from "@/utils/Constants";
 import { customMapStyle, islamabadInitialRegion } from "@/utils/CustomMap";
 import { getPoints } from "@/utils/mapUtils";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { FC, useEffect, useRef, useState } from "react";
+import { FC, memo, useEffect, useRef, useState } from "react";
 import { Image, TouchableOpacity, View } from "react-native";
 import MapView, { Marker, Polyline } from "react-native-maps";
 import MapViewDirections from "react-native-maps-directions";
@@ -82,7 +82,7 @@ const LiveTrackingMap: FC<{
     if (pickup?.latitude && drop?.latitude) {
       fitToMarkers();
     }
-  }, [pickup?.latitude, drop?.latitude, captain?.latitude]);
+  }, [pickup?.latitude, drop?.latitude, captain.latitude]);
 
   return (
     <View style={{ height: height, width: "100%" }}>
@@ -151,7 +151,7 @@ const LiveTrackingMap: FC<{
             anchor={{ x: 0.5, y: 1 }}
             zIndex={3}
           >
-            <View style={{ transform: [{ rotate: `${captain?.heading || 0}deg` }] }}>
+            <View style={{ transform: [{ rotate: `${captain?.heading}deg` }] }}>
               <Image
                 source={require("@/assets/icons/cab_marker.png")}
                 style={{ height: 40, width: 40, resizeMode: "contain" }}
@@ -180,6 +180,6 @@ const LiveTrackingMap: FC<{
       </TouchableOpacity>
     </View>
   );
-};
+}; 
 
-export default LiveTrackingMap;
+export default memo(LiveTrackingMap);
