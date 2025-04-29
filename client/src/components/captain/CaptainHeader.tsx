@@ -31,13 +31,13 @@ const CaptainHeader = () => {
         address: "SomeWhere",
         heading: heading as number,
       });
-      emit("getOnDuty", {
+      emit("goOnDuty", {
         latitude: location?.coords?.latitude,
         longitude: location?.coords?.longitude,
         heading: heading,
       });
     } else {
-      emit("getOffDuty");
+      emit("goOffDuty");
     }
   };
 
@@ -79,7 +79,7 @@ const CaptainHeader = () => {
 
       <View style={riderStyles?.earningContainer}>
         <Text style={{ color: "#fff" }}>Today's Earning</Text>
-        <View style={commonStyles.flexRowGap}>
+        <View style={commonStyles.flexRowGap}>  
           <Text>RS 231.22</Text>
 
           <MaterialIcons name="arrow-drop-down" size={24} color="fff" />

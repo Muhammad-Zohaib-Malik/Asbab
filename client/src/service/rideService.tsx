@@ -53,14 +53,15 @@ export const getMyRides= async (isCustomer: boolean=true) => {
 
 export const acceptRideOffer=async(rideId:string) => {
   try {
-    const res=await appAxios.post(`/ride/accept/${rideId}`)
+    const res=await appAxios.patch(`/ride/accept/${rideId}`)
     resetAndNavigate({
-      pathname: "/rider/liveride",
+      pathname: "/captain/liveride",
       params:{id:rideId}
     })
+    console.log("Ride offer accepted",res.data)
     
-  } catch (error) {
-    Alert.alert("There was an error")
+  } catch (error:any) {
+    Alert.alert("There was an error",error)
     console.log("Error in accepting ride offer", error)
     
   }
@@ -69,7 +70,7 @@ export const acceptRideOffer=async(rideId:string) => {
 
 export const updateRideStatus=async(rideId:string,status:string) => {
   try {
-    const res=await appAxios.post(`/ride/update/${rideId}`,{status})
+    const res=await appAxios.patch(`/ride/update/${rideId}`,{status})
     return true
 
   } catch (error) {

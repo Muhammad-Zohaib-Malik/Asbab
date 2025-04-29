@@ -25,7 +25,7 @@ const CounterButton:FC<CounterButtonProps>=({
             isPlaying
             duration={initialCount}
             size={30}
-            colors={["#004777", "#F7B733", "#A30000"]}
+            colors={["#004777", "#F7B733", "#A30000","#A30000"]}
             colorsTime={[12, 5, 2,0]}
             strokeWidth={3}>
                 {({ remainingTime }) => (

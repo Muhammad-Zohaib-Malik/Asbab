@@ -107,7 +107,7 @@ const acceptRide = async (req, res) => {
 const updateRideStatus = async (req, res) => {
   const { rideId } = req.params;
   const { status } = req.body;
-
+  console.log("API Request:", rideId, status);
   if (!rideId || !status) {
     throw new BadRequestError("Ride ID and status are required");
   }
@@ -118,6 +118,7 @@ const updateRideStatus = async (req, res) => {
     if (!ride) {
       throw new NotFoundError("Ride not found");
     }
+
 
     if (!["START", "ARRIVED", "COMPLETED"].includes(status)) {
       throw new BadRequestError("Invalid ride status");

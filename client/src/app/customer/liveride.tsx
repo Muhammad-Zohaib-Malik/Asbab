@@ -24,8 +24,8 @@ const LiveRide = () => {
   const snapPoints = useMemo(() => androidHeights, []);
   const [mapHeight, setMapHeight] = useState(snapPoints[0]);
 
-  console.log("rideData", rideData);
-  console.log("riderCoords", riderCoords);
+  console.log("rideData from user", rideData);
+  console.log("riderCoords from user", riderCoords);
 
   const handleSheetChanges = useCallback((index: number) => {
     let height = screenHeight * 0.8;
@@ -40,7 +40,7 @@ const LiveRide = () => {
       emit("subscribeRide", id);
       on("rideData", (data) => {
         setRideData(data);
-        if (data?.status === "SEARCHING_FOR_RIDER") {
+        if (data?.status === "SEARCHING_FOR_CAPTAIN") {
           emit("searchCaptain", id);
         }
       });

@@ -20,6 +20,8 @@ const LiveRide = () => {
   const route = useRoute() as any;
   const params = route?.params || {};
   const id = params.id;
+  console.log(rideData, "Ride Data");
+  console.log(id, "Ride ID");
 
   useEffect(() => {
     let localtionSubscription: any;
@@ -140,7 +142,7 @@ const LiveRide = () => {
             setIsOtpModelVisible(true);
             return;
           }
-          const isSuccess = await updateRideStatus(rideData?.id, "COMPLETED");
+          const isSuccess = await updateRideStatus(rideData?._id, "COMPLETED");
           if (isSuccess) {
             Alert.alert("Ride Completed Successfully");
             resetAndNavigate("/captain/home");
@@ -158,7 +160,8 @@ const LiveRide = () => {
           title="Enter OTP"
           onConfirm={async (otp) => {
             if (otp === rideData?.otp) {
-              const isSuccess = await updateRideStatus(rideData?.id, "ARRIVED");
+              console.log("Trying to update status to COMPLETED for ride:", rideData?._id);
+              const isSuccess = await updateRideStatus(rideData?._id, "ARRIVED");
               if (isSuccess) {
                 setIsOtpModelVisible(false);
               } else {

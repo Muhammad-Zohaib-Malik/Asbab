@@ -42,7 +42,11 @@ const CaptainHome = () => {
               address: "SomeWhere",
               heading: heading as number,
             });
-            emit("updateLocation", {});
+            emit("updateLocation", {
+              latitude,
+              longitude,
+              heading,
+            });
           }
         );
       }
@@ -60,9 +64,9 @@ const CaptainHome = () => {
 
   useEffect(() => {
     if (onDuty && isFocused) {
-      on("riderOffer", (rideDetails: any) => {
+      on("rideOffer", (rideDetails: any) => {
         setRiderOffers((prevOffers) => {
-          const existingIds = new Set(prevOffers.map((offer) => offer?.id));
+          const existingIds = new Set(prevOffers?.map((offer) => offer?.id));
           if (!existingIds.has(rideDetails?.id)) {
             return [...prevOffers, rideDetails];
           }
@@ -71,7 +75,7 @@ const CaptainHome = () => {
       });
     }
     return () => {
-      off("riderOffer");
+      off("rideOffer");
     };
   }, [onDuty, on, off, isFocused]);
 
