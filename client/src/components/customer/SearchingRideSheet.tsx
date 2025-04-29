@@ -25,6 +25,7 @@ interface RideItem {
 
 const SearchingRideSheet: FC<{ item: RideItem }> = ({ item }) => {
   const { emit } = useWS();
+  
   return (
     <View>
       <View style={rideStyles?.headerContainer}>
@@ -101,6 +102,7 @@ const SearchingRideSheet: FC<{ item: RideItem }> = ({ item }) => {
         </TouchableOpacity>
       </View>
     </View>
+    
   );
 };
 

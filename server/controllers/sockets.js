@@ -25,10 +25,6 @@ const handleSocketConnection = (io) => {
         return next(new Error("Token expired"));
       }
       return next(new Error("Authentication failed"));
-      // console.log("Socket Error", error);
-      // return next(
-      //   new Error("Authentication invalid: Token verification failed")
-      // );
     }
   });
 

@@ -5,7 +5,7 @@ import { resetAndNavigate } from "@/utils/Helpers";
 import { vehicleIcons } from "@/utils/mapUtils";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { FC } from "react";
-import { Image, Text, TouchableOpacity, View, ScrollView } from "react-native";
+import { Image, Text, TouchableOpacity, View } from "react-native";
 
 type VehicleType = "bike" | "auto" | "cabEconomy" | "cabPremium";
 
@@ -24,7 +24,7 @@ const LiveTrackingSheet: FC<{ item: RideItem }> = ({ item }) => {
   const { emit } = useWS();
 
   return (
-    <View style={{ flex: 1 }}>
+    <View>
       <View style={rideStyles?.headerContainer}>
         <View style={commonStyles.flexRowGap}>
           {item?.vehicle && (
@@ -35,7 +35,7 @@ const LiveTrackingSheet: FC<{ item: RideItem }> = ({ item }) => {
           )}
           <View>
             <Text>
-              { item?.status === "START"
+              {item?.status === "START"
                 ? "Captain Near You"
                 : item?.status === "ARRIVED"
                 ? "Happy Journey"
@@ -65,14 +65,14 @@ const LiveTrackingSheet: FC<{ item: RideItem }> = ({ item }) => {
         <View
           style={[
             commonStyles.flexRowGap,
-            { marginVertical: 10, width: "90%" },
+            { marginVertical: 15, width: "90%" },
           ]}
         >
           <Image
             source={require("@/assets/icons/map_pin.png")}
             style={rideStyles.pinIcon}
           />
-          <Text style={{ flex: 1 }}>{item?.pickup?.address}</Text>
+          <Text numberOfLines={2}>{item?.pickup?.address}</Text>
         </View>
 
         {/* Drop Location */}
@@ -86,7 +86,7 @@ const LiveTrackingSheet: FC<{ item: RideItem }> = ({ item }) => {
             source={require("@/assets/icons/drop_marker.png")}
             style={rideStyles.pinIcon}
           />
-          <Text style={{ flex: 1 }}>{item?.drop?.address}</Text>
+          <Text numberOfLines={2}>{item?.drop?.address}</Text>
         </View>
 
         {/* Payment Info */}
@@ -98,13 +98,13 @@ const LiveTrackingSheet: FC<{ item: RideItem }> = ({ item }) => {
                 size={24}
                 color="black"
               />
-              <Text style={{ marginLeft: 10 }}>Payment</Text>
+              <Text>Payment</Text>
             </View>
             <Text style={{ fontWeight: "bold" }}>
               RS {item.fare?.toFixed(2)}
             </Text>
           </View>
-          <Text style={{ marginTop: 5, color: "gray" }}>Payment via cash</Text>
+          <Text style={{ color: "gray" }}>Payment via cash</Text>
         </View>
       </View>
 

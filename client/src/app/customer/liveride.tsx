@@ -24,7 +24,8 @@ const LiveRide = () => {
   const snapPoints = useMemo(() => androidHeights, []);
   const [mapHeight, setMapHeight] = useState(snapPoints[0]);
 
-
+  console.log("rideData", rideData);
+  console.log("riderCoords", riderCoords);
 
   const handleSheetChanges = useCallback((index: number) => {
     let height = screenHeight * 0.8;
@@ -88,7 +89,7 @@ const LiveRide = () => {
           drop={{
             latitude: parseFloat(rideData?.drop?.latitude),
             longitude: parseFloat(rideData?.drop?.longitude),
-          }}   
+          }}
           pickup={{
             latitude: parseFloat(rideData?.pickup?.latitude),
             longitude: parseFloat(rideData?.pickup?.longitude),
@@ -117,7 +118,7 @@ const LiveRide = () => {
           onChange={handleSheetChanges}
         >
           <BottomSheetScrollView contentContainerStyle={rideStyles?.container}>
-            {rideData?.status === "SEARCHING_FOR_RIDER" ? (
+            {rideData?.status === "SEARCHING_FOR_CAPTAIN" ? (
               <SearchingRideSheet item={rideData} />
             ) : (
               <LiveTrackingSheet item={rideData} />
@@ -128,7 +129,7 @@ const LiveRide = () => {
         <View
           style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
         >
-          <Text>Fetching Information...</Text> 
+          <Text>Fetching Information...</Text>
           <ActivityIndicator color="black" size="small" />
         </View>
       )}
