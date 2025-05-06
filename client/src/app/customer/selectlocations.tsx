@@ -10,7 +10,7 @@ import { Ionicons } from "@expo/vector-icons"
 import { router } from "expo-router"
 import { StatusBar } from "expo-status-bar"
 import React, { useEffect, useState } from "react"
-import { Image, Text, TouchableOpacity, View } from "react-native"
+import { Image, KeyboardAvoidingView, Platform, Text, TouchableOpacity, View } from "react-native"
 import { FlatList } from "react-native-gesture-handler"
 import { SafeAreaView } from "react-native-safe-area-context"
 import MapPickerModel from "@/components/customer/MapPickerModel"
@@ -110,97 +110,191 @@ const LocationSelection = () => {
     }, [location])
 
 
-    return (
-        <View style={homeStyles.container}>
-            <StatusBar style="light" backgroundColor="#075BB5" translucent={false} />
-            <SafeAreaView />
-            <TouchableOpacity style={commonStyles.flexRow} onPress={() => router.back()}>
-                <Ionicons name="chevron-back" size={24} color={Colors.iosColor} />
-                <Text className="font-JakartaMedium" style={{ color: Colors.iosColor }}>Back</Text>
-            </TouchableOpacity>
+    // return (
+        // <View style={homeStyles.container}>
+        //     <StatusBar style="light" backgroundColor="#075BB5" translucent={false} />
+        //     <SafeAreaView />
+        //     <TouchableOpacity style={commonStyles.flexRow} onPress={() => router.back()}>
+        //         <Ionicons name="chevron-back" size={24} color={Colors.iosColor} />
+        //         <Text className="font-JakartaMedium" style={{ color: Colors.iosColor }}>Back</Text>
+        //     </TouchableOpacity>
 
-            <View style={uiStyles.locationInputs}>
-                <LocationInput
-                    placeholder="Search Pickup Location"
-                    type="pickup"
-                    value={pickup}
-                    onChangeText={(text) => {
+        //     <View style={uiStyles.locationInputs}>
+        //         <LocationInput
+        //             placeholder="Search Pickup Location"
+        //             type="pickup"
+        //             value={pickup}
+        //             onChangeText={(text) => {
+        //                 setPickup(text)
+        //                 fetchLocation(text)
+        //             }}
+        //             onFocus={() => setFocusedInput("pickup")}
+        //         />
+        //         <LocationInput
+        //             placeholder="Drop Location"
+        //             type="drop"
+        //             value={drop}
+        //             onChangeText={(text) => {
+        //                 setDrop(text)
+        //                 fetchLocation(text)
+        //             }}
+        //             onFocus={() => setFocusedInput("drop")}
+        //         />
+
+        //         <Text className="font-JakartaMedium" style={uiStyles.suggestionText}>suggestions</Text>
+        //     </View>
+
+        //     <FlatList
+        //         data={locations}
+        //         renderItem={renderLocations}
+        //         keyExtractor={(item: any) => item.place_id}
+        //         initialNumToRender={5}
+        //         windowSize={5}
+        //         contentContainerStyle={{paddingBottom:120}}
+        //         ListFooterComponent={
+        //             <TouchableOpacity
+        //                 style={[commonStyles.flexRow, uiStyles.container]}
+        //                 onPress={() => {
+        //                     setModalTitle(focusedInput);
+        //                     setMapModalVisible(true);
+        //                 }}
+        //             >
+        //                 <Image source={require('@/assets/icons/map_pin.png')} style={uiStyles.mapPinIcon} />
+        //                 <Text className="font-JakartaMedium" style={uiStyles.mapPinIcon}>Select From Map</Text>
+        //             </TouchableOpacity>
+        //         }
+        //     />
+
+        //     {
+        //         isMapModalVisible && (
+        //             <MapPickerModel
+        //                 selectedLocation={{
+        //                     latitude:
+        //                         focusedInput === "drop"
+        //                             ? dropCoords?.latitude
+        //                             : pickupCoords?.latitude,
+        //                     longitude:
+        //                         focusedInput === "drop"
+        //                             ? dropCoords?.logitude
+        //                             : pickupCoords?.logitude,
+        //                     address: focusedInput === "drop" ? drop : pickup
+        //                 }}
+        //                 title={modalTitle}
+        //                 visible={isMapModalVisible}
+        //                 onClose={() => setMapModalVisible(false)}
+        //                 onSelectLocation={(data) => {
+        //                     if (data) {
+        //                         if (modalTitle === "drop") {
+        //                             setDrop(data?.address)
+        //                             setDropCoords(data)
+        //                         }
+        //                         else {
+        //                             setLocation(data)
+        //                             setPickupCoords(data)
+        //                             setPickup(data?.address)
+        //                         }
+
+        //                     }
+        //                 }}
+        //             />
+        //         )
+        //     }
+
+        // </View>
+        return (
+            <SafeAreaView style={{ flex: 1, backgroundColor: "#fff" }}>
+              <StatusBar style="light" backgroundColor="#075BB5" translucent={false} />
+          
+              <KeyboardAvoidingView
+                style={{ flex: 1 }}
+                behavior={Platform.OS === "ios" ? "padding" : undefined}
+                keyboardVerticalOffset={Platform.OS === "ios" ? 0 : 20}
+              >
+                <View style={[homeStyles.container, { flex: 1 }]}>
+                  <TouchableOpacity style={commonStyles.flexRow} onPress={() => router.back()}>
+                    <Ionicons name="chevron-back" size={24} color={Colors.iosColor} />
+                    <Text className="font-JakartaMedium" style={{ color: Colors.iosColor }}>Back</Text>
+                  </TouchableOpacity>
+          
+                  <View style={uiStyles.locationInputs}>
+                    <LocationInput
+                      placeholder="Search Pickup Location"
+                      type="pickup"
+                      value={pickup}
+                      onChangeText={(text) => {
                         setPickup(text)
                         fetchLocation(text)
-                    }}
-                    onFocus={() => setFocusedInput("pickup")}
-                />
-                <LocationInput
-                    placeholder="Drop Location"
-                    type="drop"
-                    value={drop}
-                    onChangeText={(text) => {
+                      }}
+                      onFocus={() => setFocusedInput("pickup")}
+                    />
+                    <LocationInput
+                      placeholder="Drop Location"
+                      type="drop"
+                      value={drop}
+                      onChangeText={(text) => {
                         setDrop(text)
                         fetchLocation(text)
-                    }}
-                    onFocus={() => setFocusedInput("drop")}
-                />
-
-                <Text className="font-JakartaMedium" style={uiStyles.suggestionText}>suggestions</Text>
-            </View>
-
-            <FlatList
-                data={locations}
-                renderItem={renderLocations}
-                keyExtractor={(item: any) => item.place_id}
-                initialNumToRender={5}
-                windowSize={5}
-                ListFooterComponent={
-                    <TouchableOpacity
-                        style={[commonStyles.flexRow, uiStyles.container]}
-                        onPress={() => {
-                            setModalTitle(focusedInput);
-                            setMapModalVisible(true);
-                        }}
-                    >
-                        <Image source={require('@/assets/icons/map_pin.png')} style={uiStyles.mapPinIcon} />
-                        <Text className="font-JakartaMedium" style={uiStyles.mapPinIcon}>Select From Map</Text>
-                    </TouchableOpacity>
-                }
-            />
-
-            {
-                isMapModalVisible && (
-                    <MapPickerModel
-                        selectedLocation={{
-                            latitude:
-                                focusedInput === "drop"
-                                    ? dropCoords?.latitude
-                                    : pickupCoords?.latitude,
-                            longitude:
-                                focusedInput === "drop"
-                                    ? dropCoords?.logitude
-                                    : pickupCoords?.logitude,
-                            address: focusedInput === "drop" ? drop : pickup
-                        }}
-                        title={modalTitle}
-                        visible={isMapModalVisible}
-                        onClose={() => setMapModalVisible(false)}
-                        onSelectLocation={(data) => {
-                            if (data) {
-                                if (modalTitle === "drop") {
-                                    setDrop(data?.address)
-                                    setDropCoords(data)
-                                }
-                                else {
-                                    setLocation(data)
-                                    setPickupCoords(data)
-                                    setPickup(data?.address)
-                                }
-
-                            }
-                        }}
+                      }}
+                      onFocus={() => setFocusedInput("drop")}
                     />
-                )
-            }
-
-        </View>
-    )
+                    <Text className="font-JakartaMedium" style={uiStyles.suggestionText}>suggestions</Text>
+                  </View>
+          
+                  <FlatList
+                    data={locations}
+                    renderItem={renderLocations}
+                    keyExtractor={(item: any) => item.place_id}
+                    initialNumToRender={5}
+                    windowSize={5}
+                    style={{ flex: 1 }}
+                    contentContainerStyle={{ paddingBottom: 120 }}
+                    keyboardShouldPersistTaps="handled"
+                    ListFooterComponent={
+                      <TouchableOpacity
+                        style={[commonStyles.flexRow, uiStyles.container, { marginTop: 20 }]}
+                        onPress={() => {
+                          setModalTitle(focusedInput)
+                          setMapModalVisible(true)
+                        }}
+                      >
+                        <Image source={require('@/assets/icons/map_pin.png')} style={uiStyles.mapPinIcon} />
+                        <Text className="font-JakartaMedium" style={{ fontSize: 16, marginLeft: 8 }}>
+                          Select From Map
+                        </Text>
+                      </TouchableOpacity>
+                    }
+                  />
+                </View>
+          
+                {isMapModalVisible && (
+                  <MapPickerModel
+                    selectedLocation={{
+                      latitude: focusedInput === "drop" ? dropCoords?.latitude : pickupCoords?.latitude,
+                      longitude: focusedInput === "drop" ? dropCoords?.longitude : pickupCoords?.longitude,
+                      address: focusedInput === "drop" ? drop : pickup,
+                    }}
+                    title={modalTitle}
+                    visible={isMapModalVisible}
+                    onClose={() => setMapModalVisible(false)}
+                    onSelectLocation={(data) => {
+                      if (data) {
+                        if (modalTitle === "drop") {
+                          setDrop(data?.address)
+                          setDropCoords(data)
+                        } else {
+                          setLocation(data)
+                          setPickupCoords(data)
+                          setPickup(data?.address)
+                        }
+                      }
+                    }}
+                  />
+                )}
+              </KeyboardAvoidingView>
+            </SafeAreaView>
+          )
+          
+    // )
 }
 
 export default LocationSelection
