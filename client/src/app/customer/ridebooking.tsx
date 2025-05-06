@@ -29,33 +29,24 @@ const RideBooking = () => {
       {
         type: "Bike",
         seats: 1,
-        time: "1 min",
-        dropTime: "4:28 pm",
         price: farePrices?.bike,
-        isFastest: true,
         icon: require("@/assets/icons/bike.png"),
       },
       {
         type: "Auto",
         seats: 3,
-        time: "1 min",
-        dropTime: "4:28 pm",
         price: farePrices?.auto,
         icon: require("@/assets/icons/auto.png"),
       },
       {
         type: "Cab Economy",
         seats: 5,
-        time: "1 min",
-        dropTime: "4:28 pm",
         price: farePrices?.cabEconomy,
         icon: require("@/assets/icons/cab.png"),
       },
       {
         type: "Cab Premium",
         seats: 4,
-        time: "1 min",
-        dropTime: "4:28 pm",
         price: farePrices?.cabPremium,
         icon: require("@/assets/icons/cab_premium.png"),
       },
@@ -110,9 +101,6 @@ const RideBooking = () => {
       )}
 
       <View style={rideStyles.rideSelectionContainer}>
-        {/* <View style={rideStyles?.offerContainer}>
-                    <Text style={rideStyles?.offerText}>You Got RS 10 off 5 coins cashback</Text>
-                </View> */}
 
         <ScrollView
           contentContainerStyle={rideStyles?.scrollContainer}
@@ -141,11 +129,17 @@ const RideBooking = () => {
         />
       </TouchableOpacity>
 
-      <View style={rideStyles.bookingContainer}>
-        <Text disabled={loading} onPress={handleRideBooking}>
-          Book Ride
-        </Text>
-      </View>
+      <View className="px-1 ">
+  <TouchableOpacity
+    className="bg-blue-600 rounded-2xl py-4 items-center  active:opacity-80"
+    disabled={loading}
+    onPress={handleRideBooking}
+  >
+    <Text className="text-white font-semibold text-lg">
+      {loading ? "Booking..." : "Book Ride"}
+    </Text>
+  </TouchableOpacity>
+</View>
     </View>
   );
 };
@@ -153,35 +147,33 @@ const RideBooking = () => {
 const RideOption = memo(({ ride, selected, onSelect }: any) => (
   <TouchableOpacity
     onPress={() => onSelect(ride?.type)}
-    style={[
-      rideStyles.rideOption,
-      { borderColor: selected === ride.type ? "#222" : "#dddd" },
-    ]}
+    className={`border-2 rounded-xl p-4 mb-3 ${
+      selected === ride.type ? "border-black" : "border-gray-300"
+    }`}
   >
-    <View style={commonStyles.flexRowBetween}>
-      <Image source={ride?.icon} style={rideStyles?.rideIcon} />
-      <View>
-        <Text>
-          {ride?.type}
-          {ride?.isFastest && (
-            <Text style={rideStyles.fastestLabel}>Fastest</Text>
-          )}
-        </Text>
-        <Text>
-          {ride?.seats} seats {ride?.time} away Drop {ride?.dropTime}
-        </Text>
+    <View className="flex-row justify-between items-center">
+      {/* Icon and Ride Info */}
+      <View className="flex-row items-center space-x-3">
+        <Image
+          source={ride?.icon}
+          className="w-16 h-16 rounded-md"
+          resizeMode="contain"
+        />
+        <View>
+          <Text className="font-JakartaBold text-base">{ride?.type}</Text>
+          <Text className="text-gray-500 font-JakartaMedium">{ride?.seats} seats</Text>
+        </View>
       </View>
 
-      <View style={rideStyles?.priceContainer}>
-        <Text>RS{ride?.price?.toFixed(2)}</Text>
-        {selected === ride.type && (
-          <Text style={rideStyles?.discountedPrice}>
-            RS{Number(ride?.price + 10).toFixed(2)}
-          </Text>
-        )}
+      {/* Pricing */}
+      <View className="items-end">
+        <Text className="text-base font-JakartaMedium text-black">
+          RS {ride?.price?.toFixed(2)}
+        </Text>
       </View>
     </View>
   </TouchableOpacity>
 ));
+
 
 export default memo(RideBooking);
