@@ -18,7 +18,10 @@ const calculateFare = (distance) => {
     auto: { baseFare: 15, perKmRate: 7, minimumFare: 30 },
     cabEconomy: { baseFare: 20, perKmRate: 10, minimumFare: 50 },
     cabPremium: { baseFare: 30, perKmRate: 15, minimumFare: 70 },
+    parcel: { baseFare: 5, perKmRate: 3, minimumFare: 20 },
+    truck: { baseFare: 50, perKmRate: 20, minimumFare: 100 }
   };
+
 
   const fareCalculation = (baseFare, perKmRate, minimumFare) => {
     const calculatedFare = baseFare + distance * perKmRate;
@@ -45,6 +48,16 @@ const calculateFare = (distance) => {
       rateStructure.cabPremium.baseFare,
       rateStructure.cabPremium.perKmRate,
       rateStructure.cabPremium.minimumFare
+    ),
+    parcel: fareCalculation(
+      rateStructure.parcel.baseFare,
+      rateStructure.parcel.perKmRate,
+      rateStructure.parcel.minimumFare
+    ),
+    truck: fareCalculation(
+      rateStructure.truck.baseFare,
+      rateStructure.truck.perKmRate,
+      rateStructure.truck.minimumFare
     ),
   };
 };

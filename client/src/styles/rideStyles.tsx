@@ -203,4 +203,49 @@ export const rideStyles = StyleSheet.create({
         height: 50,
         backgroundColor: 'red',
     },
+    modalBackground: {
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+        backgroundColor: "rgba(0, 0, 0, 0.5)",
+      },
+      modalContainer: {
+        backgroundColor: "white",
+        padding: 20,
+        borderRadius: 10,
+        width: "80%",
+        alignItems: "center",
+      },
+      modalTitle: {
+        fontSize: 18,
+        fontWeight: "bold",
+        marginBottom: 15,
+      },
+      input: {
+        width: "100%",
+        borderBottomWidth: 1,
+        marginBottom: 15,
+        paddingVertical: 5,
+        paddingHorizontal: 10,
+      },
+      inputTitle: {
+        fontSize: 14,
+        marginBottom: 5,
+      },
+      modalButtonsContainer: {
+        flexDirection: "row",
+        justifyContent: "space-around",
+        width: "100%",
+      },
+      modalButton: {
+        backgroundColor: "#007BFF",
+        paddingVertical: 10,
+        paddingHorizontal: 15,
+        borderRadius: 5,
+        margin: 5,
+      },
+      modalButtonText: {
+        color: "white",
+        fontWeight: "bold",
+      },
 })

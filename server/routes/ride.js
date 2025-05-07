@@ -18,6 +18,7 @@ router.post("/create", createRide);
 router.patch("/accept/:rideId", acceptRide);
 router.patch("/update/:rideId", updateRideStatus);
 router.get("/rides", getMyRides);
-router.post("/rate", submitRating); 
+router.post("/rating/:id", submitRating);
+
 
 module.exports = router;

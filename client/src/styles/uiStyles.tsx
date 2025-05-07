@@ -52,8 +52,6 @@ export const uiStyles = StyleSheet.create({
     locationText: {
         width: '86%',
         fontSize: RFValue(14),
-        
-        // fontFamily: 'Regular',
         color: Colors.text,
         opacity: 0.8
     },
@@ -66,34 +64,34 @@ export const uiStyles = StyleSheet.create({
         padding: 10,
         backgroundColor: Colors.secondary_light
     },
-    cubeContainer: {
-        width: '22.8%',
-        marginRight: 10,
-        justifyContent: 'center',
-        alignItems: 'center'
-    },
-    cubeIcon: {
-        width: '100%',
-        height: 45,
-        aspectRatio: 1 / 1,
-        resizeMode: "contain",
-    },
-    cubeIconContainer: {
-        width: '100%',
-        padding: 10,
-        justifyContent: "center",
-        alignItems: "center",
-        borderRadius: 10,
-        height: 60,
-        marginBottom: 10,
-        backgroundColor: '#E5E7EA'
-    },
-    cubes: {
-        flexDirection: 'row',
-        marginVertical: 20,
-        alignItems: 'baseline',
-        justifyContent: 'space-between',
-    },
+        cubeContainer: {
+            width: '22.8%',
+            marginRight: 15,
+            justifyContent: 'center',
+            alignItems: 'center'
+        },
+        cubeIcon: {
+            width: '100%',
+            height: 45,
+            aspectRatio: 1 / 1,
+            resizeMode: "contain",
+        },
+        cubeIconContainer: {
+            width: '100%',
+            padding: 10,
+            justifyContent: "center",
+            alignItems: "center",
+            borderRadius: 10,
+            height: 60,
+            marginBottom: 10,
+            backgroundColor: '#E5E7EA'
+        },
+        cubes: {
+            flexDirection: 'row',
+            marginVertical: 20,
+            alignItems: 'baseline',
+            justifyContent: 'space-between',
+        },
     adImage: {
         height: '100%',
         width: '100%',

@@ -127,6 +127,7 @@ export const calculateFare = (distance: number) => {
         auto: { baseFare: 15, perKmRate: 7, minimumFare: 30 },
         cabEconomy: { baseFare: 20, perKmRate: 10, minimumFare: 50 },
         cabPremium: { baseFare: 30, perKmRate: 15, minimumFare: 70 },
+        truck: { baseFare: 50, perKmRate: 20, minimumFare: 100 },
     };
 
     const fareCalculation = (baseFare: number, perKmRate: number, minimumFare: number) => {
@@ -139,6 +140,7 @@ export const calculateFare = (distance: number) => {
         auto: fareCalculation(rateStructure.auto.baseFare, rateStructure.auto.perKmRate, rateStructure.auto.minimumFare),
         cabEconomy: fareCalculation(rateStructure.cabEconomy.baseFare, rateStructure.cabEconomy.perKmRate, rateStructure.cabEconomy.minimumFare),
         cabPremium: fareCalculation(rateStructure.cabPremium.baseFare, rateStructure.cabPremium.perKmRate, rateStructure.cabPremium.minimumFare),
+        truck: fareCalculation(rateStructure.truck.baseFare, rateStructure.truck.perKmRate, rateStructure.truck.minimumFare),
     };
 }
 
@@ -193,9 +195,10 @@ export const getPoints = (places: any) => {
     return quadraticBezierCurve(p1, p2, controlPoint, 100);
 };
 
-export const vehicleIcons: Record<'bike' | 'auto' | 'cabEconomy' | 'cabPremium', { icon: any }> = {
+export const vehicleIcons: Record<'bike' | 'auto' | 'cabEconomy' | 'cabPremium' | 'truck', { icon: any }> = {
     bike: { icon: require('@/assets/icons/bike.png') },
     auto: { icon: require('@/assets/icons/auto.png') },
     cabEconomy: { icon: require('@/assets/icons/cab.png') },
     cabPremium: { icon: require('@/assets/icons/cab_premium.png') },
+    truck: { icon: require('@/assets/icons/truck.png') },
 };

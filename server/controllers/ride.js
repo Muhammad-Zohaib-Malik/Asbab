@@ -170,8 +170,9 @@ const getMyRides = async (req, res) => {
   }
 };
 
- const submitRating = async (req, res) => {
-  const { rideId, rating, review } = req.body;
+const submitRating = async (req, res) => {
+  const { rating, review } = req.body; 
+  const { id: rideId } = req.params;  
   const customerId = req.user.id;
 
   if (!rideId || !rating) {

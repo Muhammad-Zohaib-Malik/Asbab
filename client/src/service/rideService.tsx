@@ -10,7 +10,7 @@ interface coords {
 }
 
 export const createRide = async (payload: {
-  vehicle: "bike" | "auto" | "cabEconomy" | "cabPremium";
+  vehicle: "bike" | "auto" | "cabEconomy" | "cabPremium" | "truck";
   pickup: coords;
   drop: coords;
 }) => {
@@ -80,3 +80,26 @@ export const updateRideStatus=async(rideId:string,status:string) => {
     
   }
 }
+
+
+export const ratingRide = async (
+  rideId: string,
+  rating: number,
+  review?: string
+) => {
+  try {
+    // Sending a POST request to the /ride/rating/:id endpoint
+    const res = await appAxios.post(`/ride/rating/${rideId}`, {
+      rating,
+      review,
+    });
+
+    Alert.alert("Thank you for your feedback!");
+    console.log("Ride rated successfully:", res.data);
+    return true;
+  } catch (error: any) {
+    Alert.alert("There was an error submitting your rating");
+    console.log("Error in rating ride:", error?.response?.data?.message || error);
+    return false;
+  }
+};
