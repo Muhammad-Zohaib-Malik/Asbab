@@ -26,10 +26,6 @@ const rideSchema = new Schema(
       type: Number,
       required: true,
     },
-    earnings: {
-      type: Number,
-      default: 0,
-    },
     customer: {
       type: Schema.Types.ObjectId,
       ref: "User",
