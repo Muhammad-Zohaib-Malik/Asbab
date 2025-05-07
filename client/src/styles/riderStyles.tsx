@@ -3,7 +3,7 @@ import { StyleSheet } from "react-native";
 
 export const riderStyles = StyleSheet.create({
     headerContainer: {
-        backgroundColor: Colors.primary,
+        backgroundColor: Colors.header,
         padding: 10,
     },
     emptyImage: {

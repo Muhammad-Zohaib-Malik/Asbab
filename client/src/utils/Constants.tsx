@@ -27,6 +27,7 @@ export enum Colors {
     secondary = '#E5EBF5',
     tertiary = '#3C75BE',
     secondary_light='#F6F7F9',
-    iosColor='#007AFF'
+    iosColor='#007AFF',
+    header='#075BB5',
 }
 

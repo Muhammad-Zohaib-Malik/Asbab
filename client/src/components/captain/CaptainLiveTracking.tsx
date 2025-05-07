@@ -184,10 +184,6 @@ const CaptainLiveTracking: FC<{
         )}
       </MapView>
 
-      <TouchableOpacity style={mapStyles.gpsLiveButton} onPress={() => {}}>
-        <Text>Open Live GPS</Text>
-        <FontAwesome6 name="location-arrow" size={RFValue(12)} color="#000" />
-      </TouchableOpacity>
 
       <TouchableOpacity style={mapStyles.gpsButton} onPress={fitToMarkers}>
         <MaterialCommunityIcons

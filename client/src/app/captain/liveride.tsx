@@ -75,11 +75,11 @@ const LiveRide = () => {
 
   useEffect(() => {
     if (id) {
-      console.log("Subscribing to ride updates for ID:", id); // Check if the ID is correct
+     
       emit("subscribeRide", id);
 
       on("rideData", (data) => {
-        console.log("Received ride data:", data); // Check if you are receiving the data
+        
 
         setRideData(data);
       });

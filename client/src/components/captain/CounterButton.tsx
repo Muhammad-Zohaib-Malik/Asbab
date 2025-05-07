@@ -47,14 +47,14 @@ const styles = StyleSheet.create({
         justifyContent: "space-between",
         padding: 10,
         borderRadius: 10,
-        backgroundColor:Colors.primary
+        backgroundColor:Colors.header,
     },
     counter:{
         backgroundColor:"white",
         borderRadius:50
     },
     text:{
-        color:"#000",
+        color:"#fff",
         marginRight:10
     }
 })
