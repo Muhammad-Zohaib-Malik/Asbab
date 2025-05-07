@@ -1,4 +1,6 @@
+
 const Ride = require("../models/Ride");
+const Rating = require("../models/Rating");
 const { BadRequestError } = require("../errors");
 const { StatusCodes } = require("http-status-codes");
 const {
@@ -168,4 +170,50 @@ const getMyRides = async (req, res) => {
   }
 };
 
-module.exports = { createRide, acceptRide, updateRideStatus, getMyRides };
+ const submitRating = async (req, res) => {
+  const { rideId, rating, review } = req.body;
+  const customerId = req.user.id;
+
+  if (!rideId || !rating) {
+    throw new BadRequestError("Ride ID and rating are required");
+  }
+
+  const ride = await Ride.findById(rideId);
+
+  if (!ride) {
+    throw new BadRequestError("Ride not found");
+  }
+
+  if (ride.customer.toString() !== customerId) {
+    throw new BadRequestError("You are not authorized to rate this ride");
+  }
+
+  if (ride.status !== "COMPLETED") {
+    throw new BadRequestError("Cannot rate a ride that is not completed");
+  }
+
+  const existingRating = await Rating.findOne({ ride: rideId });
+
+  if (existingRating) {
+    throw new BadRequestError("Rating already submitted for this ride");
+  }
+
+  const newRating = new Rating({
+    ride: rideId,
+    customer: ride.customer,
+    captain: ride.captain,
+    rating,
+    review,
+  });
+
+  await newRating.save();
+
+  res.status(StatusCodes.CREATED).json({
+    message: "Rating submitted successfully",
+    rating: newRating,
+  });
+};
+
+
+
+module.exports = { createRide, acceptRide, updateRideStatus, getMyRides,submitRating };
