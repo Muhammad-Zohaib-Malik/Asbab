@@ -57,7 +57,7 @@ const LiveTrackingSheet: FC<{ item: RideItem }> = ({ item }) => {
       </View>
 
       <View style={{ padding: 10 }}>
-        <Text style={{ fontWeight: "bold", fontSize: 16, marginBottom: 10 }}>
+        <Text className="font-JakartaMedium" style={{  fontSize: 16, marginBottom: 10,fontFamily:"JakartaMedium" }}>
           Location details
         </Text>
 
@@ -98,10 +98,10 @@ const LiveTrackingSheet: FC<{ item: RideItem }> = ({ item }) => {
                 size={24}
                 color="black"
               />
-              <Text>Payment</Text>
+              <Text className="font-JakartaMedium">Payment</Text>
             </View>
             <Text style={{ fontWeight: "bold" }}>
-              RS {item.fare?.toFixed(2)}
+              RS {item.fare ? Math.ceil(Number(item.fare.toFixed(2))) : 0}
             </Text>
           </View>
           <Text style={{ color: "gray" }}>Payment via cash</Text>

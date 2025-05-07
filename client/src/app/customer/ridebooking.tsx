@@ -1,7 +1,6 @@
 import RoutesMap from "@/components/customer/RoutesMap";
 import { createRide } from "@/service/rideService";
 import { useUserStore } from "@/store/userStore";
-import { commonStyles } from "@/styles/commonStyles";
 import { rideStyles } from "@/styles/rideStyles";
 import { calculateFare } from "@/utils/mapUtils";
 import { MaterialIcons } from "@expo/vector-icons";
@@ -168,7 +167,7 @@ const RideOption = memo(({ ride, selected, onSelect }: any) => (
       {/* Pricing */}
       <View className="items-end">
         <Text className="text-base font-JakartaMedium text-black">
-          RS {ride?.price?.toFixed(2)}
+        RS {Math.ceil(ride?.price)}
         </Text>
       </View>
     </View>
