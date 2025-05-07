@@ -77,7 +77,7 @@ const SearchingRideSheet: FC<{ item: RideItem }> = ({ item }) => {
               />
               <Text style={{ marginLeft: 10 }}>Payment</Text>
             </View>
-            <Text>RS{item?.fare?.toFixed(2)}</Text>
+            <Text>RS {item?.fare ? Math.ceil(Number(item.fare.toFixed(2))) : 0}</Text>
           </View>
           <Text>Payment via cash</Text>
         </View>

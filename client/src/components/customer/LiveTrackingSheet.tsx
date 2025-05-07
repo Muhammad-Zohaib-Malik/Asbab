@@ -69,7 +69,7 @@ const LiveTrackingSheet: FC<{ item: RideItem }> = ({ item }) => {
         {item?.captain?.phone && (
           <Text>
             +92
-            {item?.captain?.phone?.slice(0, 5) + " " + item?.captain?.phone?.slice(5)}
+            {item?.captain?.phone?.slice(0, 5)  + item?.captain?.phone?.slice(5)}
           </Text>
         )}
       </View>
@@ -100,7 +100,7 @@ const LiveTrackingSheet: FC<{ item: RideItem }> = ({ item }) => {
               <Text className="font-JakartaMedium">Payment</Text>
             </View>
             <Text style={{ fontWeight: "bold" }}>
-              RS {item.fare ? Math.ceil(Number(item.fare.toFixed(2))) : 0}
+              RS { Math.ceil(Number(item.fare?.toFixed(2)))}
             </Text>
           </View>
           <Text style={{ color: "gray" }}>Payment via cash</Text>

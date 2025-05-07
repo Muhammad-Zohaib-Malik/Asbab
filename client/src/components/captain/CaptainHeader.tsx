@@ -78,7 +78,7 @@ const CaptainHeader = () => {
       </View>
 
       <View style={riderStyles?.earningContainer}>
-        <Text style={{ color: "#fff" }}>Today's Earning</Text>
+        <Text className="font-JakartaMedium" style={{ color: "#fff" }}>Today's Earning</Text>
         <View style={commonStyles.flexRowGap}>  
           <Text>RS 231</Text>
 

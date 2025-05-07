@@ -110,6 +110,7 @@ const updateRideStatus = async (req, res) => {
   const { rideId } = req.params;
   const { status } = req.body;
   console.log("API Request:", rideId, status);
+
   if (!rideId || !status) {
     throw new BadRequestError("Ride ID and status are required");
   }
@@ -121,12 +122,21 @@ const updateRideStatus = async (req, res) => {
       throw new NotFoundError("Ride not found");
     }
 
-
     if (!["START", "ARRIVED", "COMPLETED"].includes(status)) {
       throw new BadRequestError("Invalid ride status");
     }
 
     ride.status = status;
+
+    if (status === "COMPLETED" && ride.captain) {
+      // Update captain earnings when the ride is completed
+      const fare = ride.fare;
+      ride.captain.earnings += fare; // Add fare to captain's earnings
+
+      // Optionally, update the User model for the captain if you have an earnings field there.
+      await ride.captain.save(); // Save the updated captain earnings
+    }
+
     await ride.save();
 
     req.socket.to(`ride_${rideId}`).emit("rideUpdate", ride);
