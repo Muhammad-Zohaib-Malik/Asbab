@@ -72,7 +72,7 @@ const OtpInputModel: FC<OtpInputModelProps> = ({
         </View>
 
         <TouchableOpacity onPress={handleConfirm} style={styles.confirmButton}>
-          <Text style={styles.confirmButtonText}>Confirm</Text>
+          <Text className="font-JakartaMedium" style={styles.confirmButtonText}>Confirm</Text>
         </TouchableOpacity>
       </View>
     </Modal>
@@ -104,8 +104,7 @@ const styles = StyleSheet.create({
   },
   confirmButtonText: {
     color: "#fff",
-    fontSize: 16,
-    fontWeight: "bold",
+
   },
 });
 

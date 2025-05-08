@@ -25,7 +25,7 @@ interface RideItem {
 
 const SearchingRideSheet: FC<{ item: RideItem }> = ({ item }) => {
   const { emit } = useWS();
-  
+
   return (
     <View>
       <View style={rideStyles?.headerContainer}>
@@ -38,15 +38,15 @@ const SearchingRideSheet: FC<{ item: RideItem }> = ({ item }) => {
           )}
 
           <View style={{ marginLeft: 10 }}>
-            <Text>Looking for You</Text>
-            <Text>{item?.vehicle} Ride</Text>
+            <Text className="font-JakartaMedium">Looking for You</Text>
+            <Text className="font-JakartaMedium">{item?.vehicle} Ride</Text>
           </View>
         </View>
         <ActivityIndicator color="black" size="small" />
       </View>
 
       <View style={{ padding: 10 }}>
-        <Text> Location Details</Text>
+        <Text className="font-JakartaMedium"> Location Details</Text>
         <View
           style={[
             commonStyles?.flexRowGap,
@@ -54,17 +54,17 @@ const SearchingRideSheet: FC<{ item: RideItem }> = ({ item }) => {
           ]}
         >
           <Image
-            source={require("@/assets/icons/marker.png")}
+            source={require("@/assets/icons/map_pin.png")}
             style={rideStyles?.pinIcon}
           />
-          <Text numberOfLines={2}>{item?.pickup?.address}</Text>
+          <Text className="font-JakartaMedium" numberOfLines={2}>{item?.pickup?.address}</Text>
         </View>
         <View style={[commonStyles?.flexRowGap, { width: "90%" }]}>
           <Image
             source={require("@/assets/icons/drop_marker.png")}
             style={rideStyles?.pinIcon}
           />
-          <Text numberOfLines={2}>{item?.drop?.address}</Text>
+          <Text className="font-JakartaMedium" numberOfLines={2}>{item?.drop?.address}</Text>
         </View>
 
         <View style={{ marginVertical: 20 }}>
@@ -75,34 +75,45 @@ const SearchingRideSheet: FC<{ item: RideItem }> = ({ item }) => {
                 size={20}
                 color="black"
               />
-              <Text style={{ marginLeft: 10 }}>Payment</Text>
+              <Text className="font-JakartaMedium" style={{ marginLeft: 10 }}>
+                Payment
+              </Text>
             </View>
-            <Text>RS {item?.fare ? Math.ceil(Number(item.fare.toFixed(2))) : 0}</Text>
+            <Text className="font-JakartaMedium">
+              RS {item?.fare ? Math.ceil(Number(item.fare.toFixed(2))) : 0}
+            </Text>
           </View>
-          <Text>Payment via cash</Text>
+          <View style={rideStyles?.bottomButtonContainer}>
+            <TouchableOpacity
+              style={rideStyles?.cancelButton}
+              onPress={() => {
+                emit("cancelRide", item?._id);
+                console.log("Cancel");
+              }}
+            >
+              <Text
+                className="font-JakartaMedium"
+                style={rideStyles?.cancelButtonText}
+              >
+                Cancel
+              </Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={rideStyles?.backButton2}
+              onPress={() => router.back()}
+            >
+              <Text
+                className="font-JakartaMedium"
+                style={rideStyles.backButtonText}
+              >
+                Back
+              </Text>
+            </TouchableOpacity>
+          </View>
         </View>
       </View>
-
-      <View style={rideStyles?.bottomButtonContainer}>
-        <TouchableOpacity
-          style={rideStyles?.cancelButton}
-          onPress={() => {
-            emit("cancelRide", item?._id);
-            console.log("Cancel");
-          }}
-        >
-          <Text style={rideStyles?.cancelButtonText}>Cancel</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity
-          style={rideStyles?.backButton2}
-          onPress={() => router.back()}
-        >
-          <Text style={rideStyles.backButtonText}>Back</Text>
-        </TouchableOpacity>
-      </View>
     </View>
-    
   );
 };
 

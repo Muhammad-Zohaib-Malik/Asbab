@@ -51,7 +51,7 @@ app.use(errorHandlerMiddleware);
 
 const start = async () => {
   try {
-    await connectDB(process.env.MONGO_URI);
+    await connectDB(process.env.MONGO_URI || "mongodb://localhost:27017/asbab");
 
     // Uncomment this and comment below one if you want to run on ip address so that you can
     // access api in physical device

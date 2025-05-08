@@ -42,7 +42,7 @@ const RatingPopup: FC<RatingPopupProps> = ({ onSubmit, onCancel }) => {
             placeholder="Write your review..."
             value={review}
             onChangeText={setReview}
-            className="w-full p-3 mb-4 border border-gray-300 rounded-xl bg-gray-100"
+            className="w-full p-3 mb-4 border border-gray-300 rounded-xl bg-gray-100 font-JakartaExtraLight"
             multiline
           />
 
@@ -51,14 +51,14 @@ const RatingPopup: FC<RatingPopupProps> = ({ onSubmit, onCancel }) => {
               className="w-[45%] py-3 bg-gray-200 rounded-lg items-center justify-center"
               onPress={onCancel}
             >
-              <Text className="font-semibold text-gray-700">Cancel</Text>
+              <Text className="font-JakartaMedium text-gray-700">Cancel</Text>
             </TouchableOpacity>
 
             <TouchableOpacity
-              className="w-[45%] py-3 bg-blue-500 rounded-lg items-center justify-center"
+              className="w-[45%] py-3 bg-blue-600 rounded-lg items-center justify-center"
               onPress={() => onSubmit(rating, review)}
             >
-              <Text className="font-semibold text-white">Submit</Text>
+              <Text className="font-JakartaMedium text-white">Submit</Text>
             </TouchableOpacity>
           </View>
         </View>
