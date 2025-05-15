@@ -16,7 +16,7 @@ const menuItems = [
   {
     label: "My Rides",
     icon: "car-outline",
-    route: "/my-rides",
+    route: "/customer/myrides",
   },
   {
     label: "Profile",

@@ -9,6 +9,35 @@ interface coords {
   longitude: number;
 }
 
+export interface Ride {
+  _id: string;
+  vehicle: string;
+  distance: number;
+  pickup: {
+    address: string;
+    latitude: number;
+    longitude: number;
+  };
+  drop: {
+    address: string;
+    latitude: number;
+    longitude: number;
+  };
+  fare: number;
+  customer: {
+    _id: string;
+    phone: string;
+  };
+  captain: {
+    _id: string;
+    phone: string;
+  };
+  status: string;
+  otp: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
 export const createRide = async (payload: {
   vehicle: "bike" | "auto" | "cabEconomy" | "cabPremium" | "truck";
   pickup: coords;
@@ -29,27 +58,56 @@ export const createRide = async (payload: {
 };
 
 
-export const getMyRides= async (isCustomer: boolean=true) => {
-    try {
-        const res = await appAxios.get("/ride/rides")
-        const filterRides=res.data.rides?.filter(
-            (ride:any)=>ride?.status!="COMPLETED"
-        )
-        if(filterRides?.length>0){
-            router.navigate({
-                pathname:isCustomer? "/customer/liveride":"/rider/liveride",
-                params:{
-                    id:filterRides[0]?._id
-                }
-            });
-        }
+// export const getMyRides= async (isCustomer: boolean=true) => {
+//     try {
+//         const res = await appAxios.get("/ride/rides")
+//         const filterRides=res.data.rides?.filter(
+//             (ride:any)=>ride?.status!="COMPLETED"
+//         )
+//         if(filterRides?.length>0){
+//             router.navigate({
+//                 pathname:isCustomer? "/customer/liveride":"/rider/liveride",
+//                 params:{
+//                     id:filterRides[0]?._id
+//                 }
+//             });
+//         }
 
-    } catch (error:any) {
+//     } catch (error:any) {
         
-        Alert.alert("There was an error")
-        console.log("Error in Get my ride", error?.response?.data?.message)
-    }
-}
+//         Alert.alert("There was an error")
+//         console.log("Error in Get my ride", error?.response?.data?.message)
+//     }
+// }
+
+
+
+// export const getMyRides = async (status?: string): Promise<any[] | null> => {
+//   try {
+//     const res = await appAxios.get("/ride/rides", {
+//       params: status ? { status } : {},
+//     });
+//     return res.data.rides ?? [];
+//   } catch (error: any) {
+//     Alert.alert("Failed to fetch rides");
+//     console.log("Error in getMyRides:", error?.response?.data?.message);
+//     return null;
+//   }
+// };
+
+
+export const getMyRides = async (status?: string): Promise<Ride[] | null> => {
+  try {
+    const res = await appAxios.get("/ride/rides", {
+      params: status ? { status } : {},
+    });
+    return res.data.rides ?? [];
+  } catch (error: any) {
+    Alert.alert("Failed to fetch rides");
+    console.log("Error in getMyRides:", error?.response?.data?.message || error.message);
+    return null;
+  }
+};
 
 export const acceptRideOffer=async(rideId:string) => {
   try {

@@ -141,32 +141,84 @@ const updateRideStatus = async (req, res) => {
   }
 };
 
+// const getMyRides = async (req, res) => {
+//   const userId = req.user.id;
+//   const { status } = req.query;
+
+//   try {
+//     const query = {
+//       $or: [{ customer: userId }, { captain: userId }],
+//     };
+
+//     if (status) {
+//       query.status = status;
+//     }
+
+//     const rides = await Ride.find(query)
+//       .populate("customer", "name phone")
+//       .populate("captain", "name phone")
+//       .sort({ createdAt: -1 });
+
+//     res.status(StatusCodes.OK).json({
+//       message: "Rides retrieved successfully",
+//       count: rides.length,
+//       rides,
+//     });
+//   } catch (error) {
+//     console.error("Error retrieving rides:", error);
+//     throw new BadRequestError("Failed to retrieve rides");
+//   }
+// };
+
+// only show rides for the customer
+// Controller function
 const getMyRides = async (req, res) => {
-  const userId = req.user.id;
-  const { status } = req.query;
+  const userId = req.user.id; // Extracted from auth middleware (JWT)
+  const status = req.query.status; // Optional query param to filter by status
 
   try {
-    const query = {
-      $or: [{ customer: userId }, { captain: userId }],
-    };
-
+    // Build query to fetch rides only for this customer and optionally by status
+    const query = { customer: userId };
     if (status) {
       query.status = status;
     }
 
+    // Find rides with full details populated
     const rides = await Ride.find(query)
-      .populate("customer", "name phone")
-      .populate("captain", "name phone")
+      .populate("customer", "name phone")   // populate name and phone for customer
+      .populate("captain", "name phone")    // populate name and phone for captain
       .sort({ createdAt: -1 });
 
-    res.status(StatusCodes.OK).json({
+    res.status(200).json({
       message: "Rides retrieved successfully",
       count: rides.length,
       rides,
     });
   } catch (error) {
     console.error("Error retrieving rides:", error);
-    throw new BadRequestError("Failed to retrieve rides");
+    res.status(400).json({ message: "Failed to retrieve rides" });
+  }
+};
+
+
+module.exports = { getMyRides };
+
+
+
+
+const getAllRidesWithId = async (req, res) => {
+  try {
+    const rides = await Ride.find({}, "_id")
+      .sort({ createdAt: -1 });
+
+    res.status(StatusCodes.OK).json({
+      message: "Ride IDs retrieved successfully",
+      count: rides.length,
+      rideIds: rides.map(ride => ride._id),
+    });
+  } catch (error) {
+    console.error("Error retrieving ride IDs:", error);
+    throw new BadRequestError("Failed to retrieve ride IDs");
   }
 };
 

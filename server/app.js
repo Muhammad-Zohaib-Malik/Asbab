@@ -19,6 +19,9 @@ const rideRouter = require("./routes/ride");
 
 // Import socket handler
 const handleSocketConnection = require("./controllers/sockets");
+const { buildAdminRouter, admin } = require("./config/setup");
+
+// Cloudinary configuration
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
   api_key: process.env.CLOUDINARY_API_KEY,
@@ -38,7 +41,7 @@ app.use((req, res, next) => {
   return next();
 });
 
-// Initialize the WebSocket handling logic
+// Initialize WebSocket handling logic
 handleSocketConnection(io);
 
 // Routes
@@ -51,21 +54,23 @@ app.use(errorHandlerMiddleware);
 
 const start = async () => {
   try {
+    // Database connection
     await connectDB(process.env.MONGO_URI || "mongodb://localhost:27017/asbab");
 
-    // Uncomment this and comment below one if you want to run on ip address so that you can
-    // access api in physical device
+    // Set up AdminJS routes after DB connection
+    // await buildAdminRouter(app);
 
-    // server.listen(process.env.PORT || 3000, "0.0.0.0", () =>
-    server.listen(process.env.PORT || 3000, () =>
+    // Start the server
+    server.listen(process.env.PORT || 3000, () => {
       console.log(
-        `HTTP server is running on port http://localhost:${process.env.PORT || 3000
-        }`
+        // `HTTP server is running on http://localhost:${process.env.PORT}${admin.options.rootPath}`
+         `HTTP server is running on http://localhost:${process.env.PORT}`
 
-      )
-    );
+      );
+    });
+
   } catch (error) {
-    console.log(error);
+    console.error("Error starting the server:", error);
   }
 };
 
