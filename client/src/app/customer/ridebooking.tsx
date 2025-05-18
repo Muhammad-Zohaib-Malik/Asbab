@@ -8,7 +8,15 @@ import { useRoute } from "@react-navigation/native";
 import { router } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import { memo, useCallback, useMemo, useState } from "react";
-import { Image, ScrollView, Text, TouchableOpacity, View } from "react-native";
+import {
+  Image,
+  Modal,
+  ScrollView,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import { RFValue } from "react-native-responsive-fontsize";
 
 const RideBooking = () => {
@@ -17,6 +25,11 @@ const RideBooking = () => {
   const { location } = useUserStore() as any;
   const [selectedOption, setSelectedOption] = useState("Bike");
   const [loading, setLoading] = useState(false);
+
+  // Modal state
+  const [modalVisible, setModalVisible] = useState(false);
+  const [loadType, setLoadType] = useState("");
+  const [weight, setWeight] = useState("");
 
   const farePrices = useMemo(() => {
     const distance = parseFloat(item?.distanceInKm);
@@ -60,14 +73,21 @@ const RideBooking = () => {
         seats: 8,
         price: farePrices?.van,
         icon: require("@/assets/icons/van.png"),
-      }
+      },
     ],
     [farePrices]
   );
 
   const handleOptionsSelect = useCallback((type: string) => {
     setSelectedOption(type);
+    if (type === "Truck" || type === "Van") {
+      setModalVisible(true);
+    }
   }, []);
+
+  const handleModalSubmit = () => {
+    setModalVisible(false);
+  };
 
   const handleRideBooking = async () => {
     setLoading(true);
@@ -94,6 +114,13 @@ const RideBooking = () => {
         longitude: parseFloat(location.longitude),
         address: location.address,
       },
+      loadDetails:
+        selectedOption === "Truck" || selectedOption === "Van"
+          ? {
+              type: loadType,
+              weight: Number(weight),
+            }
+          : undefined,
     });
 
     setLoading(false);
@@ -102,6 +129,7 @@ const RideBooking = () => {
   return (
     <View style={rideStyles.container}>
       <StatusBar style="light" backgroundColor="#075BB5" translucent={false} />
+
       {item?.drop_latitude && location?.latitude && (
         <RoutesMap
           drop={{
@@ -116,7 +144,6 @@ const RideBooking = () => {
       )}
 
       <View style={rideStyles.rideSelectionContainer}>
-
         <ScrollView
           contentContainerStyle={rideStyles?.scrollContainer}
           showsVerticalScrollIndicator={false}
@@ -144,17 +171,68 @@ const RideBooking = () => {
         />
       </TouchableOpacity>
 
-      <View className="px-1 ">
-  <TouchableOpacity
-    className="bg-blue-600 rounded-2xl py-4 items-center  active:opacity-80"
-    disabled={loading}
-    onPress={handleRideBooking}
-  >
-    <Text className="text-white font-semibold text-lg">
-      {loading ? "Booking..." : "Book Ride"}
-    </Text>
-  </TouchableOpacity>
-</View>
+      <View className="px-1">
+        <TouchableOpacity
+          className="bg-blue-600 rounded-2xl py-4 items-center active:opacity-80"
+          disabled={loading}
+          onPress={handleRideBooking}
+        >
+          <Text className="text-white font-semibold text-lg">
+            {loading ? "Booking..." : "Book Ride"}
+          </Text>
+        </TouchableOpacity>
+      </View>
+
+      {/* Modal */}
+      <Modal visible={modalVisible} animationType="slide" transparent>
+        <View className="flex-1 justify-center items-center bg-black bg-opacity-60 px-4">
+          <View className="bg-white w-full max-w-md rounded-3xl p-6 shadow-lg">
+            {/* Close Button */}
+            <TouchableOpacity
+              className="absolute top-4 right-4  rounded-full p-5"
+              onPress={() => setModalVisible(false)}
+              activeOpacity={0.7}
+            >
+              <Text className="text-gray-600  text-3xl font-bold">×</Text>
+            </TouchableOpacity>
+
+            <Text className="text-2xl font-JakartaBold mb-6 text-center text-gray-900">
+              Load Details
+            </Text>
+
+            <Text className="mb-2 text-gray-700 font-JakartaMedium">
+              What are you transporting?
+            </Text>
+            <TextInput
+              className="border border-gray-300 rounded-lg p-3 mb-5 text-gray-900 font-JakartaMedium"
+              placeholder="e.g. Furniture, Boxes"
+              placeholderTextColor="#9ca3af"
+              value={loadType}
+              onChangeText={setLoadType}
+            />
+
+            <Text className="mb-2 text-gray-700 font-JakartaMedium">
+              Approximate weight (in kg)
+            </Text>
+            <TextInput
+              className="border border-gray-300 rounded-lg p-3 mb-6 text-gray-900 font-JakartaMedium"
+              placeholder="e.g. 200"
+              placeholderTextColor="#9ca3af"
+              keyboardType="numeric"
+              value={weight}
+              onChangeText={setWeight}
+            />
+
+            <TouchableOpacity
+              className="bg-blue-600 rounded-xl py-4 items-center shadow-md"
+              onPress={handleModalSubmit}
+              activeOpacity={0.8}
+            >
+              <Text className="text-white text-lg font-JakartaBold">Continue</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
     </View>
   );
 };
@@ -167,7 +245,6 @@ const RideOption = memo(({ ride, selected, onSelect }: any) => (
     }`}
   >
     <View className="flex-row justify-between items-center">
-      {/* Icon and Ride Info */}
       <View className="flex-row items-center space-x-3">
         <Image
           source={ride?.icon}
@@ -176,19 +253,19 @@ const RideOption = memo(({ ride, selected, onSelect }: any) => (
         />
         <View>
           <Text className="font-JakartaBold text-base">{ride?.type}</Text>
-          <Text className="text-gray-500 font-JakartaMedium">{ride?.seats} seats</Text>
+          <Text className="text-gray-500 font-JakartaMedium">
+            {ride?.seats} seats
+          </Text>
         </View>
       </View>
 
-      {/* Pricing */}
       <View className="items-end">
         <Text className="text-base font-JakartaMedium text-black">
-        RS {Math.ceil(ride?.price)}
+          RS {Math.ceil(ride?.price)}
         </Text>
       </View>
     </View>
   </TouchableOpacity>
 ));
-
 
 export default memo(RideBooking);

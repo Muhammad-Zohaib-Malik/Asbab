@@ -10,7 +10,7 @@ const {
 } = require("../utils/mapUtils");
 
 const createRide = async (req, res) => {
-  const { vehicle, pickup, drop } = req.body;
+  const { vehicle, pickup, drop,loadDetails } = req.body;
 
   if (!vehicle || !pickup || !drop) {
     throw new BadRequestError("Vehicle, pickup, and drop details are required");
@@ -35,6 +35,15 @@ const createRide = async (req, res) => {
     throw new BadRequestError("Complete pickup and drop details are required");
   }
 
+  if (
+    (vehicle === "truck" || vehicle === "van") &&
+    (!loadDetails || !loadDetails.type || !loadDetails.weight)
+  ) {
+    throw new BadRequestError(
+      "Load type and weight are required for van/truck rides"
+    );
+  }
+
   const customer = req.user;
 
   try {
@@ -53,6 +62,7 @@ const createRide = async (req, res) => {
       drop: { address: dropAddress, latitude: dropLat, longitude: dropLon },
       customer: customer.id,
       otp: generateOTP(),
+       loadDetails: (vehicle === "truck" || vehicle === "van") ? loadDetails : undefined,
     });
 
     await ride.save();

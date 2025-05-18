@@ -22,6 +22,14 @@ const rideSchema = new Schema(
       latitude: { type: Number, required: true },
       longitude: { type: Number, required: true },
     },
+    loadDetails: {
+      type: {
+        type: String, // e.g., Furniture, Electronics
+      },
+      weight: {
+        type: Number, // in kg
+      },
+    },
     fare: {
       type: Number,
       required: true,

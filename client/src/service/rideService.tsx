@@ -37,11 +37,16 @@ export interface Ride {
   createdAt: string;
   updatedAt: string;
 }
+type LoadDetails = {
+  type: string;
+  weight: number;
+};
 
 export const createRide = async (payload: {
   vehicle: "bike" | "auto" | "cabEconomy" | "cabPremium" | "truck" | "van";
   pickup: coords;
   drop: coords;
+   loadDetails?: LoadDetails;
 }) => {
   try {
     const res = await appAxios.post("/ride/create", payload);
