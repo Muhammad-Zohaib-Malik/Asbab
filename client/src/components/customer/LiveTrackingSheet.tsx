@@ -9,7 +9,7 @@ import { Image, Text, TouchableOpacity, View, Alert } from "react-native";
 import RatingPopup from "@/components/customer/RatingPopup";
 import { ratingRide } from "@/service/rideService";
 
-type VehicleType = "bike" | "auto" | "cabEconomy" | "cabPremium" | "truck";
+type VehicleType = "bike" | "auto" | "cabEconomy" | "cabPremium" | "truck" | "van";
 
 interface RideItem {
   vehicle?: VehicleType;

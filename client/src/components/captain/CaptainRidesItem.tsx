@@ -9,7 +9,7 @@ import { Image, Text, TouchableOpacity, View } from "react-native";
 import Animated, { FadeInLeft, FadeOutRight } from "react-native-reanimated";
 import CounterButton from "./CounterButton";
 
-type VehicleType = "bike" | "auto" | "cabEconomy" | "cabPremium" | "truck";
+type VehicleType = "bike" | "auto" | "cabEconomy" | "cabPremium" | "truck" | "van";
 
 interface RideItem {
   _id: string;

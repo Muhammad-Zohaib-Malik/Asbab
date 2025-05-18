@@ -13,7 +13,7 @@ import {
   View,
 } from "react-native";
 
-type VehicleType = "bike" | "auto" | "cabEconomy" | "cabPremium" | "truck";
+type VehicleType = "bike" | "auto" | "cabEconomy" | "cabPremium" | "truck" | "van";
 
 interface RideItem {
   vehicle?: VehicleType;

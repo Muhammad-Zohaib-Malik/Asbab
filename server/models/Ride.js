@@ -5,7 +5,7 @@ const rideSchema = new Schema(
   {
     vehicle: {
       type: String,
-      enum: ["bike", "auto", "cabEconomy", "cabPremium", "truck"],
+      enum: ["bike", "auto", "cabEconomy", "cabPremium", "truck", "van"],
       required: true,
     },
     distance: {

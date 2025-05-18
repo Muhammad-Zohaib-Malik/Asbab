@@ -1,4 +1,4 @@
-import { Image, SafeAreaView, Text, View } from "react-native";
+import { Image, Text, View } from "react-native";
 import React, { useEffect, useState } from "react";
 import { useIsFocused } from "@react-navigation/native";
 import { useWS } from "@/service/WebProvider";
@@ -9,7 +9,6 @@ import { homeStyles } from "@/styles/homeStyles";
 import { StatusBar } from "expo-status-bar";
 import CaptainHeader from "@/components/captain/CaptainHeader";
 import { FlatList } from "react-native-gesture-handler";
-import { rideStyles } from "@/styles/rideStyles";
 import { riderStyles } from "@/styles/riderStyles";
 import CaptainRidesItem from "@/components/captain/CaptainRidesItem";
 

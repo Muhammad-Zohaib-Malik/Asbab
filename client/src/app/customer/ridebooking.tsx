@@ -46,14 +46,20 @@ const RideBooking = () => {
       {
         type: "Cab Premium",
         seats: 4,
-        price: farePrices?.truck,
+        price: farePrices?.cabPremium,
         icon: require("@/assets/icons/cab_premium.png"),
       },
       {
         type: "Truck",
         seats: 12,
-        price: farePrices?.cabPremium,
+        price: farePrices?.truck,
         icon: require("@/assets/icons/truck.png"),
+      },
+      {
+        type: "Van",
+        seats: 8,
+        price: farePrices?.van,
+        icon: require("@/assets/icons/van.png"),
       }
     ],
     [farePrices]
@@ -75,6 +81,8 @@ const RideBooking = () => {
           ? "bike"
           : selectedOption === "Truck"
           ? "truck"
+          : selectedOption === "Van"
+          ? "van"
           : "auto",
       drop: {
         latitude: parseFloat(item.drop_latitude),

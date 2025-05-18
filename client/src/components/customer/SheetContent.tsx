@@ -7,9 +7,9 @@ const cubes = [
   { name: "Bike", imageUri: require("@/assets/icons/bike.png") },
   { name: "Auto", imageUri: require("@/assets/icons/auto.png") },
   { name: "Cab Economy", imageUri: require("@/assets/icons/cab.png") },
-  { name: "Parcel", imageUri: require("@/assets/icons/parcel.png") },
   { name: "Cab Premium", imageUri: require("@/assets/icons/cab_premium.png") },
   { name: "Truck", imageUri: require("@/assets/icons/truck.png") },
+  { name: "Van", imageUri: require("@/assets/icons/van.png") },
 ];
 
 const SheetContent = () => {

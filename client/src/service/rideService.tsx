@@ -39,7 +39,7 @@ export interface Ride {
 }
 
 export const createRide = async (payload: {
-  vehicle: "bike" | "auto" | "cabEconomy" | "cabPremium" | "truck";
+  vehicle: "bike" | "auto" | "cabEconomy" | "cabPremium" | "truck" | "van";
   pickup: coords;
   drop: coords;
 }) => {
@@ -57,6 +57,40 @@ export const createRide = async (payload: {
   }
 };
 
+export const getMyRides = async (
+  status?: string,
+  isCustomer: boolean = true
+): Promise<Ride[] | null> => {
+  try {
+    const res = await appAxios.get("/ride/rides", {
+      params: status ? { status } : {},
+    });
+
+    const rides: Ride[] = res.data.rides ?? [];
+
+    // Filter rides that are NOT completed
+    const liveRides = rides.filter((ride) => ride.status !== "COMPLETED");
+
+    if (liveRides.length > 0) {
+      // Navigate to live ride page of first live ride found
+      router.push({
+        pathname: isCustomer ? "/customer/liveride" : "/rider/liveride",
+        params: {
+          id: liveRides[0]._id,
+        },
+      });
+    }
+
+    return rides;
+  } catch (error: any) {
+    Alert.alert("Failed to fetch rides");
+    console.log(
+      "Error in getMyRides:",
+      error?.response?.data?.message || error.message
+    );
+    return null;
+  }
+};
 
 // export const getMyRides= async (isCustomer: boolean=true) => {
 //     try {
@@ -82,7 +116,10 @@ export const createRide = async (payload: {
 
 
 
-// export const getMyRides = async (status?: string): Promise<any[] | null> => {
+
+
+
+// export const getMyRides = async (status?: string): Promise<Ride[] | null> => {
 //   try {
 //     const res = await appAxios.get("/ride/rides", {
 //       params: status ? { status } : {},
@@ -90,24 +127,10 @@ export const createRide = async (payload: {
 //     return res.data.rides ?? [];
 //   } catch (error: any) {
 //     Alert.alert("Failed to fetch rides");
-//     console.log("Error in getMyRides:", error?.response?.data?.message);
+//     console.log("Error in getMyRides:", error?.response?.data?.message || error.message);
 //     return null;
 //   }
 // };
-
-
-export const getMyRides = async (status?: string): Promise<Ride[] | null> => {
-  try {
-    const res = await appAxios.get("/ride/rides", {
-      params: status ? { status } : {},
-    });
-    return res.data.rides ?? [];
-  } catch (error: any) {
-    Alert.alert("Failed to fetch rides");
-    console.log("Error in getMyRides:", error?.response?.data?.message || error.message);
-    return null;
-  }
-};
 
 export const acceptRideOffer=async(rideId:string) => {
   try {
