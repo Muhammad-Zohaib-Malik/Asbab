@@ -10,7 +10,7 @@ const {
 } = require("../utils/mapUtils");
 
 const createRide = async (req, res) => {
-  const { vehicle, pickup, drop,loadDetails } = req.body;
+  const { vehicle, pickup, drop, loadDetails, paymentMethod, currency = "pkr" } = req.body;
 
   if (!vehicle || !pickup || !drop) {
     throw new BadRequestError("Vehicle, pickup, and drop details are required");
@@ -24,24 +24,12 @@ const createRide = async (req, res) => {
 
   const { address: dropAddress, latitude: dropLat, longitude: dropLon } = drop;
 
-  if (
-    !pickupAddress ||
-    !pickupLat ||
-    !pickupLon ||
-    !dropAddress ||
-    !dropLat ||
-    !dropLon
-  ) {
+  if (!pickupAddress || !pickupLat || !pickupLon || !dropAddress || !dropLat || !dropLon) {
     throw new BadRequestError("Complete pickup and drop details are required");
   }
 
-  if (
-    (vehicle === "truck" || vehicle === "van") &&
-    (!loadDetails || !loadDetails.type || !loadDetails.weight)
-  ) {
-    throw new BadRequestError(
-      "Load type and weight are required for van/truck rides"
-    );
+  if ((vehicle === "truck" || vehicle === "van") && (!loadDetails?.type || !loadDetails?.weight)) {
+    throw new BadRequestError("Load type and weight are required for van/truck rides");
   }
 
   const customer = req.user;
@@ -50,26 +38,41 @@ const createRide = async (req, res) => {
     const distance = calculateDistance(pickupLat, pickupLon, dropLat, dropLon);
     const fare = calculateFare(distance, vehicle);
 
-    const ride = new Ride({
+    const rideData = {
       vehicle,
       distance,
       fare: fare[vehicle],
-      pickup: {
-        address: pickupAddress,
-        latitude: pickupLat,
-        longitude: pickupLon,
-      },
+      pickup: { address: pickupAddress, latitude: pickupLat, longitude: pickupLon },
       drop: { address: dropAddress, latitude: dropLat, longitude: dropLon },
       customer: customer.id,
       otp: generateOTP(),
-       loadDetails: (vehicle === "truck" || vehicle === "van") ? loadDetails : undefined,
-    });
+      loadDetails: vehicle === "truck" || vehicle === "van" ? loadDetails : undefined,
+      status: "SEARCHING_FOR_CAPTAIN",
+      payment: {
+        method: paymentMethod,
+        amount: fare[vehicle],
+        currency,
+        status: paymentMethod === "cash" ? "unpaid" : "succeeded",
+      },
+    };
 
+    if (paymentMethod === "card") {
+      const paymentIntent = await stripe.paymentIntents.create({
+        amount: Math.round(fare[vehicle] * 100),
+        currency,
+        payment_method_types: ["card"],
+      });
+      rideData.payment.paymentIntentId = paymentIntent.id;
+      rideData.payment.clientSecret = paymentIntent.client_secret;
+    }
+
+    const ride = new Ride(rideData);
     await ride.save();
 
     res.status(StatusCodes.CREATED).json({
       message: "Ride created successfully",
       ride,
+      clientSecret: rideData.payment.clientSecret || null,
     });
   } catch (error) {
     console.error(error);

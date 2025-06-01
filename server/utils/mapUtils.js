@@ -25,7 +25,7 @@ const calculateFare = (distance) => {
 
   const fareCalculation = (baseFare, perKmRate, minimumFare) => {
     const calculatedFare = baseFare + distance * perKmRate;
-    return Math.max(calculatedFare, minimumFare);
+    return Math.max(Math.round(calculatedFare), Math.round(minimumFare));
   };
 
   return {

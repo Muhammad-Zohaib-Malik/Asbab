@@ -10,6 +10,7 @@ import { useRoute } from "@react-navigation/native";
 import { StatusBar } from "expo-status-bar";
 import { memo, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { ActivityIndicator, Alert, Text, View } from "react-native";
+import { StripeProvider } from "@stripe/stripe-react-native";
 
 const androidHeights = [screenHeight * 0.12, screenHeight * 0.42];
 
@@ -80,60 +81,68 @@ const LiveRide = () => {
   }, [rideData]);
 
   return (
-    <View style={rideStyles?.container}>
-      <StatusBar style="light" backgroundColor="#075BB5" translucent={false} />
-      {rideData && (
-        <LiveTrackingMap
-          height={mapHeight}
-          status={rideData?.status}
-          drop={{
-            latitude: parseFloat(rideData?.drop?.latitude),
-            longitude: parseFloat(rideData?.drop?.longitude),
-          }}
-          pickup={{
-            latitude: parseFloat(rideData?.pickup?.latitude),
-            longitude: parseFloat(rideData?.pickup?.longitude),
-          }}
-          captain={
-            riderCoords
-              ? {
-                  latitude: riderCoords.latitude,
-                  longitude: riderCoords.longitude,
-                  heading: riderCoords.heading,
-                }
-              : {}
-          }
+    <StripeProvider publishableKey={process.env.STRIPE_PUBLISHABLE_KEY}>
+      <View style={rideStyles?.container}>
+        <StatusBar
+          style="light"
+          backgroundColor="#075BB5"
+          translucent={false}
         />
-      )}
+        {rideData && (
+          <LiveTrackingMap
+            height={mapHeight}
+            status={rideData?.status}
+            drop={{
+              latitude: parseFloat(rideData?.drop?.latitude),
+              longitude: parseFloat(rideData?.drop?.longitude),
+            }}
+            pickup={{
+              latitude: parseFloat(rideData?.pickup?.latitude),
+              longitude: parseFloat(rideData?.pickup?.longitude),
+            }}
+            captain={
+              riderCoords
+                ? {
+                    latitude: riderCoords.latitude,
+                    longitude: riderCoords.longitude,
+                    heading: riderCoords.heading,
+                  }
+                : {}
+            }
+          />
+        )}
 
-      {rideData ? (
-        <BottomSheet
-          ref={bottomSheetRef}
-          index={1}
-          handleIndicatorStyle={{ backgroundColor: "#ccc" }}
-          enableOverDrag={false}
-          enableDynamicSizing={false}
-          style={{ zIndex: 4 }}
-          snapPoints={snapPoints}
-          onChange={handleSheetChanges}
-        >
-          <BottomSheetScrollView contentContainerStyle={rideStyles?.container}>
-            {rideData?.status === "SEARCHING_FOR_CAPTAIN" ? (
-              <SearchingRideSheet item={rideData} />
-            ) : (
-              <LiveTrackingSheet item={rideData} />
-            )}
-          </BottomSheetScrollView>
-        </BottomSheet>
-      ) : (
-        <View
-          style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
-        >
-          <Text>Fetching Information...</Text>
-          <ActivityIndicator color="black" size="small" />
-        </View>
-      )}
-    </View>
+        {rideData ? (
+          <BottomSheet
+            ref={bottomSheetRef}
+            index={1}
+            handleIndicatorStyle={{ backgroundColor: "#ccc" }}
+            enableOverDrag={false}
+            enableDynamicSizing={false}
+            style={{ zIndex: 4 }}
+            snapPoints={snapPoints}
+            onChange={handleSheetChanges}
+          >
+            <BottomSheetScrollView
+              contentContainerStyle={rideStyles?.container}
+            >
+              {rideData?.status === "SEARCHING_FOR_CAPTAIN" ? (
+                <SearchingRideSheet item={rideData} />
+              ) : (
+                <LiveTrackingSheet item={rideData} />
+              )}
+            </BottomSheetScrollView>
+          </BottomSheet>
+        ) : (
+          <View
+            style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
+          >
+            <Text>Fetching Information...</Text>
+            <ActivityIndicator color="black" size="small" />
+          </View>
+        )}
+      </View>
+    </StripeProvider>
   );
 };
 

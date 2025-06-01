@@ -48,6 +48,7 @@ export default function RootLayout() {
           <Stack.Screen name="customer/setting" options={{ headerShown: false }} />
           <Stack.Screen name="customer/liveride" options={{ headerShown: false }} />
           <Stack.Screen name="customer/myrides" options={{ headerShown: false }} />
+          <Stack.Screen name="customer/payment" options={{ headerShown: false }} />
           <Stack.Screen name="+not-found" />
         </Stack>
       </WSProvider>

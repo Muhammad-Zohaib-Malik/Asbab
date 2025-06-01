@@ -5,11 +5,18 @@ import { resetAndNavigate } from "@/utils/Helpers";
 import { vehicleIcons } from "@/utils/mapUtils";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { FC, useState, useEffect } from "react";
-import { Image, Text, TouchableOpacity, View, Alert } from "react-native";
+import { Image, Text, TouchableOpacity, View, Modal } from "react-native";
 import RatingPopup from "@/components/customer/RatingPopup";
 import { ratingRide } from "@/service/rideService";
+import { useRouter } from "expo-router"; // ✅ Added for routing
 
-type VehicleType = "bike" | "auto" | "cabEconomy" | "cabPremium" | "truck" | "van";
+type VehicleType =
+  | "bike"
+  | "auto"
+  | "cabEconomy"
+  | "cabPremium"
+  | "truck"
+  | "van";
 
 interface RideItem {
   vehicle?: VehicleType;
@@ -22,22 +29,126 @@ interface RideItem {
   status: string;
 }
 
+const PaymentPopup: FC<{
+  onSelect: (method: "cash" | "card") => void;
+  onCancel: () => void;
+}> = ({ onSelect, onCancel }) => {
+  return (
+    <Modal transparent animationType="fade">
+      <View
+        style={{
+          flex: 1,
+          backgroundColor: "rgba(0,0,0,0.5)",
+          justifyContent: "center",
+          alignItems: "center",
+          padding: 20,
+        }}
+      >
+        <View
+          style={{
+            backgroundColor: "white",
+            borderRadius: 10,
+            padding: 20,
+            width: "100%",
+            maxWidth: 300,
+          }}
+        >
+          <Text
+            style={{
+              fontSize: 18,
+              fontWeight: "bold",
+              marginBottom: 15,
+              textAlign: "center",
+            }}
+          >
+            Select Payment Method
+          </Text>
+
+          <TouchableOpacity
+            onPress={() => onSelect("cash")}
+            style={{
+              backgroundColor: "#4caf50",
+              padding: 12,
+              borderRadius: 6,
+              marginBottom: 10,
+            }}
+          >
+            <Text style={{ color: "white", textAlign: "center", fontSize: 16 }}>
+              Cash
+            </Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            onPress={() => onSelect("card")}
+            style={{
+              backgroundColor: "#2196f3",
+              padding: 12,
+              borderRadius: 6,
+              marginBottom: 10,
+            }}
+          >
+            <Text style={{ color: "white", textAlign: "center", fontSize: 16 }}>
+              Card
+            </Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            onPress={onCancel}
+            style={{
+              marginTop: 10,
+              padding: 10,
+            }}
+          >
+            <Text style={{ textAlign: "center", color: "red", fontSize: 14 }}>
+              Cancel
+            </Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+    </Modal>
+  );
+};
+
 const LiveTrackingSheet: FC<{ item: RideItem }> = ({ item }) => {
   const { emit } = useWS();
+  const router = useRouter(); // ✅ Hook to navigate
+
   const [isCompleted, setIsCompleted] = useState(false);
   const [showRatingPopup, setShowRatingPopup] = useState(false);
+  const [showPaymentPopup, setShowPaymentPopup] = useState(false);
+  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<
+    "cash" | "card" | null
+  >(null);
 
   useEffect(() => {
     if (item.status === "COMPLETED") {
       setIsCompleted(true);
-      setShowRatingPopup(true);
+      setShowPaymentPopup(true);
     }
   }, [item.status]);
+
+  const onPaymentSelect = (method: "cash" | "card") => {
+    setSelectedPaymentMethod(method);
+    setShowPaymentPopup(false);
+
+    if (method === "cash") {
+      setShowRatingPopup(true);
+    } else if (method === "card") {
+      router.push({
+        pathname: "/customer/payment",
+        params: {
+          rideId: item._id,
+          fare: item.fare?.toString() || "0",
+        },
+      });
+    }
+  };
 
   const submitRating = async (rating: number, review: string) => {
     const isSuccessful = await ratingRide(item._id, rating, review);
     if (isSuccessful) {
       setShowRatingPopup(false);
+      resetAndNavigate("/customer/home");
     }
   };
 
@@ -69,8 +180,7 @@ const LiveTrackingSheet: FC<{ item: RideItem }> = ({ item }) => {
 
         {item?.captain?.phone && (
           <Text className="font-JakartaMedium">
-            +92 {""}
-            {item?.captain?.phone?.slice(0, 5) + item?.captain?.phone?.slice(5)}
+            +92 {item?.captain?.phone?.slice(0, 5) + item?.captain?.phone?.slice(5)}
           </Text>
         )}
       </View>
@@ -118,7 +228,7 @@ const LiveTrackingSheet: FC<{ item: RideItem }> = ({ item }) => {
 
         {/* Payment Info */}
         <View style={{ marginVertical: 20 }}>
-          <View style={[commonStyles.flexRowBetween]}>
+          <View style={commonStyles.flexRowBetween}>
             <View style={commonStyles.flexRow}>
               <MaterialCommunityIcons
                 name="credit-card"
@@ -130,8 +240,8 @@ const LiveTrackingSheet: FC<{ item: RideItem }> = ({ item }) => {
             <Text className="font-JakartaMedium" style={{ fontWeight: "bold" }}>
               RS {Math.ceil(Number(item.fare?.toFixed(2)))}
             </Text>
-            
           </View>
+
           <View style={rideStyles.bottomButtonContainer}>
             <TouchableOpacity
               style={rideStyles.cancelButton}
@@ -155,6 +265,14 @@ const LiveTrackingSheet: FC<{ item: RideItem }> = ({ item }) => {
           </View>
         </View>
       </View>
+
+      {/* Payment Popup */}
+      {showPaymentPopup && (
+        <PaymentPopup
+          onSelect={onPaymentSelect}
+          onCancel={() => setShowPaymentPopup(false)}
+        />
+      )}
 
       {/* Rating Popup */}
       {showRatingPopup && (
