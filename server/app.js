@@ -12,16 +12,13 @@ const notFoundMiddleware = require("./middleware/not-found");
 const errorHandlerMiddleware = require("./middleware/error-handler");
 const authMiddleware = require("./middleware/authentication");
 const cloudinary = require("cloudinary").v2;
-const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY); 
-
+const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
 // Routers
 const authRouter = require("./routes/auth");
 const rideRouter = require("./routes/ride");
-const stripeRouter = require("./routes/stripe");
 
-// Import socket handler
-const handleSocketConnection = require("./controllers/sockets");
+// AdminJS setup
 const { buildAdminRouter, admin } = require("./config/setup");
 
 // Cloudinary configuration
@@ -32,52 +29,40 @@ cloudinary.config({
 });
 
 const app = express();
-app.use(express.json());
-
-
-
-
 const server = http.createServer(app);
-
 const io = socketIo(server, { cors: { origin: "*" } });
 
-// Attach the WebSocket instance to the request object
+app.use(express.json());
+
+// Attach WebSocket instance to request
 app.use((req, res, next) => {
   req.io = io;
-  return next();
+  next();
 });
 
-// Initialize WebSocket handling logic
-handleSocketConnection(io);
+// Log all incoming requests
+// app.use((req, res, next) => {
+//   console.log(`Incoming request: ${req.method} ${req.url}`);
+//   next();
+// });
 
-// Routes
-app.use("/auth", authRouter);
-app.use("/ride", authMiddleware, rideRouter);
-app.use("/stripe", stripeRouter);
-
-
+// Stripe Payment Sheet Route
 app.post("/create-payment-sheet", async (req, res) => {
   const { amount, currency } = req.body;
 
   try {
-    // 1. Create Customer
     const customer = await stripe.customers.create();
-
-    // 2. Create Ephemeral Key
     const ephemeralKey = await stripe.ephemeralKeys.create(
       { customer: customer.id },
       { apiVersion: "2023-10-16" }
     );
-
-    // 3. Create Payment Intent
     const paymentIntent = await stripe.paymentIntents.create({
-      amount: amount, // e.g., 1099 for $10.99
-      currency: currency, // e.g., "usd"
+      amount,
+      currency,
       customer: customer.id,
       automatic_payment_methods: { enabled: true },
     });
 
-    // 4. Send details to frontend
     res.send({
       paymentIntent: paymentIntent.client_secret,
       ephemeralKey: ephemeralKey.secret,
@@ -89,25 +74,30 @@ app.post("/create-payment-sheet", async (req, res) => {
   }
 });
 
-// Middleware
-app.use(notFoundMiddleware);
-app.use(errorHandlerMiddleware);
+// Socket handler (placed here if it modifies `io`)
+const handleSocketConnection = require("./controllers/sockets");
+handleSocketConnection(io);
+
+const PORT = process.env.PORT || 3000;
 
 const start = async () => {
   try {
-    // Database connection
     await connectDB(process.env.MONGO_URI || "mongodb://localhost:27017/asbab");
 
-    // Set up AdminJS routes after DB connection
-    // await buildAdminRouter(app);
+    // ✅ Mount AdminJS first
+    await buildAdminRouter(app);
 
-    // Start the server
-    server.listen(process.env.PORT || 3000, () => {
-      console.log(
-        // `HTTP server is running on http://localhost:${process.env.PORT}${admin.options.rootPath}`
-         `HTTP server is running on http://localhost:${process.env.PORT}`
+    // ✅ Then mount other app routes
+    app.use("/auth", authRouter);
+    app.use("/ride", authMiddleware, rideRouter);
 
-      );
+    // ✅ Then add fallback middlewares
+    app.use(notFoundMiddleware);
+    app.use(errorHandlerMiddleware);
+
+    server.listen(PORT, () => {
+      console.log(`HTTP server is running at http://localhost:${PORT}`);
+      console.log(`✅ AdminJS is running at http://localhost:${PORT}${admin.options.rootPath}`);
     });
 
   } catch (error) {
