@@ -17,6 +17,7 @@ const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 // Routers
 const authRouter = require("./routes/auth");
 const rideRouter = require("./routes/ride");
+const complaintRouter = require("./routes/complains");
 
 // AdminJS setup
 const { buildAdminRouter, admin } = require("./config/setup");
@@ -90,6 +91,7 @@ const start = async () => {
     // ✅ Then mount other app routes
     app.use("/auth", authRouter);
     app.use("/ride", authMiddleware, rideRouter);
+    app.use("/complaint", authMiddleware, complaintRouter);
 
     // ✅ Then add fallback middlewares
     app.use(notFoundMiddleware);

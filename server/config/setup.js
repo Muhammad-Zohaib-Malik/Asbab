@@ -9,6 +9,7 @@
     const User = require('../models/User');
     const Ride = require('../models/Ride');
     const Rating = require('../models/Rating');
+    const Complain = require('../models/Complaints');
     const PORT = process.env.PORT || 3000;
 
     // ✅ Register the Mongoose adapter correctly
@@ -39,6 +40,7 @@
         },
         { resource: Ride },
         { resource: Rating },
+        { resource: Complain },
     ],
     rootPath: '/admin',
     branding: {
