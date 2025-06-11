@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import {
   View,
   Text,
@@ -10,16 +10,14 @@ import {
   Modal,
   Animated,
   Easing,
+  Alert,
 } from "react-native";
+import { createComplaint } from "../../service/rideService"; // Adjust path
 
-interface AddComplaintProps {
-  userId: string;
-}
-
-const AddComplaint = ({ userId }: AddComplaintProps) => {
+const AddComplaint = () => {
   const [message, setMessage] = useState("");
   const [modalVisible, setModalVisible] = useState(false);
-  const scaleValue = new Animated.Value(0);
+  const scaleValue = useRef(new Animated.Value(0)).current;
 
   const animateModal = () => {
     scaleValue.setValue(0);
@@ -33,28 +31,17 @@ const AddComplaint = ({ userId }: AddComplaintProps) => {
 
   const handleSubmit = async () => {
     if (!message.trim()) {
-      alert("Please enter your complaint.");
+      Alert.alert("Validation Error", "Please enter your complaint.");
       return;
     }
 
     try {
-      const res = await fetch("http://192.168.0.104:3000/complaint", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ user: userId, message }),
-      });
-
-      if (!res.ok) throw new Error("Failed to submit complaint");
-
+      await createComplaint(message);
       setMessage("");
       setModalVisible(true);
       animateModal();
-    } catch (error) {
-      if (error instanceof Error) {
-        alert(error.message);
-      } else {
-        alert("Something went wrong.");
-      }
+    } catch (error: any) {
+      Alert.alert("Error", error?.message || "Something went wrong.");
     }
   };
 
@@ -95,9 +82,7 @@ const AddComplaint = ({ userId }: AddComplaintProps) => {
       <Modal transparent visible={modalVisible} animationType="fade">
         <View className="flex-1 justify-center items-center bg-black bg-opacity-40 px-8">
           <Animated.View
-            style={{
-              transform: [{ scale: scaleValue }],
-            }}
+            style={{ transform: [{ scale: scaleValue }] }}
             className="bg-white rounded-xl p-8 w-full max-w-sm shadow-lg"
           >
             <Text className="text-2xl font-bold text-center mb-4 text-purple-700">

@@ -46,7 +46,7 @@ export const createRide = async (payload: {
   vehicle: "bike" | "auto" | "cabEconomy" | "cabPremium" | "truck" | "van";
   pickup: coords;
   drop: coords;
-   loadDetails?: LoadDetails;
+  loadDetails?: LoadDetails;
 }) => {
   try {
     const res = await appAxios.post("/ride/create", payload);
@@ -113,16 +113,11 @@ export const getMyRides = async (
 //         }
 
 //     } catch (error:any) {
-        
+
 //         Alert.alert("There was an error")
 //         console.log("Error in Get my ride", error?.response?.data?.message)
 //     }
 // }
-
-
-
-
-
 
 // export const getMyRides = async (status?: string): Promise<Ride[] | null> => {
 //   try {
@@ -137,36 +132,30 @@ export const getMyRides = async (
 //   }
 // };
 
-export const acceptRideOffer=async(rideId:string) => {
+export const acceptRideOffer = async (rideId: string) => {
   try {
-    const res=await appAxios.patch(`/ride/accept/${rideId}`)
+    const res = await appAxios.patch(`/ride/accept/${rideId}`);
     resetAndNavigate({
       pathname: "/captain/liveride",
-      params:{id:rideId}
-    })
-    console.log("Ride offer accepted",res.data)
-    
-  } catch (error:any) {
-    Alert.alert("There was an error",error)
-    console.log("Error in accepting ride offer", error)
-    
+      params: { id: rideId },
+    });
+    console.log("Ride offer accepted", res.data);
+  } catch (error: any) {
+    Alert.alert("There was an error", error);
+    console.log("Error in accepting ride offer", error);
   }
-}
+};
 
-
-export const updateRideStatus=async(rideId:string,status:string) => {
+export const updateRideStatus = async (rideId: string, status: string) => {
   try {
-    const res=await appAxios.patch(`/ride/update/${rideId}`,{status})
-    return true
-
+    const res = await appAxios.patch(`/ride/update/${rideId}`, { status });
+    return true;
   } catch (error) {
-    Alert.alert("There was an error")
-    console.log("Error in updating ride status", error)
-    return false
-    
+    Alert.alert("There was an error");
+    console.log("Error in updating ride status", error);
+    return false;
   }
-}
-
+};
 
 export const ratingRide = async (
   rideId: string,
@@ -174,7 +163,6 @@ export const ratingRide = async (
   review?: string
 ) => {
   try {
-    // Sending a POST request to the /ride/rating/:id endpoint
     const res = await appAxios.post(`/ride/rating/${rideId}`, {
       rating,
       review,
@@ -185,7 +173,23 @@ export const ratingRide = async (
     return true;
   } catch (error: any) {
     Alert.alert("There was an error submitting your rating");
-    console.log("Error in rating ride:", error?.response?.data?.message || error);
+    console.log(
+      "Error in rating ride:",
+      error?.response?.data?.message || error
+    );
     return false;
+  }
+};
+
+export const createComplaint = async (message: string) => {
+  try {
+    const res = await appAxios.post("/complaint", { message });
+    return res.data;
+  } catch (error: any) {
+    Alert.alert("There was an error submitting your complaint.");
+    console.log(
+      "Complaint error:",
+      error?.response?.data?.message || error.message
+    );
   }
 };
