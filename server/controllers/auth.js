@@ -2,9 +2,11 @@ const User = require("../models/User");
 const { StatusCodes } = require("http-status-codes");
 const { BadRequestError, UnauthenticatedError } = require("../errors");
 const jwt = require("jsonwebtoken");
-const { uploadOnCloudinary, deleteImageFromCloudinary } = require("../utils/cloudinary");
+const {
+  uploadOnCloudinary,
+  deleteImageFromCloudinary,
+} = require("../utils/cloudinary");
 const fs = require("fs");
-
 
 const auth = async (req, res) => {
   const { phone, role } = req.body;
@@ -54,7 +56,7 @@ const auth = async (req, res) => {
     });
   } catch (error) {
     console.error(error);
-    throw error
+    throw error;
   }
 };
 
@@ -114,7 +116,7 @@ const updateProfileController = async (req, res) => {
         phone: user.phone,
         profilePic: user.profilePic,
         role: user.role,
-      }
+      },
     });
   } catch (error) {
     console.error(error);
@@ -122,48 +124,50 @@ const updateProfileController = async (req, res) => {
   }
 };
 
-const updateProfilePicContoller = async (req, res) => {
+const updateProfilePicController = async (req, res, next) => {
   const userId = req.user.id;
   const profilePic = req.file;
 
   if (!profilePic) {
-    throw new BadRequestError("Profile picture is required");
+    return next(new BadRequestError("Profile picture is required"));
   }
 
   try {
     const user = await User.findById(userId);
-
     if (!user) {
-      throw new NotFoundError("User not found");
+      return next(new NotFoundError("User not found"));
     }
 
+    // Delete old profile picture if exists
     if (user.profilePicId) {
       try {
         await deleteImageFromCloudinary(user.profilePicId);
       } catch (error) {
-        console.error('Error deleting existing profile picture:', error);
+        console.error(
+          "Error deleting existing profile picture from Cloudinary:",
+          error
+        );
+        // Don't throw — it's okay to continue even if deletion fails
       }
     }
 
-    try {
-      const uploadResult = await uploadOnCloudinary(profilePic.path);
-      if (!uploadResult) {
-        throw new BadRequestError("Cloudinary upload returned undefined.");
-      }
-
-      const { secure_url, public_id } = uploadResult;
-      user.profilePic = secure_url;
-      user.profilePicId = public_id;
-      fs.unlinkSync(profilePic.path);
-    } catch (error) {
-      console.error('Error uploading profile picture to Cloudinary:', error);
-      throw new BadRequestError("Failed to upload profile Picture");
-
+    // Upload new image to Cloudinary
+    const uploadResult = await uploadOnCloudinary(profilePic.path);
+    if (!uploadResult) {
+      return next(new BadRequestError("Failed to upload image to Cloudinary"));
     }
+
+    // Update user with new image info
+    const { secure_url, public_id } = uploadResult;
+    user.profilePic = secure_url;
+    user.profilePicId = public_id;
+
+    // Delete local file
+    fs.unlinkSync(profilePic.path);
 
     await user.save();
 
-    res.status(StatusCodes.OK).json({
+    return res.status(StatusCodes.OK).json({
       message: "Profile picture updated successfully",
       user: {
         id: user._id,
@@ -171,21 +175,17 @@ const updateProfilePicContoller = async (req, res) => {
         phone: user.phone,
         profilePic: user.profilePic,
         role: user.role,
-      }
+      },
     });
   } catch (error) {
-    console.error(error);
-    throw error;
+    console.error("Error in updateProfilePicController:", error);
+    next(error); // Let error middleware handle it
   }
-}
-
-
-
+};
 
 module.exports = {
   refreshToken,
   auth,
   updateProfileController,
-  updateProfilePicContoller,
-
+  updateProfilePicController,
 };
