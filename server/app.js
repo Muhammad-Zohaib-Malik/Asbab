@@ -91,7 +91,7 @@ const start = async () => {
     // ✅ Then mount other app routes
     app.use("/auth", authRouter);
     app.use("/ride", authMiddleware, rideRouter);
-    app.use("/complaint", authMiddleware, complaintRouter);
+    app.use("/complaint", complaintRouter);
 
     // ✅ Then add fallback middlewares
     app.use(notFoundMiddleware);

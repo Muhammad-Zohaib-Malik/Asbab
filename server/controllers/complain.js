@@ -2,35 +2,42 @@ const Complaint = require('../models/Complaints');
 
 const createComplaint = async (req, res) => {
   try {
-    const { user, message } = req.body;
+    const { message } = req.body;
 
-    if (!user || !message) {
-      return res.status(400).json({ message: 'User and message are required' });
+    if (!message) {
+      return res.status(400).json({ error: "Message is required" });
     }
 
+    console.log("Authenticated user:", req.user);
+
     const complaint = new Complaint({
-      user,
+      user: req.user._id,
       message,
-      // status will default to 'pending'
     });
 
-    await complaint.save();
+    const savedComplaint = await complaint.save();
 
-    res.status(201).json({ message: 'Complaint submitted successfully', complaint });
+    res.status(201).json(savedComplaint);
   } catch (error) {
-    res.status(500).json({ message: 'Error creating complaint', error });
+    console.error("Error creating complaint:", error);
+    res.status(500).json({ error: "Internal Server Error" });
   }
 };
 
 const getComplaintsById = async (req, res) => {
-  try {
-    const complaints = await Complaint.find({ user: req.params.userId })
-      // No ride ref now, so no populate needed
-      .sort({ createdAt: -1 });
+   try {
+    const { userId } = req.params;
+
+    if (req.user._id.toString() !== userId) {
+      return res.status(403).json({ error: "Access denied" });
+    }
+
+    const complaints = await Complaint.find({ user: userId }).sort({ createdAt: -1 });
 
     res.json(complaints);
   } catch (error) {
-    res.status(500).json({ message: 'Error fetching complaints', error });
+    console.error("Error fetching complaints:", error);
+    res.status(500).json({ error: "Internal Server Error" });
   }
 };
 
