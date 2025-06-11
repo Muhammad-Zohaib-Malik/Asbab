@@ -25,7 +25,7 @@ const menuItems = [
   },
   {
     label: "Complaints",
-    icon: "chatbox-ellipses-outline", // Changed icon
+    icon: "chatbox-ellipses-outline", 
     route: "/customer/complaints",
   },
   {

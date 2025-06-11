@@ -8,7 +8,7 @@ import { FC, useState, useEffect } from "react";
 import { Image, Text, TouchableOpacity, View, Modal } from "react-native";
 import RatingPopup from "@/components/customer/RatingPopup";
 import { ratingRide } from "@/service/rideService";
-import { useRouter } from "expo-router"; // ✅ Added for routing
+import { useRouter } from "expo-router"; 
 
 type VehicleType =
   | "bike"
@@ -111,7 +111,7 @@ const PaymentPopup: FC<{
 
 const LiveTrackingSheet: FC<{ item: RideItem }> = ({ item }) => {
   const { emit } = useWS();
-  const router = useRouter(); // ✅ Hook to navigate
+  const router = useRouter(); 
 
   const [isCompleted, setIsCompleted] = useState(false);
   const [showRatingPopup, setShowRatingPopup] = useState(false);
