@@ -117,10 +117,9 @@ export const updateProfilePic = async (photoUri: string) => {
 
     const formData = new FormData();
     formData.append("profilePic", {
-      uri: Platform.OS === 'android' ? photoUri : photoUri.replace('file://', ''),
-
+      uri: photoUri,
       name: "profile-pic.jpg",
-      type: "image/jpg"
+      type: "image/jpeg"
     } as any);
 
     const res = await axios.put(`${BASE_URL}/auth/update-profile-pic`, formData, {
@@ -145,4 +144,5 @@ export const updateProfilePic = async (photoUri: string) => {
     }
   }
 };
+
 
