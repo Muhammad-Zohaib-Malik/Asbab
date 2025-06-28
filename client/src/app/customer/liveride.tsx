@@ -10,7 +10,6 @@ import { useRoute } from "@react-navigation/native";
 import { StatusBar } from "expo-status-bar";
 import { memo, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { ActivityIndicator, Alert, Text, View } from "react-native";
-import { StripeProvider } from "@stripe/stripe-react-native";
 
 const androidHeights = [screenHeight * 0.12, screenHeight * 0.42];
 
@@ -81,7 +80,7 @@ const LiveRide = () => {
   }, [rideData]);
 
   return (
-    <StripeProvider publishableKey={process.env.STRIPE_PUBLISHABLE_KEY}>
+    // <StripeProvider publishableKey={process.env.STRIPE_PUBLISHABLE_KEY}>
       <View style={rideStyles?.container}>
         <StatusBar
           style="light"
@@ -142,7 +141,7 @@ const LiveRide = () => {
           </View>
         )}
       </View>
-    </StripeProvider>
+    // </StripeProvider>
   );
 };
 

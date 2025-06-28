@@ -31,7 +31,7 @@ const Payment = () => {
     setLoading(true);
     try {
       const response = await axios.post(
-        "http://192.168.0.104:3000/create-payment-sheet",
+        "http://192.168.0.102:3000/create-payment-sheet",
         {
           amount: amountInCents(),
           currency: currency.toLowerCase(),
@@ -90,7 +90,7 @@ const Payment = () => {
       Alert.alert("Success", "Payment confirmed!");
       setPaymentSheetReady(false);
       setAmount("");
-      router.navigate("/customer/home");
+      router.navigate("/customer/home");  
     }
   };
 
@@ -100,14 +100,16 @@ const Payment = () => {
         Enter Amount ({currency.toUpperCase()}):
       </Text>
       <TextInput
+      className="font-JakartaMedium"
         keyboardType="numeric"
         value={Array.isArray(amount) ? amount[0] ?? "" : amount}
         onChangeText={setAmount}
         style={styles.input}
       />
 
-      <Text style={styles.label}>Currency (e.g. pkr):</Text>
+      <Text style={styles.label} className="font-JakartaMedium">Currency (e.g. pkr):</Text>
       <TextInput
+      className="font-JakartaMedium"
         autoCapitalize="none"
         placeholder="Currency"
         value={currency}
@@ -115,7 +117,7 @@ const Payment = () => {
         style={styles.input}
       />
 
-      <View style={{ marginVertical: 10 }}>
+      <View style={{ marginVertical: 10 }} className="font-JakartaMedium">
         <Button
           title={loading ? "Loading..." : "Initialize Payment"}
           onPress={initializePaymentSheet}
@@ -123,8 +125,9 @@ const Payment = () => {
         />
       </View>
 
-      <View style={{ marginVertical: 10 }}>
+      <View style={{ marginVertical: 10 }} className="font-JakartaMedium">
         <Button
+          
           title="Pay"
           onPress={openPaymentSheet}
           disabled={!paymentSheetReady || loading}
