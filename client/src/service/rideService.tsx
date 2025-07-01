@@ -64,7 +64,7 @@ export const createRide = async (payload: {
 
 export const getMyRides = async (
   status?: string,
-  isCustomer: boolean = true,
+  isCustomer: boolean = true
 ): Promise<Ride[] | null> => {
   try {
     const res = await appAxios.get("/ride/rides", {
@@ -91,46 +91,25 @@ export const getMyRides = async (
     Alert.alert("Failed to fetch rides");
     console.log(
       "Error in getMyRides:",
-      error?.response?.data?.message || error.message,
+      error?.response?.data?.message || error.message
     );
     return null;
   }
 };
 
-// export const getMyRides= async (isCustomer: boolean=true) => {
-//     try {
-//         const res = await appAxios.get("/ride/rides")
-//         const filterRides=res.data.rides?.filter(
-//             (ride:any)=>ride?.status!="COMPLETED"
-//         )
-//         if(filterRides?.length>0){
-//             router.navigate({
-//                 pathname:isCustomer? "/customer/liveride":"/rider/liveride",
-//                 params:{
-//                     id:filterRides[0]?._id
-//                 }
-//             });
-//         }
-
-//     } catch (error:any) {
-
-//         Alert.alert("There was an error")
-//         console.log("Error in Get my ride", error?.response?.data?.message)
-//     }
-// }
-
-// export const getMyRides = async (status?: string): Promise<Ride[] | null> => {
-//   try {
-//     const res = await appAxios.get("/ride/rides", {
-//       params: status ? { status } : {},
-//     });
-//     return res.data.rides ?? [];
-//   } catch (error: any) {
-//     Alert.alert("Failed to fetch rides");
-//     console.log("Error in getMyRides:", error?.response?.data?.message || error.message);
-//     return null;
-//   }
-// };
+export const getTotalEarning = async (captainId: string) => {
+  try {
+    const res = await appAxios.get(`/ride/earning/total/${captainId}`);
+    return res.data.totalEarning ?? 0;
+  } catch (error: any) {
+    Alert.alert("Failed to fetch total earning");
+    console.log(
+      "Error in getTotalEarning:",
+      error?.response?.data?.message || error.message
+    );
+    return 0;
+  }
+};
 
 export const acceptRideOffer = async (rideId: string) => {
   try {
@@ -160,7 +139,7 @@ export const updateRideStatus = async (rideId: string, status: string) => {
 export const ratingRide = async (
   rideId: string,
   rating: number,
-  review?: string,
+  review?: string
 ) => {
   try {
     const res = await appAxios.post(`/ride/rating/${rideId}`, {
@@ -175,7 +154,7 @@ export const ratingRide = async (
     Alert.alert("There was an error submitting your rating");
     console.log(
       "Error in rating ride:",
-      error?.response?.data?.message || error,
+      error?.response?.data?.message || error
     );
     return false;
   }
@@ -189,7 +168,7 @@ export const createComplaint = async (message: string) => {
     Alert.alert("There was an error submitting your complaint.");
     console.log(
       "Complaint error:",
-      error?.response?.data?.message || error.message,
+      error?.response?.data?.message || error.message
     );
   }
 };
