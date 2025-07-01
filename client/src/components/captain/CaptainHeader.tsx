@@ -3,18 +3,19 @@ import { useCaptainStore } from "@/store/captainStore";
 import { useIsFocused } from "@react-navigation/native";
 import { Alert, Image, Text, TouchableOpacity, View } from "react-native";
 import * as Location from "expo-location";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { rideStyles } from "@/styles/rideStyles";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { commonStyles } from "@/styles/commonStyles";
 import { MaterialIcons } from "@expo/vector-icons";
-import { logout } from "@/service/authService";
 import { riderStyles } from "@/styles/riderStyles";
+import DrawerMenu from "@/components/captain/DrawerMenu";
 
 const CaptainHeader = () => {
   const { disconnect, emit } = useWS();
   const { setOnDuty, onDuty, setLocation } = useCaptainStore();
   const isFocused = useIsFocused();
+  const [isDrawerOpen, setDrawerOpen] = useState(false);
 
   const toggleDuty = async () => {
     if (onDuty) {
@@ -53,11 +54,12 @@ const CaptainHeader = () => {
         <SafeAreaView />
 
         <View style={commonStyles.flexRowBetween}>
+          {/* ✅ Menu Icon opens drawer */}
           <MaterialIcons
             name="menu"
             size={30}
             color="black"
-            onPress={() => logout()}
+            onPress={() => setDrawerOpen(true)}
           />
           <TouchableOpacity
             style={riderStyles.toggleContainer}
@@ -79,12 +81,14 @@ const CaptainHeader = () => {
 
       <View style={riderStyles?.earningContainer}>
         <Text className="font-JakartaMedium" style={{ color: "#fff" }}>Today's Earning</Text>
-        <View style={commonStyles.flexRowGap}>  
+        <View style={commonStyles.flexRowGap}>
           <Text>RS 231</Text>
-
-          <MaterialIcons name="arrow-drop-down" size={24} color="fff" />
+          <MaterialIcons name="arrow-drop-down" size={24} color="#fff" />
         </View>
       </View>
+
+      {/* ✅ DrawerMenu Component */}
+      <DrawerMenu isOpen={isDrawerOpen} onClose={() => setDrawerOpen(false)} />
     </>
   );
 };
