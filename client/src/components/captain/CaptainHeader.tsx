@@ -10,12 +10,14 @@ import { commonStyles } from "@/styles/commonStyles";
 import { MaterialIcons } from "@expo/vector-icons";
 import { riderStyles } from "@/styles/riderStyles";
 import DrawerMenu from "@/components/captain/DrawerMenu";
+import { getTotalEarning } from "@/service/rideService";
 
 const CaptainHeader = () => {
   const { disconnect, emit } = useWS();
-  const { setOnDuty, onDuty, setLocation } = useCaptainStore();
+  const { setOnDuty, onDuty, setLocation, user: captain } = useCaptainStore();
   const isFocused = useIsFocused();
   const [isDrawerOpen, setDrawerOpen] = useState(false);
+  const [totalEarning, setTotalEarning] = useState<number>(0);
 
   const toggleDuty = async () => {
     if (onDuty) {
@@ -48,6 +50,17 @@ const CaptainHeader = () => {
     }
   }, [onDuty, isFocused]);
 
+  useEffect(() => {
+    const fetchTotal = async () => {
+      if (isFocused && captain?._id) {
+        const total = await getTotalEarning(captain._id);
+        setTotalEarning(total);
+      }
+    };
+
+    fetchTotal();
+  }, [isFocused, captain?._id]);
+
   return (
     <>
       <View style={riderStyles.headerContainer}>
@@ -79,13 +92,12 @@ const CaptainHeader = () => {
         </View>
       </View>
 
-      <View style={riderStyles?.earningContainer}>
-        <Text className="font-JakartaMedium" style={{ color: "#fff" }}>
-          Today's Earning
+      <View style={riderStyles.earningContainer}>
+        <Text className="font-JakartaSemiBold" style={{ color: "#fff" }}>
+          Total Earning
         </Text>
         <View style={commonStyles.flexRowGap}>
-          <Text>RS 231</Text>
-          <MaterialIcons name="arrow-drop-down" size={24} color="#fff" />
+          <Text className="font-JakartaSemiBold">RS {totalEarning} 💵 </Text>
         </View>
       </View>
 
