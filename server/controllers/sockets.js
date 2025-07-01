@@ -1,6 +1,6 @@
 const geolib = require("geolib");
 const User = require("../models/User");
-const Ride = require("../models/Ride"); // Import Ride model
+const Ride = require("../models/Ride");
 const jwt = require("jsonwebtoken");
 
 const handleSocketConnection = (io) => {
@@ -239,7 +239,7 @@ const handleSocketConnection = (io) => {
 
     function getCaptainSocket(captainId) {
       const captain = Object.values(onDutyCaptains).find(
-        (captain) => captain.userId.toString() === captainId.toString()
+        (captain) => captain.userId?.toString() === captainId.toString()
       );
       return captain ? io.sockets.sockets.get(captain.socketId) : null;
     }
