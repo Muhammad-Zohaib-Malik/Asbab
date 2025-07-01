@@ -7,6 +7,7 @@ const {
   calculateFare,
   generateOTP,
 } = require("../utils/mapUtils");
+const mongoose = require("mongoose");
 
 const createRide = async (req, res) => {
   const {
@@ -15,7 +16,7 @@ const createRide = async (req, res) => {
     drop,
     loadDetails,
     paymentMethod,
-    currency = "pkr",
+    currency = "Pkr",
   } = req.body;
 
   if (!vehicle || !pickup || !drop) {
@@ -46,7 +47,7 @@ const createRide = async (req, res) => {
     (!loadDetails?.type || !loadDetails?.weight)
   ) {
     throw new BadRequestError(
-      "Load type and weight are required for van/truck rides",
+      "Load type and weight are required for van/truck rides"
     );
   }
 
@@ -297,10 +298,42 @@ const submitRating = async (req, res) => {
   });
 };
 
+const getTotalEarning = async (req, res) => {
+  try {
+    const { captainId } = req.params;
+
+    if (!mongoose.Types.ObjectId.isValid(captainId)) {
+      return res.status(400).json({ message: "Invalid captain ID" });
+    }
+
+    const result = await Ride.aggregate([
+      {
+        $match: {
+          captain: new mongoose.Types.ObjectId(captainId),
+          status: "COMPLETED",
+        },
+      },
+      {
+        $group: {
+          _id: null,
+          totalEarning: { $sum: "$fare" },
+        },
+      },
+    ]);
+
+    const earning = result.length > 0 ? result[0].totalEarning : 0;
+    res.status(200).json({ totalEarning: earning });
+  } catch (err) {
+    console.error("Error fetching total earning:", err);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+
 module.exports = {
   createRide,
   acceptRide,
   updateRideStatus,
+  getTotalEarning,
   getMyRides,
   submitRating,
 };
