@@ -11,6 +11,8 @@ import {
 import { useStripe } from "@stripe/stripe-react-native";
 import axios from "axios";
 import { useLocalSearchParams, router } from "expo-router";
+import RatingPopup from "../../components/customer/RatingPopup";
+import { ratingRide } from "../../service/rideService";
 
 const Payment = () => {
   const { initPaymentSheet, presentPaymentSheet } = useStripe();
@@ -20,6 +22,8 @@ const Payment = () => {
   const [currency, setCurrency] = useState("pkr");
   const [paymentSheetReady, setPaymentSheetReady] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [ratingLoading, setRatingLoading] = useState(false);
+  const [showRating, setShowRating] = useState(false);
 
   const amountInCents = () => {
     const num = parseFloat(Array.isArray(amount) ? (amount[0] ?? "") : amount);
@@ -42,14 +46,7 @@ const Payment = () => {
       return { paymentIntent, ephemeralKey, customer };
     } catch (error) {
       if (axios.isAxiosError(error)) {
-        Alert.alert(
-          "Error",
-          error.response?.data?.message ||
-            error.message ||
-            "Something went wrong",
-        );
-      } else if (error instanceof Error) {
-        Alert.alert("Error", error.message || "Something went wrong");
+        Alert.alert("Error", error.response?.data?.message || error.message);
       } else {
         Alert.alert("Error", "Something went wrong");
       }
@@ -95,11 +92,36 @@ const Payment = () => {
     if (error) {
       Alert.alert(`Error code: ${error.code}`, error.message);
     } else {
-      Alert.alert("Success", "Payment confirmed!");
       setPaymentSheetReady(false);
       setAmount("");
-      router.navigate("/customer/home");
+
+      Alert.alert("Success", "Payment confirmed!", [
+        {
+          text: "OK",
+          onPress: () => {
+            setShowRating(true);
+          },
+        },
+      ]);
     }
+  };
+
+  const handleRatingSubmit = async (rating: number, review: string) => {
+    setRatingLoading(true);
+    const success = await ratingRide(rideId as string, rating, review);
+    setRatingLoading(false);
+    setShowRating(false);
+
+    if (success) {
+      router.navigate("/customer/home");
+    } else {
+      Alert.alert("Error", "Failed to submit rating.");
+    }
+  };
+
+  const handleRatingCancel = () => {
+    setShowRating(false);
+    router.navigate("/customer/home");
   };
 
   return (
@@ -113,9 +135,7 @@ const Payment = () => {
         style={styles.input}
       />
 
-      <Text style={styles.label} className="font-JakartaMedium">
-        Currency (e.g. pkr):
-      </Text>
+      <Text style={styles.label}>Currency (e.g. pkr):</Text>
       <TextInput
         className="font-JakartaMedium"
         autoCapitalize="none"
@@ -125,7 +145,7 @@ const Payment = () => {
         style={styles.input}
       />
 
-      <View style={{ marginVertical: 10 }} className="font-JakartaMedium">
+      <View style={{ marginVertical: 10 }} className="font-JakartaBold">
         <Button
           title={loading ? "Loading..." : "Initialize Payment"}
           onPress={initializePaymentSheet}
@@ -133,7 +153,7 @@ const Payment = () => {
         />
       </View>
 
-      <View style={{ marginVertical: 10 }} className="font-JakartaMedium">
+      <View style={{ marginVertical: 10 }} className="font-JakartaBold">
         <Button
           title="Pay"
           onPress={openPaymentSheet}
@@ -142,6 +162,15 @@ const Payment = () => {
       </View>
 
       {loading && <ActivityIndicator size="large" color="#007AFF" />}
+
+      {/* ⭐ Show Rating Popup */}
+      {showRating && (
+        <RatingPopup
+          onSubmit={handleRatingSubmit}
+          onCancel={handleRatingCancel}
+          loading={ratingLoading}
+        />
+      )}
     </View>
   );
 };
