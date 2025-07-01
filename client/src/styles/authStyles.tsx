@@ -6,35 +6,34 @@ export const authStyles = StyleSheet.create({
   logo: {
     width: 70,
     height: 70,
-    resizeMode: 'contain'
+    resizeMode: "contain",
   },
   container: {
     padding: 12,
     flex: 1,
-    backgroundColor: Colors.background
+    backgroundColor: Colors.background,
   },
   flexRowGap: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 5
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 5,
   },
   footerContainer: {
-    position: 'absolute',
-    bottom: Platform.OS === 'android' ? 20 : 30,
+    position: "absolute",
+    bottom: Platform.OS === "android" ? 20 : 30,
     width: screenWidth,
     padding: 10,
-    justifyContent: 'center',
-    alignItems: "center"
+    justifyContent: "center",
+    alignItems: "center",
   },
 
   footerText: {
     fontSize: 14,
-    color: '#6c757d',
-    textAlign: 'center',
-
+    color: "#6c757d",
+    textAlign: "center",
   },
   link: {
-    color: '#075BB5',
-    textDecorationLine: 'underline',
+    color: "#075BB5",
+    textDecorationLine: "underline",
   },
-})
+});

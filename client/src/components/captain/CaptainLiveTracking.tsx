@@ -184,7 +184,6 @@ const CaptainLiveTracking: FC<{
         )}
       </MapView>
 
-
       <TouchableOpacity style={mapStyles.gpsButton} onPress={fitToMarkers}>
         <MaterialCommunityIcons
           name="crosshairs-gps"

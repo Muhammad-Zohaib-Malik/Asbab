@@ -108,7 +108,9 @@ const MyRides = () => {
             </View>
 
             <View>
-              <Text className="text-gray-500 font-JakartaMedium">Captain Phone</Text>
+              <Text className="text-gray-500 font-JakartaMedium">
+                Captain Phone
+              </Text>
               <Text className="text-gray-900 text-base font-JakartaMedium">
                 {item.captain?.phone ?? "N/A"}
               </Text>

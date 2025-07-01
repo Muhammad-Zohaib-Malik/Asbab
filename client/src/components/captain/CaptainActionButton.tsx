@@ -28,7 +28,9 @@ const CaptainActionButton: FC<{
   return (
     <View style={rideStyles?.swipeableContaninerRider}>
       <View style={commonStyles?.flexRowBetween}>
-        <Text className="font-JakartaMedium" numberOfLines={1}>Meet the Customer</Text>
+        <Text className="font-JakartaMedium" numberOfLines={1}>
+          Meet the Customer
+        </Text>
         <Text className="font-JakartaMedium">
           +92{" "}
           {ride?.customer?.phone &&

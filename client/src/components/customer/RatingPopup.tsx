@@ -27,7 +27,10 @@ const RatingPopup: FC<RatingPopupProps> = ({ onSubmit, onCancel }) => {
           {/* Rating stars */}
           <View className="flex-row mb-4">
             {[...Array(5)].map((_, index) => (
-              <TouchableOpacity key={index} onPress={() => handleStarPress(index)}>
+              <TouchableOpacity
+                key={index}
+                onPress={() => handleStarPress(index)}
+              >
                 <MaterialCommunityIcons
                   name={index < rating ? "star" : "star-outline"}
                   size={24}

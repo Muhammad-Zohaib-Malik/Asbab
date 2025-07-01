@@ -13,7 +13,13 @@ import {
   View,
 } from "react-native";
 
-type VehicleType = "bike" | "auto" | "cabEconomy" | "cabPremium" | "truck" | "van";
+type VehicleType =
+  | "bike"
+  | "auto"
+  | "cabEconomy"
+  | "cabPremium"
+  | "truck"
+  | "van";
 
 interface RideItem {
   vehicle?: VehicleType;
@@ -57,14 +63,18 @@ const SearchingRideSheet: FC<{ item: RideItem }> = ({ item }) => {
             source={require("@/assets/icons/map_pin.png")}
             style={rideStyles?.pinIcon}
           />
-          <Text className="font-JakartaMedium" numberOfLines={2}>{item?.pickup?.address}</Text>
+          <Text className="font-JakartaMedium" numberOfLines={2}>
+            {item?.pickup?.address}
+          </Text>
         </View>
         <View style={[commonStyles?.flexRowGap, { width: "90%" }]}>
           <Image
             source={require("@/assets/icons/drop_marker.png")}
             style={rideStyles?.pinIcon}
           />
-          <Text className="font-JakartaMedium" numberOfLines={2}>{item?.drop?.address}</Text>
+          <Text className="font-JakartaMedium" numberOfLines={2}>
+            {item?.drop?.address}
+          </Text>
         </View>
 
         <View style={{ marginVertical: 20 }}>

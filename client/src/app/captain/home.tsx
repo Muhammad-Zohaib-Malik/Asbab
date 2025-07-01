@@ -46,7 +46,7 @@ const CaptainHome = () => {
               longitude,
               heading,
             });
-          }
+          },
         );
       }
     };
@@ -78,39 +78,43 @@ const CaptainHome = () => {
     };
   }, [onDuty, on, off, isFocused]);
 
-
   const removeRide = (id: string) => {
     setRiderOffers((prevOffers) =>
-      prevOffers.filter((offer) => offer?.id !== id)
+      prevOffers.filter((offer) => offer?.id !== id),
     );
   };
 
   const renderRides = ({ item }: any) => {
     return (
-      <CaptainRidesItem removeIt={()=>removeRide(item?._id)} item={item}/>
-    )
-  }
-
+      <CaptainRidesItem removeIt={() => removeRide(item?._id)} item={item} />
+    );
+  };
 
   return (
     <View style={homeStyles.container}>
       <StatusBar style="light" backgroundColor="#075BB5" translucent={false} />
       <CaptainHeader />
 
-      <FlatList data={!onDuty ? [] : rideroffers}
+      <FlatList
+        data={!onDuty ? [] : rideroffers}
         renderItem={renderRides}
         style={{ flex: 1 }}
         contentContainerStyle={{ padding: 10, paddingBottom: 120 }}
         keyExtractor={(item: any) => item?._id || Math.random().toString()}
         ListEmptyComponent={
           <View style={riderStyles?.emptyContainer}>
-            <Image source={require("@/assets/icons/ride.jpg")} style={riderStyles?.emptyImage} />
-            <Text style={{ textAlign: 'center' }}>{onDuty ? "There are no available rides! Stay Actice" : "You're currently OFF-DUTY! please go ON-DUTY to start earning"}</Text>
+            <Image
+              source={require("@/assets/icons/ride.jpg")}
+              style={riderStyles?.emptyImage}
+            />
+            <Text style={{ textAlign: "center" }}>
+              {onDuty
+                ? "There are no available rides! Stay Actice"
+                : "You're currently OFF-DUTY! please go ON-DUTY to start earning"}
+            </Text>
           </View>
         }
-
       />
-
     </View>
   );
 };

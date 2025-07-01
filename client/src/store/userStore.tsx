@@ -1,13 +1,12 @@
-import { create } from 'zustand'
-import { createJSONStorage, persist } from 'zustand/middleware'
-import AsyncStorage from '@react-native-async-storage/async-storage'
-
+import { create } from "zustand";
+import { createJSONStorage, persist } from "zustand/middleware";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 type CustomLocation = {
   latitude: number;
   longitude: number;
   address: string;
-} | null
+} | null;
 
 interface UserStoreProps {
   user: any;
@@ -31,11 +30,11 @@ export const useUserStore = create<UserStoreProps>()(
       clearData: () => set({ user: null, location: null, outOfRange: false }),
     }),
     {
-      name: 'user-store', // Name of the persisted store
+      name: "user-store", // Name of the persisted store
       partialize: (state) => ({
         user: state.user, // Only persist the user data
       }),
       storage: createJSONStorage(() => AsyncStorage), // Use AsyncStorage here
-    }
-  )
-)
+    },
+  ),
+);

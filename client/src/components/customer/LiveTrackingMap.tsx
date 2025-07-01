@@ -109,7 +109,9 @@ const LiveTrackingMap: FC<{
             strokeColor={Colors.iosColor}
             strokeWidth={5}
             precision="high"
-            onError={(error) => console.log("Error in MapViewDirections", error)}
+            onError={(error) =>
+              console.log("Error in MapViewDirections", error)
+            }
           />
         )}
 
@@ -180,6 +182,6 @@ const LiveTrackingMap: FC<{
       </TouchableOpacity>
     </View>
   );
-}; 
+};
 
 export default memo(LiveTrackingMap);

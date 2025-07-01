@@ -10,7 +10,7 @@ export const appAxios = axios.create({
 
 export const refresh_tokens = async () => {
   try {
-    const refreshToken = await AsyncStorage.getItem('refresh_token');
+    const refreshToken = await AsyncStorage.getItem("refresh_token");
     if (!refreshToken) {
       throw new Error("No refresh token available");
     }
@@ -22,20 +22,20 @@ export const refresh_tokens = async () => {
     const new_access_token = response.data.access_token;
     const new_refresh_token = response.data.refresh_token;
 
-    await AsyncStorage.setItem('access_token', new_access_token);
-    await AsyncStorage.setItem('refresh_token', new_refresh_token);
+    await AsyncStorage.setItem("access_token", new_access_token);
+    await AsyncStorage.setItem("refresh_token", new_refresh_token);
 
     return new_access_token;
   } catch (error) {
-    await AsyncStorage.clear();  // Clear all AsyncStorage
+    await AsyncStorage.clear(); // Clear all AsyncStorage
     logout();
-    resetAndNavigate('/role');
+    resetAndNavigate("/role");
     throw new Error("Refresh token expired or invalid");
   }
 };
 
 appAxios.interceptors.request.use(async (config) => {
-  const access_token = await AsyncStorage.getItem('access_token');
+  const access_token = await AsyncStorage.getItem("access_token");
   if (access_token) {
     config.headers.Authorization = `Bearer ${access_token}`;
   }
@@ -57,5 +57,5 @@ appAxios.interceptors.response.use(
       }
     }
     return Promise.reject(error);
-  }
+  },
 );

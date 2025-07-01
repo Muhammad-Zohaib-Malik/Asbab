@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -6,24 +6,24 @@ import {
   Image,
   TouchableOpacity,
   Alert,
-  ActivityIndicator
-} from 'react-native';
-import * as ImagePicker from 'expo-image-picker';
-import { Feather } from '@expo/vector-icons';
+  ActivityIndicator,
+} from "react-native";
+import * as ImagePicker from "expo-image-picker";
+import { Feather } from "@expo/vector-icons";
 import { updateProfile, updateProfilePic } from "../../service/authService";
-import { useUserStore } from '../../store/userStore';
+import { useUserStore } from "../../store/userStore";
 
 const Profile = () => {
   const { user, setUser } = useUserStore();
 
   const [localUser, setLocalUser] = useState({
-    name: '',
-    phone: '',
-    role: '',
-    profilePic: ''
+    name: "",
+    phone: "",
+    role: "",
+    profilePic: "",
   });
 
-  const [editingField, setEditingField] = useState('');
+  const [editingField, setEditingField] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
@@ -33,9 +33,9 @@ const Profile = () => {
   }, [user]);
 
   const handleChange = (field: string, value: string) => {
-    setLocalUser(prevState => ({
+    setLocalUser((prevState) => ({
       ...prevState,
-      [field]: value
+      [field]: value,
     }));
   };
 
@@ -55,8 +55,8 @@ const Profile = () => {
 
   const toggleEdit = (field: string) => {
     if (editingField === field) {
-      setEditingField('');
-      if (field === 'name') {
+      setEditingField("");
+      if (field === "name") {
         handleUpdateProfile();
       }
     } else {
@@ -66,8 +66,11 @@ const Profile = () => {
 
   const pickImage = async () => {
     const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
-    if (status !== 'granted') {
-      Alert.alert("Permission Denied", "You need to allow permission to select an image.");
+    if (status !== "granted") {
+      Alert.alert(
+        "Permission Denied",
+        "You need to allow permission to select an image.",
+      );
       return;
     }
 
@@ -75,7 +78,7 @@ const Profile = () => {
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
       aspect: [1, 1],
-      quality: 1
+      quality: 1,
     });
 
     if (!result.canceled) {
@@ -101,7 +104,9 @@ const Profile = () => {
         <TouchableOpacity onPress={pickImage}>
           <View className="w-32 h-32 overflow-hidden bg-gray-200 rounded-full">
             <Image
-              source={{ uri: localUser.profilePic || 'https://via.placeholder.com/150' }}
+              source={{
+                uri: localUser.profilePic || "https://via.placeholder.com/150",
+              }}
               className="w-full h-full"
               resizeMode="cover"
             />
@@ -114,8 +119,8 @@ const Profile = () => {
       {/* Name Field */}
       <View className="flex-row items-center mb-4">
         <Text className="text-lg font-JakartaMedium">Name</Text>
-        <TouchableOpacity className="ml-2" onPress={() => toggleEdit('name')}>
-          {editingField === 'name' ? (
+        <TouchableOpacity className="ml-2" onPress={() => toggleEdit("name")}>
+          {editingField === "name" ? (
             <Feather name="check" size={20} color="blue" />
           ) : (
             <Feather name="edit-2" size={20} color="gray" />
@@ -123,12 +128,12 @@ const Profile = () => {
         </TouchableOpacity>
       </View>
 
-      {editingField === 'name' ? (
+      {editingField === "name" ? (
         <TextInput
           className="p-3 mb-4 border border-gray-300 rounded-lg font-JakartaMedium"
           placeholder="Enter your name"
           value={localUser.name}
-          onChangeText={(text) => handleChange('name', text)}
+          onChangeText={(text) => handleChange("name", text)}
         />
       ) : (
         <Text className="p-3 mb-4 border border-gray-300 rounded-lg font-JakartaMedium">

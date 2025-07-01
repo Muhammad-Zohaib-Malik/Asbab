@@ -1,6 +1,6 @@
-import { create } from 'zustand'
-import { createJSONStorage, persist } from 'zustand/middleware'
-import AsyncStorage from '@react-native-async-storage/async-storage'
+import { create } from "zustand";
+import { createJSONStorage, persist } from "zustand/middleware";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 type CustomLocation = {
   latitude: number;
@@ -28,14 +28,15 @@ export const useCaptainStore = create<CaptainStoreProps>()(
       setUser: (data) => set({ user: data }),
       setLocation: (data) => set({ location: data }),
       setOnDuty: (data) => set({ onDuty: data }),
-      clearCaptainData: () => set({ user: null, location: null, onDuty: false }),
+      clearCaptainData: () =>
+        set({ user: null, location: null, onDuty: false }),
     }),
     {
-      name: 'captain-store',
+      name: "captain-store",
       partialize: (state) => ({
         user: state.user,
       }),
-      storage: createJSONStorage(() => AsyncStorage),  // Using AsyncStorage instead of mmkvStorage
-    }
-  )
-)
+      storage: createJSONStorage(() => AsyncStorage), // Using AsyncStorage instead of mmkvStorage
+    },
+  ),
+);

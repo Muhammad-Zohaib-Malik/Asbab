@@ -23,7 +23,9 @@ const PaymentMethodPopup: FC<PaymentMethodPopupProps> = ({
             style={styles.button}
             onPress={() => onSelect("cash")}
           >
-            <Text style={styles.buttonText} className="font-JakartaMedium">Cash</Text>
+            <Text style={styles.buttonText} className="font-JakartaMedium">
+              Cash
+            </Text>
           </TouchableOpacity>
 
           <TouchableOpacity
@@ -37,7 +39,9 @@ const PaymentMethodPopup: FC<PaymentMethodPopupProps> = ({
           </TouchableOpacity>
 
           <TouchableOpacity onPress={onCancel} style={styles.cancelButton}>
-            <Text style={{ color: "red" }} className="font-JakartaMedium">Cancel</Text>
+            <Text style={{ color: "red" }} className="font-JakartaMedium">
+              Cancel
+            </Text>
           </TouchableOpacity>
         </View>
       </View>

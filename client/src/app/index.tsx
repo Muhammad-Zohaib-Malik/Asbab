@@ -8,9 +8,6 @@ import { resetAndNavigate } from "@/utils/Helpers";
 import { refresh_tokens } from "@/service/apiInterceptor";
 import { useUserStore } from "@/store/userStore";
 
-
-
-
 interface DecodedToken {
   exp: number; // Token expiration time in seconds since Unix epoch
 }
@@ -52,7 +49,10 @@ const Main = () => {
             await refresh_tokens();
           } catch (err) {
             console.error("Error refreshing token:", err);
-            Alert.alert("Error", "Failed to refresh token. Please log in again.");
+            Alert.alert(
+              "Error",
+              "Failed to refresh token. Please log in again.",
+            );
             resetAndNavigate("/role");
             return;
           }
@@ -90,7 +90,6 @@ const Main = () => {
         source={require("../assets/images/Logo.png")}
         style={splashStyles.img}
       />
-
     </View>
   );
 };

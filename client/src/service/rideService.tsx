@@ -64,7 +64,7 @@ export const createRide = async (payload: {
 
 export const getMyRides = async (
   status?: string,
-  isCustomer: boolean = true
+  isCustomer: boolean = true,
 ): Promise<Ride[] | null> => {
   try {
     const res = await appAxios.get("/ride/rides", {
@@ -91,7 +91,7 @@ export const getMyRides = async (
     Alert.alert("Failed to fetch rides");
     console.log(
       "Error in getMyRides:",
-      error?.response?.data?.message || error.message
+      error?.response?.data?.message || error.message,
     );
     return null;
   }
@@ -160,7 +160,7 @@ export const updateRideStatus = async (rideId: string, status: string) => {
 export const ratingRide = async (
   rideId: string,
   rating: number,
-  review?: string
+  review?: string,
 ) => {
   try {
     const res = await appAxios.post(`/ride/rating/${rideId}`, {
@@ -175,7 +175,7 @@ export const ratingRide = async (
     Alert.alert("There was an error submitting your rating");
     console.log(
       "Error in rating ride:",
-      error?.response?.data?.message || error
+      error?.response?.data?.message || error,
     );
     return false;
   }
@@ -189,7 +189,7 @@ export const createComplaint = async (message: string) => {
     Alert.alert("There was an error submitting your complaint.");
     console.log(
       "Complaint error:",
-      error?.response?.data?.message || error.message
+      error?.response?.data?.message || error.message,
     );
   }
 };

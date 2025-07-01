@@ -80,7 +80,9 @@ const CaptainHeader = () => {
       </View>
 
       <View style={riderStyles?.earningContainer}>
-        <Text className="font-JakartaMedium" style={{ color: "#fff" }}>Today's Earning</Text>
+        <Text className="font-JakartaMedium" style={{ color: "#fff" }}>
+          Today's Earning
+        </Text>
         <View style={commonStyles.flexRowGap}>
           <Text>RS 231</Text>
           <MaterialIcons name="arrow-drop-down" size={24} color="#fff" />

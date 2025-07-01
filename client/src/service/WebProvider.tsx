@@ -16,8 +16,12 @@ interface WSService {
 
 const WSContext = createContext<WSService | undefined>(undefined);
 
-export const WSProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [socketAccessToken, setSocketAccessToken] = useState<string | null>(null);
+export const WSProvider: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}) => {
+  const [socketAccessToken, setSocketAccessToken] = useState<string | null>(
+    null,
+  );
   const socket = useRef<Socket | null>(null);
 
   useEffect(() => {
@@ -98,9 +102,7 @@ export const WSProvider: React.FC<{ children: React.ReactNode }> = ({ children }
   };
 
   return (
-    <WSContext.Provider value={socketService}>
-      {children}
-    </WSContext.Provider>
+    <WSContext.Provider value={socketService}>{children}</WSContext.Provider>
   );
 };
 

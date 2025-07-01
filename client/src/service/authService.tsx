@@ -6,7 +6,10 @@ import { Alert, Platform } from "react-native";
 import { BASE_URL } from "./config";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-export const signIn = async (payload: { role: 'customer' | 'captain', phone: string }, updateAccessToken: () => void) => {
+export const signIn = async (
+  payload: { role: "customer" | "captain"; phone: string },
+  updateAccessToken: () => void,
+) => {
   const { setUser } = useUserStore.getState();
   const { setUser: setCaptainUser } = useCaptainStore.getState();
 
@@ -28,19 +31,18 @@ export const signIn = async (payload: { role: 'customer' | 'captain', phone: str
     } else {
       resetAndNavigate("/captain/home");
     }
-    updateAccessToken()
+    updateAccessToken();
   } catch (error: any) {
-    const errorMessage = error?.response?.data?.msg || error?.message || "Unknown error in sign-in";
+    const errorMessage =
+      error?.response?.data?.msg ||
+      error?.message ||
+      "Unknown error in sign-in";
     Alert.alert("Oh, no!", error?.response?.data?.msg || "Error in sign-in");
     console.log("Error:", error?.response?.data?.msg || "Error in sign-in");
     console.error("Sign-in Error:", errorMessage);
     // console.error("Sign-in Error:", error);
-
-
   }
 };
-
-
 
 export const logout = async () => {
   const { clearData } = useUserStore.getState();
@@ -48,11 +50,11 @@ export const logout = async () => {
 
   try {
     // Get refresh token from AsyncStorage
-    const refreshToken = await AsyncStorage.getItem('refresh_token');
+    const refreshToken = await AsyncStorage.getItem("refresh_token");
 
     // Make request to backend to invalidate refresh token
     await axios.post(`${BASE_URL}/auth/logout`, {
-      refresh_token: refreshToken
+      refresh_token: refreshToken,
     });
 
     // Clear AsyncStorage
@@ -66,7 +68,6 @@ export const logout = async () => {
     throw error;
   }
 };
-
 
 export const updateProfile = async (payload: { name: string }) => {
   try {
@@ -92,12 +93,18 @@ export const updateProfile = async (payload: { name: string }) => {
       useCaptainStore.getState().setUser(res.data.user);
     }
 
-    Alert.alert("Profile Updated", "Your profile has been successfully updated.");
+    Alert.alert(
+      "Profile Updated",
+      "Your profile has been successfully updated.",
+    );
   } catch (error: unknown) {
     {
       if (axios.isAxiosError(error)) {
         console.log("Error:", error.response?.data || error.message);
-        Alert.alert("Update Failed", error.response?.data?.msg || "Error in updating profile");
+        Alert.alert(
+          "Update Failed",
+          error.response?.data?.msg || "Error in updating profile",
+        );
       } else {
         console.log("Error:", error);
         Alert.alert("Update Failed", "Unexpected error occurred.");
@@ -105,7 +112,6 @@ export const updateProfile = async (payload: { name: string }) => {
     }
   }
 };
-
 
 export const updateProfilePic = async (photoUri: string) => {
   try {
@@ -119,30 +125,38 @@ export const updateProfilePic = async (photoUri: string) => {
     formData.append("profilePic", {
       uri: photoUri,
       name: "profile-pic.jpg",
-      type: "image/jpeg"
+      type: "image/jpeg",
     } as any);
 
-    const res = await axios.put(`${BASE_URL}/auth/update-profile-pic`, formData, {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-        "Content-Type": "multipart/form-data"
-      }
-    });
+    const res = await axios.put(
+      `${BASE_URL}/auth/update-profile-pic`,
+      formData,
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          "Content-Type": "multipart/form-data",
+        },
+      },
+    );
 
     console.log("Response:", res.data);
 
-    Alert.alert("Profile Picture Updated", "Your profile picture has been successfully updated.");
+    Alert.alert(
+      "Profile Picture Updated",
+      "Your profile picture has been successfully updated.",
+    );
 
     return res.data.user.profilePic;
   } catch (error) {
     if (axios.isAxiosError(error)) {
       console.log("Error:", error.response?.data || error.message);
-      Alert.alert("Update Failed", error.response?.data?.msg || "Error in updating profile picture");
+      Alert.alert(
+        "Update Failed",
+        error.response?.data?.msg || "Error in updating profile picture",
+      );
     } else {
       console.log("Error:", error);
       Alert.alert("Update Failed", "Unexpected error occurred.");
     }
   }
 };
-
-

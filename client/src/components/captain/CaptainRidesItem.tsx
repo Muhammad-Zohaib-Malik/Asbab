@@ -9,7 +9,13 @@ import { Image, Text, TouchableOpacity, View } from "react-native";
 import Animated, { FadeInLeft, FadeOutRight } from "react-native-reanimated";
 import CounterButton from "./CounterButton";
 
-type VehicleType = "bike" | "auto" | "cabEconomy" | "cabPremium" | "truck" | "van";
+type VehicleType =
+  | "bike"
+  | "auto"
+  | "cabEconomy"
+  | "cabPremium"
+  | "truck"
+  | "van";
 
 interface RideItem {
   _id: string;
@@ -62,50 +68,55 @@ const CaptainRidesItem: FC<{ item: RideItem; removeIt: () => void }> = ({
         </View>
       </View>
 
-        <View style={orderStyles?.locationsContainer}>
-            <View style={orderStyles?.flexRowBase}>
-            <View>
-                <View style={orderStyles?.dropHollowCircle} />
-                <View style={orderStyles?.continuousLine} />
-            </View>
-            <View style={orderStyles?.infoText}>
-                <Text numberOfLines={1}>{item?.drop?.address?.slice(0, 10)}</Text>
-                <Text numberOfLines={2} style={orderStyles.label}>
-                {item?.drop?.address}
-                </Text>
-            </View>
-            </View> 
-
-        </View>
-
-          <View style={[commonStyles.flexRowGap]}>
-            <View>
-                <Text>Pickup</Text>
-                <Text>{(location && (calculateDistance(
-                    item?.pickup?.latitude ?? 0,
-                    item?.pickup?.longitude ?? 0,
-                    location?.latitude ?? 0,
-                    location?.longitude ?? 0
-                )).toFixed(2)) || "--"}{""}KM</Text>
-            </View>
-
-            <View style={orderStyles?.borderLine} >
-                <Text style={orderStyles.label}>Drop</Text>
-                <Text>{item?.distance.toFixed(2)}Km</Text>
-            </View>
+      <View style={orderStyles?.locationsContainer}>
+        <View style={orderStyles?.flexRowBase}>
+          <View>
+            <View style={orderStyles?.dropHollowCircle} />
+            <View style={orderStyles?.continuousLine} />
           </View>
-         
-
-
-        <View style={orderStyles?.flexRowEnd}>
-            <TouchableOpacity>
-                <Ionicons name="close-circle" size={24} color="black"/>
-            </TouchableOpacity>
-
-            <CounterButton onCountdownEnd={removeIt} initialCount={12} onPress={acceptRide} title="Accept"/>
-
-
+          <View style={orderStyles?.infoText}>
+            <Text numberOfLines={1}>{item?.drop?.address?.slice(0, 10)}</Text>
+            <Text numberOfLines={2} style={orderStyles.label}>
+              {item?.drop?.address}
+            </Text>
+          </View>
         </View>
+      </View>
+
+      <View style={[commonStyles.flexRowGap]}>
+        <View>
+          <Text>Pickup</Text>
+          <Text>
+            {(location &&
+              calculateDistance(
+                item?.pickup?.latitude ?? 0,
+                item?.pickup?.longitude ?? 0,
+                location?.latitude ?? 0,
+                location?.longitude ?? 0,
+              ).toFixed(2)) ||
+              "--"}
+            {""}KM
+          </Text>
+        </View>
+
+        <View style={orderStyles?.borderLine}>
+          <Text style={orderStyles.label}>Drop</Text>
+          <Text>{item?.distance.toFixed(2)}Km</Text>
+        </View>
+      </View>
+
+      <View style={orderStyles?.flexRowEnd}>
+        <TouchableOpacity>
+          <Ionicons name="close-circle" size={24} color="black" />
+        </TouchableOpacity>
+
+        <CounterButton
+          onCountdownEnd={removeIt}
+          initialCount={12}
+          onPress={acceptRide}
+          title="Accept"
+        />
+      </View>
     </Animated.View>
   );
 };

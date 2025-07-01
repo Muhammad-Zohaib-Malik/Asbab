@@ -56,9 +56,9 @@ const LiveRide = () => {
               heading,
             });
             console.log(
-              `Location updated Lat ${latitude} Long ${longitude}. Heading ${heading}`
+              `Location updated Lat ${latitude} Long ${longitude}. Heading ${heading}`,
             );
-          }
+          },
         );
       } else {
         console.log("Location permission not granted");
@@ -75,18 +75,15 @@ const LiveRide = () => {
 
   useEffect(() => {
     if (id) {
-     
       emit("subscribeRide", id);
 
       on("rideData", (data) => {
-        
-
         setRideData(data);
       });
 
       on("rideUpdate", (data) => {
         setRideData(data);
-      }); 
+      });
 
       on("rideCanceled", (error) => {
         console.log("Ride Cancelled", error);
@@ -134,8 +131,8 @@ const LiveRide = () => {
           rideData?.status === "START"
             ? "ARRIVED"
             : rideData?.status === "ARRIVED"
-            ? "COMPLETED"
-            : "SUCCESS"
+              ? "COMPLETED"
+              : "SUCCESS"
         }
         onPress={async () => {
           if (rideData?.status === "START") {
@@ -160,8 +157,14 @@ const LiveRide = () => {
           title="Enter OTP"
           onConfirm={async (otp) => {
             if (otp === rideData?.otp) {
-              console.log("Trying to update status to COMPLETED for ride:", rideData?._id);
-              const isSuccess = await updateRideStatus(rideData?._id, "ARRIVED");
+              console.log(
+                "Trying to update status to COMPLETED for ride:",
+                rideData?._id,
+              );
+              const isSuccess = await updateRideStatus(
+                rideData?._id,
+                "ARRIVED",
+              );
               if (isSuccess) {
                 setIsOtpModelVisible(false);
               } else {

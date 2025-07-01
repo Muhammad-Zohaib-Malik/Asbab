@@ -12,7 +12,7 @@ import {
   Easing,
   Alert,
 } from "react-native";
-import { createComplaint } from "../../service/rideService"; 
+import { createComplaint } from "../../service/rideService";
 
 const AddComplaint = () => {
   const [message, setMessage] = useState("");
@@ -50,15 +50,22 @@ const AddComplaint = () => {
       behavior={Platform.OS === "ios" ? "padding" : undefined}
       className="flex-1 bg-gradient-to-br from-purple-100 via-pink-100 to-yellow-100"
     >
-      <ScrollView contentContainerStyle={{ flexGrow: 1, justifyContent: "center", padding: 20 }}>
+      <ScrollView
+        contentContainerStyle={{
+          flexGrow: 1,
+          justifyContent: "center",
+          padding: 20,
+        }}
+      >
         <View className="bg-white rounded-xl shadow-lg p-6">
           <Text className="text-3xl font-JakartaBold text-center text-blue-500 mb-6">
             Submit a Complaint
           </Text>
 
-          <Text className="text-lg font-JakartaMedium text-blue-600 mb-2">Your Message</Text>
+          <Text className="text-lg font-JakartaMedium text-blue-600 mb-2">
+            Your Message
+          </Text>
           <TextInput
-
             multiline
             numberOfLines={6}
             placeholder="Describe your issue here..."
@@ -74,7 +81,9 @@ const AddComplaint = () => {
             activeOpacity={0.8}
             className="bg-blue-600 rounded-lg py-4 shadow-md"
           >
-            <Text className="text-white text-center text-xl font-JakartaBold">Send Complaint</Text>
+            <Text className="text-white text-center text-xl font-JakartaBold">
+              Send Complaint
+            </Text>
           </TouchableOpacity>
         </View>
       </ScrollView>
@@ -90,13 +99,16 @@ const AddComplaint = () => {
               🎉 Complaint Submitted!
             </Text>
             <Text className="text-center font-JakartaLight text-gray-600 mb-6">
-              Thank you for your feedback. We will address your complaint as soon as possible.
+              Thank you for your feedback. We will address your complaint as
+              soon as possible.
             </Text>
             <TouchableOpacity
               onPress={() => setModalVisible(false)}
               className="bg-blue-600 py-3 rounded-lg"
             >
-              <Text className="text-white text-center font-JakartaSemiBold text-lg">Close</Text>
+              <Text className="text-white text-center font-JakartaSemiBold text-lg">
+                Close
+              </Text>
             </TouchableOpacity>
           </Animated.View>
         </View>

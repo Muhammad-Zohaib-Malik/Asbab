@@ -8,9 +8,7 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 import { RFValue } from "react-native-responsive-fontsize";
 import { Colors } from "@/utils/Constants";
 import { router } from "expo-router";
-import DrawerMenu from "@/components/customer/DrawerMenu"
-
-
+import DrawerMenu from "@/components/customer/DrawerMenu";
 
 const LocationBar = () => {
   const { location } = useUserStore();
@@ -23,7 +21,11 @@ const LocationBar = () => {
         <View style={uiStyles.container}>
           {/* Menu Button */}
           <TouchableOpacity onPress={() => setDrawerOpen(true)}>
-            <Ionicons name="menu-outline" size={RFValue(18)} color={Colors.text} />
+            <Ionicons
+              name="menu-outline"
+              size={RFValue(18)}
+              color={Colors.text}
+            />
           </TouchableOpacity>
 
           {/* Location Button */}
@@ -32,7 +34,11 @@ const LocationBar = () => {
             onPress={() => router.navigate("/customer/ridePlan")}
           >
             <View style={uiStyles.dot} />
-            <Text className="font-JakartaMedium" numberOfLines={1} style={uiStyles.locationText}>
+            <Text
+              className="font-JakartaMedium"
+              numberOfLines={1}
+              style={uiStyles.locationText}
+            >
               {location?.address || "Getting Location..."}
             </Text>
           </TouchableOpacity>

@@ -1,4 +1,3 @@
-
 {
   "expo": {
     "name": "Asbab",
@@ -10,7 +9,7 @@
     "scheme": "Asbab",
     "jsEngine": "hermes",
     "userInterfaceStyle": "automatic",
-   
+
     "splash": {
       "image": "./src/assets/images/splash.png",
       "resizeMode": "contain",
@@ -20,17 +19,15 @@
       "supportsTablet": true,
       "bundleIdentifier": "com.zohaib.Asbab",
       "config": {
-                     "googleMapsApiKey": "AlzaSyp_VUXDceknq78tCbJl-OPD58MnBWO13yn"
-                     
-
-            }
+        "googleMapsApiKey": "AlzaSyp_VUXDceknq78tCbJl-OPD58MnBWO13yn"
+      }
     },
     "android": {
       "config": {
-                "googleMaps": {
-                    "apiKey": "AlzaSyp_VUXDceknq78tCbJl-OPD58MnBWO13yn"
-                }
-            },
+        "googleMaps": {
+          "apiKey": "AlzaSyp_VUXDceknq78tCbJl-OPD58MnBWO13yn"
+        }
+      },
       "adaptiveIcon": {
         "foregroundImage": "./src/assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"

@@ -14,15 +14,15 @@ import { useLocalSearchParams, router } from "expo-router";
 
 const Payment = () => {
   const { initPaymentSheet, presentPaymentSheet } = useStripe();
-  const { rideId, fare } = useLocalSearchParams(); 
+  const { rideId, fare } = useLocalSearchParams();
 
-  const [amount, setAmount] = useState(fare || ""); 
+  const [amount, setAmount] = useState(fare || "");
   const [currency, setCurrency] = useState("pkr");
   const [paymentSheetReady, setPaymentSheetReady] = useState(false);
   const [loading, setLoading] = useState(false);
 
   const amountInCents = () => {
-    const num = parseFloat(Array.isArray(amount) ? amount[0] ?? "" : amount);
+    const num = parseFloat(Array.isArray(amount) ? (amount[0] ?? "") : amount);
     if (isNaN(num) || num <= 0) return 0;
     return Math.round(num * 100);
   };
@@ -35,14 +35,19 @@ const Payment = () => {
         {
           amount: amountInCents(),
           currency: currency.toLowerCase(),
-        }
+        },
       );
 
       const { paymentIntent, ephemeralKey, customer } = response.data;
       return { paymentIntent, ephemeralKey, customer };
     } catch (error) {
       if (axios.isAxiosError(error)) {
-        Alert.alert("Error", error.response?.data?.message || error.message || "Something went wrong");
+        Alert.alert(
+          "Error",
+          error.response?.data?.message ||
+            error.message ||
+            "Something went wrong",
+        );
       } else if (error instanceof Error) {
         Alert.alert("Error", error.message || "Something went wrong");
       } else {
@@ -56,7 +61,10 @@ const Payment = () => {
 
   const initializePaymentSheet = async () => {
     if (amountInCents() <= 0) {
-      Alert.alert("Invalid amount", "Please enter a valid amount greater than zero");
+      Alert.alert(
+        "Invalid amount",
+        "Please enter a valid amount greater than zero",
+      );
       return;
     }
 
@@ -90,26 +98,26 @@ const Payment = () => {
       Alert.alert("Success", "Payment confirmed!");
       setPaymentSheetReady(false);
       setAmount("");
-      router.navigate("/customer/home");  
+      router.navigate("/customer/home");
     }
   };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.label}>
-        Enter Amount ({currency.toUpperCase()}):
-      </Text>
+      <Text style={styles.label}>Enter Amount ({currency.toUpperCase()}):</Text>
       <TextInput
-      className="font-JakartaMedium"
+        className="font-JakartaMedium"
         keyboardType="numeric"
-        value={Array.isArray(amount) ? amount[0] ?? "" : amount}
+        value={Array.isArray(amount) ? (amount[0] ?? "") : amount}
         onChangeText={setAmount}
         style={styles.input}
       />
 
-      <Text style={styles.label} className="font-JakartaMedium">Currency (e.g. pkr):</Text>
+      <Text style={styles.label} className="font-JakartaMedium">
+        Currency (e.g. pkr):
+      </Text>
       <TextInput
-      className="font-JakartaMedium"
+        className="font-JakartaMedium"
         autoCapitalize="none"
         placeholder="Currency"
         value={currency}
@@ -127,7 +135,6 @@ const Payment = () => {
 
       <View style={{ marginVertical: 10 }} className="font-JakartaMedium">
         <Button
-          
           title="Pay"
           onPress={openPaymentSheet}
           disabled={!paymentSheetReady || loading}

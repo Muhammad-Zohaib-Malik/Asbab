@@ -1,4 +1,4 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 // Utility object to interact with AsyncStorage
 export const asyncStorage = {
@@ -7,7 +7,7 @@ export const asyncStorage = {
     try {
       await AsyncStorage.setItem(key, value);
     } catch (error) {
-      console.error('Error saving data', error);
+      console.error("Error saving data", error);
     }
   },
 
@@ -17,7 +17,7 @@ export const asyncStorage = {
       const value = await AsyncStorage.getItem(key);
       return value; // Return null if not found
     } catch (error) {
-      console.error('Error retrieving data', error);
+      console.error("Error retrieving data", error);
       return null;
     }
   },
@@ -27,7 +27,7 @@ export const asyncStorage = {
     try {
       await AsyncStorage.removeItem(key);
     } catch (error) {
-      console.error('Error removing data', error);
+      console.error("Error removing data", error);
     }
   },
 };

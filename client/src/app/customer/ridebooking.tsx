@@ -75,7 +75,7 @@ const RideBooking = () => {
         icon: require("@/assets/icons/van.png"),
       },
     ],
-    [farePrices]
+    [farePrices],
   );
 
   const handleOptionsSelect = useCallback((type: string) => {
@@ -96,14 +96,14 @@ const RideBooking = () => {
         selectedOption === "Cab Economy"
           ? "cabEconomy"
           : selectedOption === "Cab Premium"
-          ? "cabPremium"
-          : selectedOption === "Bike"
-          ? "bike"
-          : selectedOption === "Truck"
-          ? "truck"
-          : selectedOption === "Van"
-          ? "van"
-          : "auto",
+            ? "cabPremium"
+            : selectedOption === "Bike"
+              ? "bike"
+              : selectedOption === "Truck"
+                ? "truck"
+                : selectedOption === "Van"
+                  ? "van"
+                  : "auto",
       drop: {
         latitude: parseFloat(item.drop_latitude),
         longitude: parseFloat(item.drop_longitude),
@@ -228,7 +228,9 @@ const RideBooking = () => {
               onPress={handleModalSubmit}
               activeOpacity={0.8}
             >
-              <Text className="text-white text-lg font-JakartaBold">Continue</Text>
+              <Text className="text-white text-lg font-JakartaBold">
+                Continue
+              </Text>
             </TouchableOpacity>
           </View>
         </View>
