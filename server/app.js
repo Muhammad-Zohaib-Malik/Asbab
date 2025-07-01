@@ -12,7 +12,7 @@ const notFoundMiddleware = require("./middleware/not-found");
 const errorHandlerMiddleware = require("./middleware/error-handler");
 const authMiddleware = require("./middleware/authentication");
 const cloudinary = require("cloudinary").v2;
-const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
+const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 
 // Routers
 const authRouter = require("./routes/auth");
@@ -83,7 +83,7 @@ const PORT = process.env.PORT || 3000;
 
 const start = async () => {
   try {
-    await connectDB(process.env.MONGO_URI || "mongodb://localhost:27017/asbab");
+    await connectDB(process.env.MONGO_URL || "mongodb://localhost:27017/asbab");
 
     // ✅ Mount AdminJS first
     await buildAdminRouter(app);
@@ -99,9 +99,10 @@ const start = async () => {
 
     server.listen(PORT, () => {
       console.log(`HTTP server is running at http://localhost:${PORT}`);
-      console.log(`✅ AdminJS is running at http://localhost:${PORT}${admin.options.rootPath}`);
+      console.log(
+        `✅ AdminJS is running at http://localhost:${PORT}${admin.options.rootPath}`
+      );
     });
-
   } catch (error) {
     console.error("Error starting the server:", error);
   }
