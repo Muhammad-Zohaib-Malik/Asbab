@@ -13,8 +13,7 @@ const userSchema = new Schema(
       type: String,
       required: true,
       unique: true,
-      match: [/^\d{10}$/, 'Phone number must be exactly 10 digits']
-
+      match: [/^\d{10}$/, "Phone number must be exactly 10 digits"],
     },
     name: {
       type: String,
@@ -31,7 +30,7 @@ const userSchema = new Schema(
   },
   {
     timestamps: true,
-  }
+  },
 );
 
 userSchema.methods.createAccessToken = function () {
@@ -41,7 +40,7 @@ userSchema.methods.createAccessToken = function () {
       phone: this.phone,
     },
     process.env.ACCESS_TOKEN_SECRET,
-    { expiresIn: process.env.ACCESS_TOKEN_EXPIRY }
+    { expiresIn: process.env.ACCESS_TOKEN_EXPIRY },
   );
 };
 
@@ -51,7 +50,7 @@ userSchema.methods.createRefreshToken = function () {
     process.env.REFRESH_TOKEN_SECRET,
     {
       expiresIn: process.env.REFRESH_TOKEN_EXPIRY,
-    }
+    },
   );
 };
 

@@ -54,7 +54,7 @@ const rideSchema = new Schema(
     },
     otp: { type: String, default: null },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 const Ride = mongoose.model("Ride", rideSchema);

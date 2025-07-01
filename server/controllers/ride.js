@@ -1,4 +1,3 @@
-
 const Ride = require("../models/Ride");
 const Rating = require("../models/Rating");
 const { BadRequestError } = require("../errors");
@@ -10,7 +9,14 @@ const {
 } = require("../utils/mapUtils");
 
 const createRide = async (req, res) => {
-  const { vehicle, pickup, drop, loadDetails, paymentMethod, currency = "pkr" } = req.body;
+  const {
+    vehicle,
+    pickup,
+    drop,
+    loadDetails,
+    paymentMethod,
+    currency = "pkr",
+  } = req.body;
 
   if (!vehicle || !pickup || !drop) {
     throw new BadRequestError("Vehicle, pickup, and drop details are required");
@@ -24,12 +30,24 @@ const createRide = async (req, res) => {
 
   const { address: dropAddress, latitude: dropLat, longitude: dropLon } = drop;
 
-  if (!pickupAddress || !pickupLat || !pickupLon || !dropAddress || !dropLat || !dropLon) {
+  if (
+    !pickupAddress ||
+    !pickupLat ||
+    !pickupLon ||
+    !dropAddress ||
+    !dropLat ||
+    !dropLon
+  ) {
     throw new BadRequestError("Complete pickup and drop details are required");
   }
 
-  if ((vehicle === "truck" || vehicle === "van") && (!loadDetails?.type || !loadDetails?.weight)) {
-    throw new BadRequestError("Load type and weight are required for van/truck rides");
+  if (
+    (vehicle === "truck" || vehicle === "van") &&
+    (!loadDetails?.type || !loadDetails?.weight)
+  ) {
+    throw new BadRequestError(
+      "Load type and weight are required for van/truck rides",
+    );
   }
 
   const customer = req.user;
@@ -42,11 +60,16 @@ const createRide = async (req, res) => {
       vehicle,
       distance,
       fare: fare[vehicle],
-      pickup: { address: pickupAddress, latitude: pickupLat, longitude: pickupLon },
+      pickup: {
+        address: pickupAddress,
+        latitude: pickupLat,
+        longitude: pickupLon,
+      },
       drop: { address: dropAddress, latitude: dropLat, longitude: dropLon },
       customer: customer.id,
       otp: generateOTP(),
-      loadDetails: vehicle === "truck" || vehicle === "van" ? loadDetails : undefined,
+      loadDetails:
+        vehicle === "truck" || vehicle === "van" ? loadDetails : undefined,
       status: "SEARCHING_FOR_CAPTAIN",
       payment: {
         method: paymentMethod,
@@ -134,7 +157,6 @@ const updateRideStatus = async (req, res) => {
       throw new NotFoundError("Ride not found");
     }
 
-
     if (!["START", "ARRIVED", "COMPLETED"].includes(status)) {
       throw new BadRequestError("Invalid ride status");
     }
@@ -198,8 +220,8 @@ const getMyRides = async (req, res) => {
 
     // Find rides with full details populated
     const rides = await Ride.find(query)
-      .populate("customer", "name phone")   // populate name and phone for customer
-      .populate("captain", "name phone")    // populate name and phone for captain
+      .populate("customer", "name phone") // populate name and phone for customer
+      .populate("captain", "name phone") // populate name and phone for captain
       .sort({ createdAt: -1 });
 
     res.status(200).json({
@@ -213,21 +235,16 @@ const getMyRides = async (req, res) => {
   }
 };
 
-
 module.exports = { getMyRides };
-
-
-
 
 const getAllRidesWithId = async (req, res) => {
   try {
-    const rides = await Ride.find({}, "_id")
-      .sort({ createdAt: -1 });
+    const rides = await Ride.find({}, "_id").sort({ createdAt: -1 });
 
     res.status(StatusCodes.OK).json({
       message: "Ride IDs retrieved successfully",
       count: rides.length,
-      rideIds: rides.map(ride => ride._id),
+      rideIds: rides.map((ride) => ride._id),
     });
   } catch (error) {
     console.error("Error retrieving ride IDs:", error);
@@ -236,8 +253,8 @@ const getAllRidesWithId = async (req, res) => {
 };
 
 const submitRating = async (req, res) => {
-  const { rating, review } = req.body; 
-  const { id: rideId } = req.params;  
+  const { rating, review } = req.body;
+  const { id: rideId } = req.params;
   const customerId = req.user.id;
 
   if (!rideId || !rating) {
@@ -280,6 +297,10 @@ const submitRating = async (req, res) => {
   });
 };
 
-
-
-module.exports = { createRide, acceptRide, updateRideStatus, getMyRides,submitRating };
+module.exports = {
+  createRide,
+  acceptRide,
+  updateRideStatus,
+  getMyRides,
+  submitRating,
+};

@@ -20,6 +20,4 @@ router.patch("/update/:rideId", updateRideStatus);
 router.get("/rides", getMyRides);
 router.post("/rating/:id", submitRating);
 
-
-
 module.exports = router;

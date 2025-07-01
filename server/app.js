@@ -55,7 +55,7 @@ app.post("/create-payment-sheet", async (req, res) => {
     const customer = await stripe.customers.create();
     const ephemeralKey = await stripe.ephemeralKeys.create(
       { customer: customer.id },
-      { apiVersion: "2023-10-16" }
+      { apiVersion: "2023-10-16" },
     );
     const paymentIntent = await stripe.paymentIntents.create({
       amount,
@@ -100,7 +100,7 @@ const start = async () => {
     server.listen(PORT, () => {
       console.log(`HTTP server is running at http://localhost:${PORT}`);
       console.log(
-        `✅ AdminJS is running at http://localhost:${PORT}${admin.options.rootPath}`
+        `✅ AdminJS is running at http://localhost:${PORT}${admin.options.rootPath}`,
       );
     });
   } catch (error) {

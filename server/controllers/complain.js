@@ -1,4 +1,4 @@
-const Complaint = require('../models/Complaints'); 
+const Complaint = require("../models/Complaints");
 
 const createComplaint = async (req, res) => {
   try {
@@ -25,14 +25,16 @@ const createComplaint = async (req, res) => {
 };
 
 const getComplaintsById = async (req, res) => {
-   try {
+  try {
     const { userId } = req.params;
 
     if (req.user._id.toString() !== userId) {
       return res.status(403).json({ error: "Access denied" });
     }
 
-    const complaints = await Complaint.find({ user: userId }).sort({ createdAt: -1 });
+    const complaints = await Complaint.find({ user: userId }).sort({
+      createdAt: -1,
+    });
 
     res.json(complaints);
   } catch (error) {

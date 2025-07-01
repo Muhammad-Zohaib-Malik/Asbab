@@ -31,7 +31,7 @@ const ratingSchema = new Schema(
   },
   {
     timestamps: true,
-  }
+  },
 );
 
 const Rating = mongoose.model("Rating", ratingSchema);

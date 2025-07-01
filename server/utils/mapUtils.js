@@ -19,9 +19,8 @@ const calculateFare = (distance) => {
     cabEconomy: { baseFare: 20, perKmRate: 10, minimumFare: 50 },
     cabPremium: { baseFare: 30, perKmRate: 15, minimumFare: 70 },
     truck: { baseFare: 50, perKmRate: 20, minimumFare: 100 },
-    van: { baseFare: 40, perKmRate: 15, minimumFare: 80 }
+    van: { baseFare: 40, perKmRate: 15, minimumFare: 80 },
   };
-
 
   const fareCalculation = (baseFare, perKmRate, minimumFare) => {
     const calculatedFare = baseFare + distance * perKmRate;
@@ -32,32 +31,32 @@ const calculateFare = (distance) => {
     bike: fareCalculation(
       rateStructure.bike.baseFare,
       rateStructure.bike.perKmRate,
-      rateStructure.bike.minimumFare
+      rateStructure.bike.minimumFare,
     ),
     auto: fareCalculation(
       rateStructure.auto.baseFare,
       rateStructure.auto.perKmRate,
-      rateStructure.auto.minimumFare
+      rateStructure.auto.minimumFare,
     ),
     cabEconomy: fareCalculation(
       rateStructure.cabEconomy.baseFare,
       rateStructure.cabEconomy.perKmRate,
-      rateStructure.cabEconomy.minimumFare
+      rateStructure.cabEconomy.minimumFare,
     ),
     cabPremium: fareCalculation(
       rateStructure.cabPremium.baseFare,
       rateStructure.cabPremium.perKmRate,
-      rateStructure.cabPremium.minimumFare
+      rateStructure.cabPremium.minimumFare,
     ),
     truck: fareCalculation(
       rateStructure.truck.baseFare,
       rateStructure.truck.perKmRate,
-      rateStructure.truck.minimumFare
+      rateStructure.truck.minimumFare,
     ),
     van: fareCalculation(
       rateStructure.van.baseFare,
       rateStructure.van.perKmRate,
-      rateStructure.van.minimumFare
+      rateStructure.van.minimumFare,
     ),
   };
 };

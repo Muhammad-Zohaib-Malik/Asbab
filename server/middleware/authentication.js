@@ -25,7 +25,4 @@ const verifyJWT = async (req, _, next) => {
   }
 };
 
-
-
-
 module.exports = verifyJWT;

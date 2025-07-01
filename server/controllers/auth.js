@@ -145,7 +145,7 @@ const updateProfilePicController = async (req, res, next) => {
       } catch (error) {
         console.error(
           "Error deleting existing profile picture from Cloudinary:",
-          error
+          error,
         );
         // Don't throw — it's okay to continue even if deletion fails
       }

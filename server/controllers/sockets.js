@@ -71,7 +71,7 @@ const handleSocketConnection = (io) => {
 
         const nearbyCaptains = Object.values(onDutyCaptains)
           .filter((captain) =>
-            geolib.isPointWithinRadius(captain.coords, customerCoords, 60000)
+            geolib.isPointWithinRadius(captain.coords, customerCoords, 60000),
           )
           .map((captain) => ({
             id: captain.socketId,
@@ -188,7 +188,7 @@ const handleSocketConnection = (io) => {
           coords: captain.coords,
         });
         console.log(
-          `User ${user.id} subscribed to Captain ${captainId}'s location.`
+          `User ${user.id} subscribed to Captain ${captainId}'s location.`,
         );
       }
     });
@@ -196,9 +196,8 @@ const handleSocketConnection = (io) => {
     socket.on("subscribeRide", async (rideId) => {
       socket.join(`ride_${rideId}`);
       try {
-        const rideData = await Ride.findById(rideId).populate(
-          "customer captain"
-        );
+        const rideData =
+          await Ride.findById(rideId).populate("customer captain");
         socket.emit("rideData", rideData);
       } catch (error) {
         socket.error("Failed to receive data");
@@ -223,14 +222,14 @@ const handleSocketConnection = (io) => {
                 geolib.isPointWithinRadius(
                   captain.coords,
                   customerCoords,
-                  60000
-                )
+                  60000,
+                ),
               )
               .map((captain) => ({
                 id: captain.socketId,
                 coords: captain.coords,
               }));
-            console.log("nearbyCaptains", nearbyCaptains)
+            console.log("nearbyCaptains", nearbyCaptains);
             socket.emit("nearbyCaptains", nearbyCaptains);
           }
         }
@@ -239,7 +238,7 @@ const handleSocketConnection = (io) => {
 
     function getCaptainSocket(captainId) {
       const captain = Object.values(onDutyCaptains).find(
-        (captain) => captain.userId?.toString() === captainId.toString()
+        (captain) => captain.userId?.toString() === captainId.toString(),
       );
       return captain ? io.sockets.sockets.get(captain.socketId) : null;
     }

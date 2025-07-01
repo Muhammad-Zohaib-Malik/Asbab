@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "main": "app.js",
   "scripts": {
-    "start": "nodemon app.js"
+    "start": "nodemon app.js",
+    "format": "prettier . --write"
   },
   "keywords": [],
   "author": "",
@@ -29,6 +30,7 @@
     "stripe": "^18.2.0"
   },
   "devDependencies": {
-    "nodemon": "^3.1.7"
+    "nodemon": "^3.1.7",
+    "prettier": "^3.6.2"
   }
 }
