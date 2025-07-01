@@ -1,5 +1,9 @@
 import { View, Text, TouchableOpacity, Dimensions } from "react-native";
-import Animated, { useSharedValue, useAnimatedStyle, withTiming } from "react-native-reanimated";
+import Animated, {
+  useSharedValue,
+  useAnimatedStyle,
+  withTiming,
+} from "react-native-reanimated";
 import { useEffect } from "react";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { useRouter } from "expo-router";
@@ -8,11 +12,6 @@ const { width } = Dimensions.get("window");
 
 // Menu Items Array
 const menuItems = [
-  {
-    label: "Home",
-    icon: "home-outline",
-    route: "/captain/home",
-  },
   {
     label: "My Rides",
     icon: "car-outline",
@@ -25,7 +24,7 @@ const menuItems = [
   },
   {
     label: "Complaints",
-    icon: "chatbox-ellipses-outline", // Changed icon
+    icon: "chatbox-ellipses-outline",
     route: "/captain/complaint",
   },
   {
