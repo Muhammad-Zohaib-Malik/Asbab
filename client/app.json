@@ -20,7 +20,7 @@
       "supportsTablet": true,
       "bundleIdentifier": "com.zohaib.Asbab",
       "config": {
-                     "googleMapsApiKey": "AlzaSyInPVUKDhdtaEWVLfHMDVFd-STij5KQ40l"
+                     "googleMapsApiKey": "AlzaSyp_VUXDceknq78tCbJl-OPD58MnBWO13yn"
                      
 
             }
@@ -28,7 +28,7 @@
     "android": {
       "config": {
                 "googleMaps": {
-                    "apiKey": "AlzaSyInPVUKDhdtaEWVLfHMDVFd-STij5KQ40l"
+                    "apiKey": "AlzaSyp_VUXDceknq78tCbJl-OPD58MnBWO13yn"
                 }
             },
       "adaptiveIcon": {
