@@ -5,6 +5,7 @@ const {
   acceptRide,
   getMyRides,
   submitRating,
+  getTotalEarning,
 } = require("../controllers/ride");
 
 const router = express.Router();
@@ -19,5 +20,6 @@ router.patch("/accept/:rideId", acceptRide);
 router.patch("/update/:rideId", updateRideStatus);
 router.get("/rides", getMyRides);
 router.post("/rating/:id", submitRating);
+router.get("/earning/total/:captainId", getTotalEarning);
 
 module.exports = router;
