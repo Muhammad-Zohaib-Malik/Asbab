@@ -41,6 +41,7 @@ const admin = new AdminJS({
     { resource: Ride },
     { resource: Rating },
     { resource: Complain },
+    { resource: Complain }
   ],
   rootPath: "/admin",
   branding: {
@@ -80,12 +81,12 @@ const buildAdminRouter = async (app) => {
         maxAge: 1000 * 60 * 60 * 24, // 1 day
       },
       name: "adminjs",
-    },
+    }
   );
 
   app.use(admin.options.rootPath, router);
   console.log(
-    `✅ AdminJS is running at http://localhost:${PORT}${admin.options.rootPath}`,
+    `✅ AdminJS is running at http://localhost:${PORT}${admin.options.rootPath}`
   );
 };
 

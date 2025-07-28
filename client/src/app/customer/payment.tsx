@@ -35,7 +35,7 @@ const Payment = () => {
     setLoading(true);
     try {
       const response = await axios.post(
-        "http://192.168.170.209:3000/create-payment-sheet",
+        "http://192.168.155.210:3000/create-payment-sheet",
         {
           amount: amountInCents(),
           currency: currency.toLowerCase(),

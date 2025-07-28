@@ -83,7 +83,7 @@ const PORT = process.env.PORT || 3000;
 
 const start = async () => {
   try {
-    await connectDB(process.env.MONGO_URL || "mongodb://localhost:27017/asbab");
+    await connectDB(process.env.MONGO_URI);
 
     // ✅ Mount AdminJS first
     await buildAdminRouter(app);
