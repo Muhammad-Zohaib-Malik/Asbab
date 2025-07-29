@@ -19,13 +19,13 @@
       "supportsTablet": true,
       "bundleIdentifier": "com.zohaib.Asbab",
       "config": {
-        "googleMapsApiKey": "AlzaSyp_VUXDceknq78tCbJl-OPD58MnBWO13yn"
+        "googleMapsApiKey": "AlzaSyix15mwFFnapCBH_qKiH2irm-tmTfVtRxP"
       }
     },
     "android": {
       "config": {
         "googleMaps": {
-          "apiKey": "AlzaSyp_VUXDceknq78tCbJl-OPD58MnBWO13yn"
+          "apiKey": "AlzaSyix15mwFFnapCBH_qKiH2irm-tmTfVtRxP"
         }
       },
       "adaptiveIcon": {

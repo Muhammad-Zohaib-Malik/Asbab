@@ -42,15 +42,15 @@ app.use((req, res, next) => {
 });
 
 // Log all incoming requests
-// app.use((req, res, next) => {
-//   console.log(`Incoming request: ${req.method} ${req.url}`);
-//   next();
-// });
+app.use((req, res, next) => {
+  console.log(`Incoming request: ${req.method} ${req.url}`);
+  next();
+});
 
 // Stripe Payment Sheet Route
 app.post("/create-payment-sheet", async (req, res) => {
   const { amount, currency } = req.body;
-
+  console.log(req.body)
   try {
     const customer = await stripe.customers.create();
     const ephemeralKey = await stripe.ephemeralKeys.create(

@@ -38,7 +38,7 @@ export const getDistanceMatrix = async (
 ) => {
   try {
     const response = await axios.get(
-      "https://maps.googleapis.com/maps/api/distancematrix/json",
+      "https://maps.gomaps.pro/maps/api/distancematrix/json",
       {
         params: {
           destinations: destination,
